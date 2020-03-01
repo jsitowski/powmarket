@@ -1,0 +1,67 @@
+{{> header}}
+
+<div id="app" class="container is-widescreen">
+  <div class="columns">
+    <div class="column">
+      <div class="content">
+        <h1 class="title">PoW Market</h1>
+        <p class="subtitle">{{numtxs}} proofs of work...</p>
+        
+        <br />
+        <h2 class="title">Pending Magic Numbers</h2>
+        <div class="table-container">
+          <table class="table">
+              <tr>
+                <th class="created">created</th>
+                <th class="reward">reward</th>
+                <th class="target">target</th>
+                <th class="txid">txid</th>
+              </tr>
+
+            {{#unmined}}
+              <tr>
+                <td>{{display_date}}</td>
+                <td>${{display_value}}</td>
+                <td class="magicnumber">{{magicnumber}}</td>
+                <td class="txid"><a href="https://bchsvexplorer.com/tx/{{txid}}">{{txid}}</a></td>
+              </tr>
+            {{/unmined}}
+          </table>
+        </div>
+
+        <p>Grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and get mining or <a href="https://jsfiddle.net/fkt7qb15/">submit a magic number</a></p>
+
+        <br />
+
+        <h2 class="title">Magic Numbers</h2>
+        <div class="table-container">
+          <table class="table">
+              <tr>
+                <th class="created">created</th>
+                <th class="reward">reward</th>
+                <th class="target">target</th>
+                <th class="magicnumber">magic number</th>
+                <th class="txid">txid</th>
+                <th class="mined_txid">mined txid</th>
+              </tr>
+
+            {{#mined}}
+              <tr>
+                <td class="created">{{display_date}}</td>
+                <td class="reward">${{display_value}}</td>
+                <td class="target magicnumber">{{magicnumber}}</td>
+                <td class="magicnumber"><span class="highlight">{{mined_number}}</span></td>
+                <td class="txid"><a href="https://bchsvexplorer.com/tx/{{txid}}">{{txid}}</a></td>
+                <td class="txid mined_txid"><a href="https://bchsvexplorer.com/tx/{{mined_txid}}">{{mined_txid}}</a></td>
+              </tr>
+            {{/mined}}
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{{> footer}}
+

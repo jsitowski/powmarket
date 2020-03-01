@@ -1,0 +1,69 @@
+html, body {
+    background-color: black;
+    color: white;
+}
+
+h1, h2, h3, h4, h5, h6, th, p, span, td {
+    color: white !important;
+}
+
+a {
+    color: white !important;
+    font-size: 14px;
+    padding-bottom: 3px;
+    text-decoration: underline;
+}
+
+h1.title {
+    margin-top: 30px;
+    display: block;
+    text-align: center;
+}
+
+.subtitle {
+    color: white !important;
+    margin-top: 30px;
+    display: block;
+    text-align: center;
+}
+
+.content {
+    color: white;
+}
+
+.table {
+    background: rgba(200, 200, 200, 0.05);
+    border: 0;
+}
+
+.table td {
+    font-size: 14px;
+}
+
+.table .created {
+    width: 120px;
+    white-space: nowrap;
+}
+
+.table .reward {
+    width: 50px;
+}
+
+.table .target{
+    width: 120px;
+}
+
+.table .txid {
+    font-family: monospace;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.table .magicnumber {
+    font-family: monospace;
+}
+
+.highlight {
+    background: rgba(61, 84, 99, 0.5);
+    padding: 2px;
+}

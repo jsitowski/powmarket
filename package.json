@@ -1,0 +1,35 @@
+{
+  "name": "pow.market",
+  "version": "0.0.1",
+  "description": "A market for magic numbers",
+  "main": "index.js",
+  "scripts": {
+    "start": "DEBUG=hummingbird:*,pow:* node -r esm src/server.js",
+    "state_machine": "DEBUG=hummingbird:*,pow:* node -r esm src/state_machine.js",
+    "patch": "DEBUG=hummingbird:*,pow:* node -r esm src/patch.js"
+  },
+  "keywords": [
+    "bitcoin",
+    "21e8"
+  ],
+  "author": "synfonaut",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "axios": "0.19.2",
+    "body-parser": "1.19.0",
+    "bsv": "1.3.0",
+    "chalk": "3.0.0",
+    "compression": "1.7.4",
+    "debug": "4.1.1",
+    "express": "4.17.1",
+    "hummingbird-bitcoin": "0.1.2",
+    "mongodb": "3.5.4",
+    "mustache-express": "1.3.0",
+    "request": "2.88.2",
+    "request-promise": "4.2.5",
+    "timeago.js": "4.0.2"
+  },
+  "devDependencies": {
+    "esm": "3.2.25"
+  }
+}
