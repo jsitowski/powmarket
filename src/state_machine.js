@@ -81,11 +81,11 @@ export default class POWMarketStateMachine {
 
         let vout = 0;
         for (const out of tx.out) {
-            const script = bsv.Script.fromASM(out.str);
+            const script = bsv.Script.fromASM(out.str); // TODO: slow
             if (is21e8Out(script)) {
                 const value = out.e.v;
                 const txid = tx.tx.h;
-                const parts = out.str.split(" ");
+                const parts = out.str.split(" "); // TODO: use script
                 const target = parts[0];
                 const magicnumber = parts[1];
 
