@@ -96,3 +96,9 @@ export async function wait(ms) {
   });
 }
 
+export function stripid(results) {
+    return results.map(result => {
+        delete result["_id"];
+        return result;
+    });
+}

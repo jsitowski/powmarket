@@ -24,6 +24,38 @@ export async function start(port=8000) {
     app.set('view engine', 'html');
     app.set('views', __dirname + '/../views');
 
+    async function fetchMagicNumbers(type) {
+        const bsvusd = await helpers.backup_bsvusd();
+
+        const db = await connect();
+
+        const query = {};
+        if (type === "mined") {
+            query["mined"] = true;
+        } else if (type === "unmined") {
+            query["mined"] = false;
+        }
+
+        const magicnumbers = helpers.stripid(await db.collection("magicnumbers").find(query).sort({"created_at": -1}).limit(250).toArray());
+        return {
+            bsvusd,
+            magicnumbers,
+        };
+    }
+
+
+    app.get('/api/mined', async function(req, res) {
+        return res.json(await fetchMagicNumbers("mined"));
+    });
+
+    app.get('/api/unmined', async function(req, res) {
+        return res.json(await fetchMagicNumbers("unmined"));
+    });
+
+    app.get('/api', async function(req, res) {
+        return res.json(await fetchMagicNumbers(null));
+    });
+
     app.get('*', async function(req, res) {
         const bsvusd = await helpers.backup_bsvusd();
 
