@@ -2,7 +2,7 @@ const log = require("debug")("pow:state_machine");
 
 import Hummingbird from "hummingbird-bitcoin"
 
-import { connect, good } from "./db"
+import { connect, good, dupe } from "./db"
 
 import bsv from "bsv"
 
@@ -105,19 +105,24 @@ export default class POWMarketStateMachine {
                     const utxo = `${txid}:${vout}`;
                     if (confirmed) {
                         log(`inserted confirmed magic number into the pool ${txid}`);
-                        utxos.add(utxo);
                     } else {
                         log(`inserted new magic number into the pool ${txid}`);
                     }
-                } catch (e) {
-                    log(`already added ${tx.tx.h}`);
 
-                    if (confirmed) {
-                        await this.db.collection("magicnumbers").updateOne({ txid }, {
-                            "$set": {
-                                confirmed: true
-                            }
-                        });
+                    utxos.add(utxo);
+                } catch (e) {
+                    if (dupe(e, ["txid"])) {
+                        log(`already added ${tx.tx.h}`);
+
+                        if (confirmed) {
+                            await this.db.collection("magicnumbers").updateOne({ txid }, {
+                                "$set": {
+                                    confirmed: true
+                                }
+                            });
+                        }
+                    } else {
+                        throw e;
                     }
                 }
             }

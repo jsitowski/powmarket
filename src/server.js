@@ -57,11 +57,7 @@ export async function start(port=8000) {
     });
 
     app.get('*', async function(req, res) {
-        const bsvusd = await helpers.backup_bsvusd();
-
-        const db = await connect();
-
-        const magicnumbers = await db.collection("magicnumbers").find().toArray();
+        const { bsvusd, magicnumbers } = await fetchMagicNumbers(null);
 
         const numtxs = magicnumbers.length;
         const mined = magicnumbers.filter(m => { return m.mined }).map(m => {

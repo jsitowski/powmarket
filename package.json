@@ -4,9 +4,9 @@
   "description": "A market for magic numbers",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=hummingbird:*,pow:* node -r esm src/server.js",
-    "state_machine": "DEBUG=hummingbird:*,pow:* node -r esm src/state_machine.js",
-    "patch": "DEBUG=hummingbird:*,pow:* node -r esm src/patch.js"
+    "start": "DEBUG=* node -r esm src/server.js",
+    "state_machine": "DEBUG=* node -r esm src/state_machine.js",
+    "patch": "DEBUG=* node -r esm src/patch.js"
   },
   "keywords": [
     "bitcoin",
