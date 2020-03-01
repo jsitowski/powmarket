@@ -25,6 +25,10 @@ RPC_HOST=XXX RPC_USER=XXX RPC_PASS=XXX PEER_HOST=XXX npm run state_machine
 
 Depends on MongoDB but could easily be switched out for another database. Pull requests welcome!
 
+## 21e8miner
+
+PoW Market is compatible with [21e8miner](https://github.com/deanmlittle/21e8miner).
+
 ## Contact
 
 @synfonaut
