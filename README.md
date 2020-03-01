@@ -2,6 +2,8 @@
 
 > A market for magic numbers
 
+https://pow.market/
+
 ## Getting Started
 
 To get the PoW market running, use the following commands
