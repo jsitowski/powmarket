@@ -59,12 +59,13 @@ export async function start(port=8000) {
     app.get('*', async function(req, res) {
         const { bsvusd, magicnumbers } = await fetchMagicNumbers(null);
 
-        const numtxs = magicnumbers.length;
         const mined = magicnumbers.filter(m => { return m.mined }).map(m => {
             m.display_date = timeago.format(m.created_at * 1000);
             m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
             return m;
         }).sort((a, b) => {
+            if (a.mined_at > b.mined_at) { return -1 }
+            if (a.mined_at < b.mined_at) { return 1 }
             if (a.created_at > b.created_at) { return -1 }
             if (a.created_at < b.created_at) { return 1 }
             return 0;
@@ -82,7 +83,20 @@ export async function start(port=8000) {
             return 0;
         });
 
-        res.render('index', { mined, unmined, numtxs, bsvusd });
+        const numtxs = magicnumbers.length;
+        const numminedtxs = mined.length;
+        const numunminedtxs = unmined.length;
+
+        res.render('index', {
+            bsvusd,
+
+            mined,
+            unmined,
+
+            numtxs,
+            numminedtxs,
+            numunminedtxs,
+        });
     });
 
     log(`starting server at http://localhost:${port}`);

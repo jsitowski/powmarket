@@ -33,3 +33,7 @@ PoW Market is compatible with [21e8miner](https://github.com/deanmlittle/21e8min
 
 @synfonaut
 
+## TODO
+
+- Sort magic numbers by when they were mined
+- Logo

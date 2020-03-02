@@ -47,6 +47,8 @@ export default class POWMarketStateMachine {
         const confirmed = !!tx.blk;
         const created_at = Math.floor(tx.blk ? tx.blk.t : Date.now() / 1000);
 
+        // log(tx.tx.h);
+
         for (const input of tx.in) {
             const utxo = `${input.e.h}:${input.e.i}`;
 
@@ -64,6 +66,7 @@ export default class POWMarketStateMachine {
                 }, {
                     "$set": {
                         mined: true,
+                        mined_at: created_at,
                         mined_number: hash,
                         mined_txid: tx.tx.h,
                         mined_address: input.e.a,
