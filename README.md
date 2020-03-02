@@ -25,7 +25,7 @@ RPC_HOST=XXX RPC_USER=XXX RPC_PASS=XXX PEER_HOST=XXX npm start
 RPC_HOST=XXX RPC_USER=XXX RPC_PASS=XXX PEER_HOST=XXX npm run state_machine
 ```
 
-Depends on MongoDB but could easily be switched out for another database. Pull requests welcome!
+Pull requests welcome!
 
 ## 21e8miner
 
