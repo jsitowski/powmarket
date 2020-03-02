@@ -61,6 +61,7 @@ export async function start(port=8000) {
 
         const mined = magicnumbers.filter(m => { return m.mined }).map(m => {
             m.display_date = timeago.format(m.created_at * 1000);
+            m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
             m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
             return m;
         }).sort((a, b) => {
