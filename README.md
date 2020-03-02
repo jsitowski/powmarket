@@ -1,5 +1,7 @@
 # PoW Market
 
+<img src="./public/static/images/logo.png" alt="logo" style="zoom: 67%;" />
+
 > A market for magic numbers
 
 https://pow.market/
@@ -27,13 +29,8 @@ Depends on MongoDB but could easily be switched out for another database. Pull r
 
 ## 21e8miner
 
-PoW Market is compatible with [21e8miner](https://github.com/deanmlittle/21e8miner).
+PoW Market is compatible with [21e8miner](https://github.com/deanmlittle/21e8miner)
 
 ## Contact
 
 @synfonaut
-
-## TODO
-
-- Sort magic numbers by when they were mined
-- Logo
