@@ -103,8 +103,8 @@ Return the last 500 mined magic numbers. Currently no paging is offered. Mined o
 
 PoW Market is compatible with [21e8miner](https://github.com/deanmlittle/21e8miner)
 
+## About
 
-
-## Contact
+PoW Market is a distributed proof-of-work market built on Bitcoin. It's built using Hummingbird (https://github.com/synfonaut/hummingbird), a real-time application framework for Bitcoin.
 
 @synfonaut
