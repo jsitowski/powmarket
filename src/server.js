@@ -37,6 +37,9 @@ export async function start(port=8000) {
         }
 
         const magicnumbers = helpers.stripid(await db.collection("magicnumbers").find(query).sort({"created_at": -1}).limit(250).toArray());
+
+        db.close();
+
         return {
             bsvusd,
             magicnumbers,
@@ -45,18 +48,27 @@ export async function start(port=8000) {
 
 
     app.get('/api/mined', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/api/mined request from ${ip}`);
         return res.json(await fetchMagicNumbers("mined"));
     });
 
     app.get('/api/unmined', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/api/unmined request from ${ip}`);
         return res.json(await fetchMagicNumbers("unmined"));
     });
 
     app.get('/api', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/api request from ${ip}`);
         return res.json(await fetchMagicNumbers(null));
     });
 
     app.get('*', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/ request from ${ip}`);
+
         const { bsvusd, magicnumbers } = await fetchMagicNumbers(null);
 
         const mined = magicnumbers.filter(m => { return m.mined }).map(m => {

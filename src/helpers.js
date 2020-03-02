@@ -28,7 +28,7 @@ export function satoshisToDollars(satoshis, bsvprice) {
 }
 
 let cryptocompare_price_timeout = 0;
-let cryptocompare_expire = 60 * 5; // 5 minute cache
+let cryptocompare_expire = 60 * 10;
 let cryptocompare_price = null;
 
 export async function backup_bsvusd() {
