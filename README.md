@@ -103,8 +103,43 @@ Return the last 500 mined magic numbers. Currently no paging is offered. Mined o
 
 PoW Market is compatible with [21e8miner](https://github.com/deanmlittle/21e8miner)
 
+
+
 ## About
 
 PoW Market is a distributed proof-of-work market built on Bitcoin. It's built using Hummingbird (https://github.com/synfonaut/hummingbird), a real-time application framework for Bitcoin.
 
 @synfonaut
+
+
+
+## EarnSV Bounties
+
+### Add scripts from Brendan ($21.80)
+
+These scripts are claimable but use a slightly different Bitcoin Script format. Adjust the script identifier [here](https://github.com/synfonaut/powmarket/blob/master/src/state_machine.js#L78) to recognize these scripts:
+
+```
+https://whatsonchain.com/tx/878e46d9b8292273ff2c7bbdcf1d3de17564132785fa3af4cadac139b62c448c
+https://whatsonchain.com/tx/b4ce678e495df5e793301092619a636282e4b83f80a572b06b29b623ba10a5ab
+https://whatsonchain.com/tx/ff5be755d27ee11c74fd7d825927cbb7d4e78f1c35e5a6449f68ab924025d112
+https://whatsonchain.com/tx/60a04a616061c3a545c2cb39b8a1c1f848b3764115adc0149615511887ebeb7e
+```
+
+
+
+### Add WebSockets API ($21.80)
+
+There are many NodeJS WebSocket APIs, switch the state_machine to use one that pushes state changes live to subscribers.
+
+
+
+## Add Market Hashpower ($21.80)
+
+How much hashpower is currently flowing through the market? Calculate and display it on homepage.
+
+
+
+### Design and UX ($2.18)
+
+Make improvements to the design / UX.
