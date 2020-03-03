@@ -8,7 +8,7 @@
         <p class="subtitle">A Marketplace for Magic Numbers</p>
         
         <br />
-        <h2 class="title">{{numunminedtxs}} Pending Magic Numbers</h2>
+        <h2 class="title">{{numunminedtxs}} Pending Magic Numbers (${{display_pendingmoney}})</h2>
         <div class="table-container">
           <table class="table">
               <tr>
@@ -16,6 +16,7 @@
                 <th class="reward">reward</th>
                 <th class="target">target</th>
                 <th class="txid">txid</th>
+                <th class="txid">hash</th>
               </tr>
 
             {{#unmined}}
@@ -24,6 +25,7 @@
                 <td>${{display_value}}</td>
                 <td class="magicnumber">{{magicnumber}}</td>
                 <td class="txid"><a href="https://blockchair.com/bitcoin-sv/transaction/{{txid}}">{{txid}}</a></td>
+                <td class="txid">{{target}}</td>
               </tr>
             {{/unmined}}
           </table>
@@ -32,7 +34,7 @@
         <p>Grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and get mining or <a href="https://jsfiddle.net/fkt7qb15/">submit a magic number</a></p>
         <br />
 
-        <h2 class="title">{{numminedtxs}} Mined Magic Numbers</h2>
+        <h2 class="title">{{numminedtxs}} Mined Magic Numbers (${{display_paidmoney}})</h2>
         <div class="table-container">
           <table class="table">
               <tr>
