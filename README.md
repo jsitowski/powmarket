@@ -134,7 +134,7 @@ There are many NodeJS WebSocket APIs, switch the state_machine to use one that p
 
 
 
-## Add Market Hashpower ($21.80)
+### Add Market Hashpower ($21.80)
 
 How much hashpower is currently flowing through the market? Calculate and display it on homepage.
 
