@@ -10,8 +10,7 @@ const Opcode = bsv.Opcode;
 
 const utxos = new Set();
 
-// from 21e8miner
-function is21e8Out(script) {
+function is21e8MinerScript(script) {
     return !!(
         script.chunks.length === 12 &&
         script.chunks[0].buf &&
@@ -29,6 +28,54 @@ function is21e8Out(script) {
         script.chunks[10].opcodenum === Opcode.OP_DROP &&
         script.chunks[11].opcodenum === Opcode.OP_CHECKSIG
     );
+}
+
+function isCoinguruStyleScript(script) {
+    /*
+    try {
+        console.log(script.chunks.length, 12, "CHUNKS");
+        console.log(script.chunks[0].buf, 1);
+        console.log(script.chunks[0].buf.length, 1, "BUF0");
+        console.log(script.chunks[1].buf, 1);
+        console.log(script.chunks[1].buf.length, 1, "BUF1");
+
+        console.log(script.chunks[2].opcodenum, Opcode.OP_SIZE);
+        console.log(script.chunks[3].opcodenum, Opcode.OP_4);
+        console.log(script.chunks[4].opcodenum, Opcode.OP_PICK);
+        console.log(script.chunks[5].opcodenum, Opcode.OP_SHA256);
+        console.log(script.chunks[6].opcodenum, Opcode.OP_SWAP);
+        console.log(script.chunks[7].opcodenum, Opcode.OP_SPLIT);
+        console.log(script.chunks[8].opcodenum, Opcode.OP_DROP);
+        console.log(script.chunks[9].opcodenum, Opcode.OP_EQUALVERIFY);
+        console.log(script.chunks[10].opcodenum, Opcode.OP_DROP);
+        console.log(script.chunks[11].opcodenum, Opcode.OP_CHECKSIG);
+    } catch (e) {
+        console.log("err while debugging");
+    }
+    */
+
+    return !!(
+        script.chunks.length >= 13 &&
+        script.chunks[0].buf &&
+        script.chunks[0].buf.length >= 1 &&
+        script.chunks[1].buf &&
+        script.chunks[1].buf.length > 1 &&
+        script.chunks[2].opcodenum === Opcode.OP_SIZE &&
+        script.chunks[3].opcodenum === Opcode.OP_4 &&
+        script.chunks[4].opcodenum === Opcode.OP_PICK &&
+        script.chunks[5].opcodenum === Opcode.OP_SHA256 &&
+        script.chunks[6].opcodenum === Opcode.OP_SWAP &&
+        script.chunks[7].opcodenum === Opcode.OP_SPLIT &&
+        script.chunks[8].opcodenum === Opcode.OP_DROP &&
+        script.chunks[9].opcodenum === Opcode.OP_EQUALVERIFY &&
+        script.chunks[10].opcodenum === Opcode.OP_DROP &&
+        script.chunks[11].opcodenum === Opcode.OP_CODESEPARATOR &&
+        script.chunks[12].opcodenum === Opcode.OP_CHECKSIG
+    );
+}
+
+function isPuzzle(script) {
+    return is21e8MinerScript(script) || isCoinguruStyleScript(script);
 }
 
 export default class POWMarketStateMachine {
@@ -85,7 +132,7 @@ export default class POWMarketStateMachine {
         let vout = 0;
         for (const out of tx.out) {
             const script = bsv.Script.fromASM(out.str); // TODO: slow
-            if (is21e8Out(script)) {
+            if (isPuzzle(script)) {
                 const value = out.e.v;
                 const txid = tx.tx.h;
                 const parts = out.str.split(" "); // TODO: use script

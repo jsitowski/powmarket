@@ -91,8 +91,8 @@ export async function start(port=8000) {
             m.display_date = timeago.format(m.created_at * 1000);
             m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
             totalpendingsats += m.value;
-            if (m.magicnumber.length > 10) {
-                m.magicnumber = m.magicnumber.substring(0, 10) + "...";
+            if (m.magicnumber.length > 14) {
+                m.magicnumber = m.magicnumber.substring(0, 14) + "...";
             }
             return m;
         }).sort((a, b) => {
