@@ -36,7 +36,7 @@ export async function start(port=8000) {
             query["mined"] = false;
         }
 
-        const magicnumbers = helpers.stripid(await db.collection("magicnumbers").find(query).sort({"created_at": -1}).limit(250).toArray());
+        const magicnumbers = helpers.stripid(await db.collection("magicnumbers").find(query).sort({"mined_at": -1, "created_at": -1}).limit(10000).toArray());
 
         db.close();
 
