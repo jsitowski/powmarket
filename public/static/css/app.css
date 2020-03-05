@@ -9,7 +9,6 @@ h1, h2, h3, h4, h5, h6, th, p, span, td {
 
 a {
     color: white !important;
-    font-size: 14px;
     padding-bottom: 3px;
     text-decoration: underline;
 }
@@ -35,33 +34,50 @@ h1.title {
 .table {
     background: rgba(200, 200, 200, 0.05);
     border: 0;
-}
-
-.table td {
     font-size: 14px;
 }
 
-.table .created {
-    width: 120px;
-    white-space: nowrap;
-}
-
-.table .reward {
-    width: 50px;
-}
-
-.table .target{
-    width: 120px;
+.content-wrapper {
+    padding: 10px;
 }
 
 .table .txid {
     font-family: monospace;
-    max-width: 150px;
-    overflow: hidden;
+    max-width: 200px;
+    overflow: scroll
 }
 
 .table .magicnumber {
     font-family: monospace;
+}
+
+.table td.created {
+    white-space: nowrap;
+    width: 150px;
+    max-width: 150px;
+    min-width: 150px;
+}
+
+.table td.reward {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+}
+
+.table td.target {
+    font-family: monospace;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+}
+
+.level {
+    margin-top: 50px;
+    padding-bottom: 40px;
+}
+
+.level .title {
+    margin-bottom: 12px !important;
 }
 
 .highlight {

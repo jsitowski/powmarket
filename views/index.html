@@ -3,38 +3,41 @@
 <div id="app" class="container is-widescreen">
   <div class="columns">
     <div class="column">
-      <div class="content">
+      <div class="content content-wrapper">
         <h1 class="title">PoW Market</h1>
         <p class="subtitle">A Marketplace for Magic Numbers</p>
+
         
-        <br />
-        <h2 class="title">{{numunminedtxs}} Pending Magic Numbers (${{display_pendingmoney}})</h2>
-        <div class="table-container">
-          <table class="table">
-              <tr>
-                <th class="created">created</th>
-                <th class="reward">reward</th>
-                <th class="target">target</th>
-                <th class="txid">txid</th>
-                <th class="txid">hash</th>
-              </tr>
+        <nav class="level is-mobile">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="title">{{numminedtxs}}</p>
+              <p class="heading">Magic Numbers Mined</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="title">${{display_paidmoney}}</p>
+              <p class="heading">Earned</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered is-hidden-mobile">
+            <div>
+              <p class="title">{{numunminedtxs}}</p>
+              <p class="heading">Pending Magic Numbers</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered is-hidden-mobile">
+            <div>
+              <p class="title">${{display_pendingmoney}}</p>
+              <p class="heading">Available</p>
+            </div>
+          </div>
+        </nav>
 
-            {{#unmined}}
-              <tr>
-                <td>{{display_date}}</td>
-                <td>${{display_value}}</td>
-                <td class="magicnumber">{{magicnumber}}</td>
-                <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
-                <td class="txid">{{target}}</td>
-              </tr>
-            {{/unmined}}
-          </table>
-        </div>
+        <h2 class="title">{{numminedtxs}} Mined Magic Numbers</h2>
+        <p>These are the most recently mined magic numbers.</p>
 
-        <p>Grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and get mining or <a href="https://jsfiddle.net/fkt7qb15/">submit a magic number</a></p>
-        <br />
-
-        <h2 class="title">{{numminedtxs}} Mined Magic Numbers (${{display_paidmoney}})</h2>
         <div class="table-container">
           <table class="table">
               <tr>
@@ -50,7 +53,7 @@
               <tr>
                 <td class="created">{{display_mined_date}}</td>
                 <td class="reward">${{display_value}}</td>
-                <td class="target magicnumber">{{magicnumber}}</td>
+                <td class="target">{{magicnumber}}</td>
                 <td class="magicnumber"><span class="highlight">{{mined_number}}</span></td>
                 <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
                 <td class="txid mined_txid"><a href="https://whatsonchain.com/tx/{{mined_txid}}">{{mined_txid}}</a></td>
@@ -59,6 +62,37 @@
           </table>
         </div>
 
+        <br />
+        <h2 class="title">{{numunminedtxs}} Pending Magic Numbers (${{display_pendingmoney}})</h2>
+        <div class="table-container">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th class="created">created</th>
+                  <th class="reward">reward</th>
+                  <th class="target">target</th>
+                  <th class="txid">txid</th>
+                 <th class="txid">hash</th>
+                </tr>
+              </thead>
+
+              <tbody>
+              {{#unmined}}
+                <tr>
+                  <td class="created">{{display_date}}</td>
+                  <td class="reward">${{display_value}}</td>
+                  <td class="target">{{magicnumber}}</td>
+                  <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
+                  <td class="txid">{{target}}</td>
+                </tr>
+              {{/unmined}}
+              </tbody>
+          </table>
+
+        </div>
+
+        <p>Grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and get mining or <a href="https://jsfiddle.net/fkt7qb15/">submit a magic number</a></p>
+        <br />
 
         <br />
         <br />

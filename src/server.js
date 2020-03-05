@@ -65,6 +65,13 @@ export async function start(port=8000) {
         return res.json(await fetchMagicNumbers(null));
     });
 
+    // CLEANUP
+    // CREATE VIEW
+    // START UNBUNDLING GLOBAL STATS FROM CURRENT VIEW
+    // ALGORITHM TO SORT BY BEST MAGIC NUMBERS
+    // START FILTERING FOR BITSV
+    // STORE USD PRICE
+
     app.get('*', async function(req, res) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/ request from ${ip}`);
@@ -85,14 +92,14 @@ export async function start(port=8000) {
             if (a.created_at > b.created_at) { return -1 }
             if (a.created_at < b.created_at) { return 1 }
             return 0;
-        });
+        }).slice(0, 10);
 
         const unmined = magicnumbers.filter(m => { return !m.mined }).map(m => {
             m.display_date = timeago.format(m.created_at * 1000);
             m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
             totalpendingsats += m.value;
-            if (m.magicnumber.length > 14) {
-                m.magicnumber = m.magicnumber.substring(0, 14) + "...";
+            if (m.magicnumber.length > 10) {
+                m.magicnumber = m.magicnumber.substring(0, 10) + "...";
             }
             return m;
         }).sort((a, b) => {
