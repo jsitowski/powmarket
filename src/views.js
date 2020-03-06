@@ -24,38 +24,45 @@ export async function dashboard(view={}, db=null) {
 }
 
 
-export async function mined(view={}) {
-    const { bsvusd, magicnumbers } = view;
+function processMagicNumber(m, view) {
+    m.display_date = timeago.format(m.created_at * 1000);
+    m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
+    m.display_value = helpers.satoshisToDollars(m.value, view.bsvusd);
+    m.display_magicnumber = (m.magicnumber.length > 10 ? m.magicnumber.substr(0, 10) + "..." : m.magicnumber);
+    return m;
+}
 
-    let totalpaidsats = 0;
-    const mined = magicnumbers.filter(m => { return m.mined }).map(m => {
-        m.display_date = timeago.format(m.created_at * 1000);
-        m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
-        m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
-        totalpaidsats += m.value;
-        return m;
-    }).sort((a, b) => {
-        if (a.mined_at > b.mined_at) { return -1 }
-        if (a.mined_at < b.mined_at) { return 1 }
-        if (a.created_at > b.created_at) { return -1 }
-        if (a.created_at < b.created_at) { return 1 }
-        return 0;
-    }).slice(0, 10);
+export async function mined(view={}, db) {
 
-    const numminedtxs = mined.length;
+    if (!view.bsvusd) { throw new Error(`expected bsvusd to be able to price mined`) }
 
-    return Object.assign({}, view, {
-        mined,
-        numminedtxs,
-        totalpaidsats,
+    const recentlyMined = await (db.collection("magicnumbers").find({"mined": true}).sort({"created_at": -1}).limit(10).toArray());
+
+    view.mined = recentlyMined.map(m => {
+        return processMagicNumber(m, view);
     });
+
+    return view;
+}
+
+export async function unmined(view={}, db) {
+
+    if (!view.bsvusd) { throw new Error(`expected bsvusd to be able to price mined`) }
+
+    const pending = await (db.collection("magicnumbers").find({"mined": false}).sort({"value": -1}).limit(10).toArray());
+
+    view.unmined = pending.map(m => {
+        return processMagicNumber(m, view);
+    });
+
+    return view;
 }
 
 export async function blockviz(view={}, db) {
 
     const now = Math.floor((new Date()).getTime() / 1000);
-    const interval = 86400;
-    const num = 7;
+    const interval = 86400 / 16;
+    const num = 112;
     const earliest_time = now - (interval * num);
     const txs = await db.collection("magicnumbers").find({"created_at": {"$gte": earliest_time}}).sort({"created_at": 1}).toArray();
 
@@ -102,53 +109,9 @@ export async function homepage(view={}) {
     view.bsvusd = bsvusd;
     view = await blockviz(view, db);
     view = await dashboard(view, db);
+    view = await mined(view, db);
+    view = await unmined(view, db);
 
     return view;
 }
 
-/*
-        const { bsvusd, magicnumbers } = await fetchMagicNumbers(null);
-
-        let totalpendingsats = 0;
-        let totalpaidsats = 0;
-        const mined = magicnumbers.filter(m => { return m.mined }).map(m => {
-            m.display_date = timeago.format(m.created_at * 1000);
-            m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
-            m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
-            totalpaidsats += m.value;
-            return m;
-        }).sort((a, b) => {
-            if (a.mined_at > b.mined_at) { return -1 }
-            if (a.mined_at < b.mined_at) { return 1 }
-            if (a.created_at > b.created_at) { return -1 }
-            if (a.created_at < b.created_at) { return 1 }
-            return 0;
-        }).slice(0, 10);
-
-        const unmined = magicnumbers.filter(m => { return !m.mined }).map(m => {
-            m.display_date = timeago.format(m.created_at * 1000);
-            m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
-            totalpendingsats += m.value;
-            if (m.magicnumber.length > 10) {
-                m.magicnumber = m.magicnumber.substring(0, 10) + "...";
-            }
-            return m;
-        }).sort((a, b) => {
-            if (a.created_at > b.created_at) { return -1 }
-            if (a.created_at < b.created_at) { return 1 }
-            return 0;
-        });
-
-        const numtxs = magicnumbers.length;
-        const numminedtxs = mined.length;
-        const numunminedtxs = unmined.length;
-
-
-            mined,
-            unmined,
-
-            numtxs,
-            numminedtxs,
-            numunminedtxs,
-
-        */

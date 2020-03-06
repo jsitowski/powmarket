@@ -1,5 +1,11 @@
 {{> header}}
 
+<script>
+function toggleExtendedDisplay() {
+  document.getElementById("blockviz").classList.toggle("extended");
+}
+</script>
+
 <div id="app" class="container is-widescreen">
   <div class="columns">
     <div class="column">
@@ -34,7 +40,7 @@
           </div>
         </nav>
 
-        <div class="blockviz-wrapper">
+        <div class="blockviz-wrapper" id="blockviz">
           <table class="blockviz">
             {{#blockviz}}
               <td class="segment">
@@ -44,12 +50,15 @@
               </td>
             {{/blockviz}}
           </table>
+          <a class="toggle" href="#" onclick="toggleExtendedDisplay()">
+            <i class="fas fa-expand-alt fa-flip-horizontal"></i>
+          </a>
         </div>
         
         <hr />
 
-        <h2 class="title">{{numminedtxs}} Mined Magic Numbers</h2>
-        <p>These are the most recently mined magic numbers.</p>
+        <h2 class="title">{{dashboard.mined_num}} Mined Magic Numbers</h2>
+        <p>There have been {{dashboard.mined_num}} Magic Numbers mined for ${{dashboard.mined_earnings}}, these are the most recent ones:</p>
 
         <div class="table-container">
           <table class="table">
@@ -66,16 +75,22 @@
               <tr>
                 <td class="created">{{display_mined_date}}</td>
                 <td class="reward">${{display_value}}</td>
-                <td class="target">{{magicnumber}}</td>
+                <td class="target">{{display_magicnumber}}</td>
                 <td class="magicnumber"><span class="highlight">{{mined_number}}</span></td>
                 <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
                 <td class="txid mined_txid"><a href="https://whatsonchain.com/tx/{{mined_txid}}">{{mined_txid}}</a></td>
               </tr>
             {{/mined}}
           </table>
+          <p><a href="">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
         </div>
+
         <br />
-        <h2 class="title">{{numunminedtxs}} Pending Magic Numbers (${{display_pendingmoney}})</h2>
+        <hr />
+        <br />
+
+        <h2 class="title">{{dashboard.unmined_num}} Pending Magic Numbers</h2>
+        <p>There are {{dashboard.unmined_num}} Pending Magic Numbers worth ${{dashboard.unmined_earnings}}, grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and start mining!</p>
         <div class="table-container">
           <table class="table">
               <thead>
@@ -93,20 +108,18 @@
                 <tr>
                   <td class="created">{{display_date}}</td>
                   <td class="reward">${{display_value}}</td>
-                  <td class="target">{{magicnumber}}</td>
+                  <td class="target">{{display_magicnumber}}</td>
                   <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
                   <td class="txid">{{target}}</td>
                 </tr>
               {{/unmined}}
               </tbody>
           </table>
-
+          <p><a href="">Show all {{dashboard.unmined_num}} Pending Magic Numbers</a></p>
         </div>
 
-        <p>Grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and get mining or <a href="https://jsfiddle.net/fkt7qb15/">submit a magic number</a></p>
         <br />
-
-        <br />
+        <hr />
         <br />
 
         <div class="columns">

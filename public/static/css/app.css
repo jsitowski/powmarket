@@ -41,6 +41,7 @@ h1.title {
     padding: 10px;
 }
 
+
 .table .txid {
     font-family: monospace;
     max-width: 200px;
@@ -86,13 +87,30 @@ h1.title {
 }
 
 .blockviz-wrapper {
-    height: 197px;
+    height: 127px;
     overflow: hidden;
+    position: relative;
+}
+
+.blockviz-wrapper.extended {
+    height: auto;
+}
+
+.blockviz-wrapper .toggle {
+    position: absolute;
+    opacity: 0;
+    bottom: 0px;
+    z-index: 99;
+    right: 0;
+    transition: opacity 0.25s;
+}
+
+.blockviz-wrapper:hover .toggle {
+    opacity: 0.5;
 }
 
 .blockviz {
     width: 100%;
-    vertical-align: bottom;
     table-layout: fixed;
 }
 
@@ -101,7 +119,6 @@ h1.title {
     vertical-align: top;
     width: 10%;
     overflow: hidden;
-    border: 1px solid black;
 }
 
 .blockviz .segment .tx {
@@ -114,7 +131,7 @@ h1.title {
 
 .blockviz .segment .tx.mined-,
 .blockviz .segment .tx.mined-false {
-    opacity: 0.4;
+    opacity: 0.44;
 }
 
 .blockviz .segment .tx.mined-true {
@@ -150,9 +167,6 @@ h1.title {
 }
 
 hr {
-    background: white;
-    height: 1px;
     opacity: 0;
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin: 20px 0;
 }
