@@ -96,14 +96,14 @@ export async function blockviz(view={}, db) {
     const earliest_time = now - (interval * num);
     const txs = await db.collection("magicnumbers").find({"created_at": {"$gte": earliest_time}}).sort({"created_at": 1}).toArray();
 
-
     let buckets = [], bucket = [];
     let before = earliest_time;
     let after = earliest_time + interval;
 
     for (const tx of txs) {
         const created_at = tx.created_at;
-        const inside = created_at >= before && created_at <= after;
+        const inside = (created_at >= before) && (created_at <= after);
+
         if (inside) {
             bucket.push({
                 mined: tx.mined,
@@ -115,6 +115,11 @@ export async function blockviz(view={}, db) {
                 buckets.push(bucket);
                 bucket = [];
             }
+            bucket.push({
+                mined: tx.mined,
+                power: tx.magicnumber.length,
+                txid: tx.txid,
+            });
             before = after;
             after += interval
         }

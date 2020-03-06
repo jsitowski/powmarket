@@ -113,7 +113,6 @@ h1.title {
 
 .blockviz .segment {
     padding: 0;
-    vertical-align: top;
     width: 10%;
     overflow: hidden;
 }
