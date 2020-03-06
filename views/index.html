@@ -20,6 +20,17 @@ function handleFormSubmit() {
 
   //console.log("CONTENT", content);
   let target = document.getElementById("target").value;
+  if (target < 75) {
+    const len = String(target).length;
+    if (len == 1) {
+      target = `000${target}`;
+    } else {
+      target = `00${target}`;
+    }
+
+    document.getElementById("target").value = target;
+  }
+
   let amount = document.getElementById("price").value;
 
   if (!content || !hash || !target || !amount) {
