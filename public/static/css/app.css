@@ -1,6 +1,6 @@
 html, body {
     background-color: black;
-    color: white;
+    color: white !important;
 }
 
 h1, h2, h3, h4, h5, h6, th, p, span, td {
@@ -84,7 +84,8 @@ h1.title {
 
 .highlight {
     background: rgba(61, 84, 99, 0.5);
-    padding: 2px;
+    padding: 2px 5px;
+    border-radius: 4px;
 }
 
 .blockviz-wrapper {
@@ -171,6 +172,12 @@ hr {
     opacity: 0;
     margin: 20px 0;
 }
+
+.table td, .table th {
+    border: 1px solid black !important;
+}
+
+
 
 @media screen and (max-width: 1024px) {
     h1.title {
