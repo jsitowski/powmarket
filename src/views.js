@@ -78,6 +78,7 @@ export async function blockviz(view={}, db) {
             bucket.push({
                 mined: tx.mined,
                 power: tx.magicnumber.length,
+                txid: tx.txid,
             });
         } else {
             if (bucket.length > 0) {
