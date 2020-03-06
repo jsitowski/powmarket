@@ -7,7 +7,6 @@
         <h1 class="title">PoW Market</h1>
         <p class="subtitle">A Marketplace for Magic Numbers</p>
 
-        
         <nav class="level is-mobile">
           <div class="level-item has-text-centered">
             <div>
@@ -35,6 +34,21 @@
           </div>
         </nav>
 
+        <div class="blockviz">
+          {{#blockviz}}
+            <div class="segment">
+              {{#.}}
+                <div class="tx power-{{power}} mined-{{mined}}"></div>
+              {{/.}}
+              <div class="clear"></div>
+            </div>
+          {{/blockviz}}
+          <div class="clear"></div>
+        </div>
+        
+        <hr />
+
+
         <h2 class="title">{{numminedtxs}} Mined Magic Numbers</h2>
         <p>These are the most recently mined magic numbers.</p>
 
@@ -61,7 +75,6 @@
             {{/mined}}
           </table>
         </div>
-
         <br />
         <h2 class="title">{{numunminedtxs}} Pending Magic Numbers (${{display_pendingmoney}})</h2>
         <div class="table-container">

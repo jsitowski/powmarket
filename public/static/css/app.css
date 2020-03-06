@@ -84,3 +84,62 @@ h1.title {
     background: rgba(61, 84, 99, 0.5);
     padding: 2px;
 }
+
+.blockviz {
+    width: 100%;
+    display: flex;
+    vertical-align: bottom;
+}
+
+.blockviz .segment {
+    padding: 0;
+    height: 150px;
+    vertical-align: bottom;
+    width: 10%;
+    overflow: hidden;
+}
+
+.blockviz .segment .tx {
+    background: white;
+    width: 5px;
+    margin: 1px;
+    height: 5px;
+    float: left;
+}
+
+.blockviz .segment .tx.mined-,
+.blockviz .segment .tx.mined-false {
+    opacity: 0.4;
+}
+
+.blockviz .segment .tx.mined-true {
+    opacity: 1;
+}
+
+.blockviz .segment .tx.power-0 {
+    background: #F7F9F9;
+}
+
+.blockviz .segment .tx.power-2 {
+    background: #BED8D4;
+}
+
+.blockviz .segment .tx.power-4 {
+    background: #78D5D7;
+}
+
+.blockviz .segment .tx.power-6 {
+    background: #63D2FF;
+}
+
+.blockviz .segment .tx.power-8 {
+    background: #2081C3;
+}
+
+.blockviz .segment .tx.power-10 {
+    background: black;
+}
+
+.clear {
+    clear: both;
+}
