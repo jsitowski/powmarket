@@ -87,6 +87,14 @@ export async function start(port=8000) {
         res.render('unmined', view);
     });
 
+    app.get('/21e8', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/ request from ${ip}`);
+        const homepage = await views.homepage();
+        homepage["21e8"] = true;
+        res.render('index', homepage);
+    });
+
     app.get('/', async function(req, res) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/ request from ${ip}`);

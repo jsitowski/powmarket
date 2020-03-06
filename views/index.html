@@ -32,8 +32,22 @@ function handleFormSubmit() {
     outputs: [{
       "script": `${hash} ${target} OP_SIZE OP_4 OP_PICK OP_SHA256 OP_SWAP OP_SPLIT OP_DROP OP_EQUALVERIFY OP_DROP OP_CHECKSIG`,
       "amount": amount,
-      "currency": "USD"
+      "currency": "USD",
     }],
+
+    "onPayment": function(response) {
+      console.log(response.txid);
+      console.log("Successfully paid");
+
+      document.getElementById("content").value = "";
+      handleKeyUp();
+
+
+    },
+    "onError": function(e) {
+      console.log("ERROR", e);
+      alert("Error while sending proof-of-work request, please try again");
+    },
   });
 
   mb.classList.add("is-active");
@@ -41,7 +55,7 @@ function handleFormSubmit() {
   return false;
 }
 
-function handleKeyUp(e) {
+function handleKeyUp() {
   content = document.getElementById("content").value;
   if (content) {
     hash = sha256(content);
@@ -50,6 +64,9 @@ function handleKeyUp(e) {
   }
 
   document.getElementById("hash").innerHTML = hash;
+
+  const mb = document.getElementById("money-button-wrapper");
+  mb.innerHTML = "<div class='money-button' id='money-button'></div>";
 }
 
 </script>
@@ -60,6 +77,10 @@ function handleKeyUp(e) {
     <div class="content content-wrapper">
       <h1 class="title">PoW Market</h1>
       <p class="subtitle">A Marketplace for Magic Numbers</p>
+
+      {{#21e8}}
+        <a id="add-magic" href="javascript:" onclick="toggleAddMagicNumber()"><i class="fas fa-magic"></i> &nbsp;Add Magic Number</a>
+      {{/21e8}}
 
       <nav class="level is-mobile">
         <div class="level-item has-text-centered">
@@ -98,7 +119,7 @@ function handleKeyUp(e) {
             </td>
           {{/blockviz}}
         </table>
-        <a class="toggle" href="#" onclick="toggleExtendedDisplay()">
+        <a class="toggle" href="javascript:" onclick="toggleExtendedDisplay()">
           <i class="fas fa-expand-alt fa-flip-horizontal"></i>
         </a>
       </div>
@@ -111,24 +132,25 @@ function handleKeyUp(e) {
       {{> mined_table}}
       <p><a href="/mined">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
 
-      <a id="add-magic" href="#" onclick="toggleAddMagicNumber()"><i class="fas fa-magic"></i> Add Magic Number</a>
+      {{#21e8}}
+        <div class="modal" id="add-magic-modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+             <section class="modal-card-body content">
+                 <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
+                 <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Enter content"></textarea>
+                 <div class="hash-wrapper"><span id="hash"></span></div>
+                 <input onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
+                 &nbsp;<span class="dollar-sign">$</span><input onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" type="text" id="price" class="price" name="price" value="0.0218" placeholder="0.0218" />
+                 <input type="button" value="Mine" onClick="handleFormSubmit()" />
+                 <span id="money-button-wrapper">
+                   <div class='money-button' id="money-button"></div>
+                 </span>
+             </section>
+          </div>
 
-      <div class="modal is-active" id="add-magic-modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-           <section class="modal-card-body content">
-               <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
-               <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Enter content"></textarea>
-               <div class="hash-wrapper"><span id="hash"></span></div>
-               <input type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
-               &nbsp;<span class="dollar-sign">$</span><input type="text" id="price" class="price" name="price" value="0.01" placeholder="0.01" />
-               <input type="button" value="Mine" onClick="handleFormSubmit()" />
-               <span id="money-button-wrapper">
-                 <div class='money-button' id="money-button"></div>
-               </span>
-           </section>
-        </div>
-        <button onClick="toggleAddMagicNumber()" class="modal-close is-large" aria-label="close"></button>
+          <button onClick="toggleAddMagicNumber()" class="modal-close is-large" aria-label="close"></button>
+        {{/21e8}}
       </div>
 
       {{> bumper}}

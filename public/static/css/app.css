@@ -194,6 +194,14 @@ hr {
 }
 
 
+@media screen and (min-width: 1025px) {
+    #add-magic {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-decoration: none;
+    }
+}
 
 @media screen and (max-width: 1024px) {
     h1.title {
@@ -205,6 +213,16 @@ hr {
         margin-top: 50px;
         padding-bottom: 20px;
     }
+
+    #add-magic {
+        display: none;
+        text-align: center;
+        display: block;
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+    }
+
 
 }
 
@@ -237,7 +255,6 @@ hr {
     }
 }
 
-
 #add-magic-modal textarea {
     background: rgba(100, 100, 100, 0.1);
     border: none;
@@ -261,7 +278,7 @@ hr {
 }
 
 #add-magic-modal .modal-card-body .price {
-    width: 80px;
+    width: 90px;
     padding-left: 30px;
 }
 
