@@ -14,10 +14,11 @@ a {
 }
 
 h1.title {
-    margin-top: 30px;
+    margin-top: 10px;
     font-size: 71px;
     display: block;
     text-align: center;
+    white-space: nowrap;
 }
 
 .subtitle {
@@ -73,7 +74,7 @@ h1.title {
 }
 
 .level {
-    margin-top: 60px;
+    margin-top: 70px;
     padding-bottom: 30px;
 }
 
@@ -170,3 +171,31 @@ hr {
     opacity: 0;
     margin: 20px 0;
 }
+
+@media screen and (max-width: 1024px) {
+    h1.title {
+        margin: 0px;
+        font-size: 68px;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    h1.title {
+        margin: 0px;
+        font-size: 58px;
+    }
+    .subtitle {
+        font-size: 19px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    h1.title {
+        margin: 0;
+        font-size: 44px;
+    }
+    .subtitle {
+        font-size: 16px;
+    }
+}
+

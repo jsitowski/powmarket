@@ -6,72 +6,74 @@ function toggleExtendedDisplay() {
 }
 </script>
 
-<div id="app" class="container is-widescreen">
-  <div class="columns">
-    <div class="column">
-      <div class="content content-wrapper">
-        <h1 class="title">PoW Market</h1>
-        <p class="subtitle">A Marketplace for Magic Numbers</p>
+<section class="section" id="app">
+  <div class="container is-widescreen">
+    <div class="columns">
+      <div class="column">
+        <div class="content content-wrapper">
+          <h1 class="title">PoW Market</h1>
+          <p class="subtitle">A Marketplace for Magic Numbers</p>
 
-        <nav class="level is-mobile">
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="title">{{dashboard.mined_num}}</p>
-              <p class="heading">Magic Numbers Mined</p>
+          <nav class="level is-mobile">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="title">{{dashboard.mined_num}}</p>
+                <p class="heading">Magic Numbers Mined</p>
+              </div>
             </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="title">${{dashboard.mined_earnings}}</p>
-              <p class="heading">Earned</p>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="title">${{dashboard.mined_earnings}}</p>
+                <p class="heading">Earned</p>
+              </div>
             </div>
-          </div>
-          <div class="level-item has-text-centered is-hidden-mobile">
-            <div>
-              <p class="title">{{dashboard.unmined_num}}</p>
-              <p class="heading">Pending Magic Numbers</p>
+            <div class="level-item has-text-centered is-hidden-mobile">
+              <div>
+                <p class="title">{{dashboard.unmined_num}}</p>
+                <p class="heading">Pending Magic Numbers</p>
+              </div>
             </div>
-          </div>
-          <div class="level-item has-text-centered is-hidden-mobile">
-            <div>
-              <p class="title">${{dashboard.unmined_earnings}}</p>
-              <p class="heading">Available</p>
+            <div class="level-item has-text-centered is-hidden-mobile">
+              <div>
+                <p class="title">${{dashboard.unmined_earnings}}</p>
+                <p class="heading">Available</p>
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
 
-        <div class="blockviz-wrapper" id="blockviz">
-          <table class="blockviz">
-            {{#blockviz}}
-              <td class="segment">
-                {{#.}}
-                <a href="https://whatsonchain.com/tx/{{txid}}" class="tx power-{{power}} mined-{{mined}}"></a>
-                {{/.}}
-              </td>
-            {{/blockviz}}
-          </table>
-          <a class="toggle" href="#" onclick="toggleExtendedDisplay()">
-            <i class="fas fa-expand-alt fa-flip-horizontal"></i>
-          </a>
+          <div class="blockviz-wrapper" id="blockviz">
+            <table class="blockviz">
+              {{#blockviz}}
+                <td class="segment">
+                  {{#.}}
+                  <a href="https://whatsonchain.com/tx/{{txid}}" class="tx power-{{power}} mined-{{mined}}"></a>
+                  {{/.}}
+                </td>
+              {{/blockviz}}
+            </table>
+            <a class="toggle" href="#" onclick="toggleExtendedDisplay()">
+              <i class="fas fa-expand-alt fa-flip-horizontal"></i>
+            </a>
+          </div>
+          
+          <hr />
+
+          {{> mined_table}}
+          <p><a href="/mined">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
+
+          <br />
+          <hr />
+          <br />
+
+          {{> unmined_table}}
+          <p><a href="/unmined">Show all {{dashboard.unmined_num}} Pending Magic Numbers</a></p>
+
+          {{> bumper}}
         </div>
-        
-        <hr />
-
-        {{> mined_table}}
-        <p><a href="/mined">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
-
-        <br />
-        <hr />
-        <br />
-
-        {{> unmined_table}}
-        <p><a href="/unmined">Show all {{dashboard.unmined_num}} Pending Magic Numbers</a></p>
-
-        {{> bumper}}
       </div>
     </div>
   </div>
-</div>
+</section>
 
 {{> footer}}
 
