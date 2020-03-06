@@ -146,7 +146,7 @@ export async function homepage(view={}) {
     view = await blockviz(view, db);
     view = await dashboard(view, db);
     view = await mined(view, db, 10);
-    view = await unmined(view, db, 10, "profitable");
+    view = await unmined(view, db, 10);
 
     return view;
 }
