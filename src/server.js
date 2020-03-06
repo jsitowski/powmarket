@@ -33,7 +33,10 @@ export async function start(port=8000) {
         view = await views.mined(view, db);
         const response = helpers.apiify(view.mined);
         db.close();
-        return res.json(response);
+        return res.json({
+            bsvusd: view.bsvusd,
+            magicnumbers: response
+        });
     });
 
     app.get('/api/unmined', async function(req, res) {
@@ -44,7 +47,10 @@ export async function start(port=8000) {
         view = await views.unmined(view, db);
         const response = helpers.apiify(view.unmined);
         db.close();
-        return res.json(response);
+        return res.json({
+            bsvusd: view.bsvusd,
+            magicnumbers: response
+        });
     });
 
     app.get('/api', async function(req, res) {
@@ -55,7 +61,10 @@ export async function start(port=8000) {
         view = await views.all(view, db);
         const response = helpers.apiify(view.mined);
         db.close();
-        return res.json(response);
+        return res.json({
+            bsvusd: view.bsvusd,
+            magicnumbers: response
+        });
     });
 
     app.get('/mined', async function(req, res) {
