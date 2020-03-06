@@ -126,7 +126,6 @@ h1.title {
     background: white;
     width: 5px;
     margin: 1px;
-    height: 5px;
     float: left;
 }
 
@@ -223,7 +222,9 @@ hr {
         text-decoration: none;
     }
 
-
+    .blockviz .segment .tx {
+        width: 3px;
+    }
 }
 
 @media screen and (max-width: 540px) {
@@ -242,6 +243,10 @@ hr {
 
     .level .title {
         font-size: 21px;
+    }
+
+    .blockviz .segment .tx {
+        width: 2px;
     }
 }
 
