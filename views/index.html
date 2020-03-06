@@ -34,20 +34,19 @@
           </div>
         </nav>
 
-        <div class="blockviz">
-          {{#blockviz}}
-            <div class="segment">
-              {{#.}}
-                <div class="tx power-{{power}} mined-{{mined}}"></div>
-              {{/.}}
-              <div class="clear"></div>
-            </div>
-          {{/blockviz}}
-          <div class="clear"></div>
+        <div class="blockviz-wrapper">
+          <table class="blockviz">
+            {{#blockviz}}
+              <td class="segment">
+                {{#.}}
+                  <div class="tx power-{{power}} mined-{{mined}}"></div>
+                {{/.}}
+              </td>
+            {{/blockviz}}
+          </table>
         </div>
         
         <hr />
-
 
         <h2 class="title">{{numminedtxs}} Mined Magic Numbers</h2>
         <p>These are the most recently mined magic numbers.</p>

@@ -72,8 +72,8 @@ h1.title {
 }
 
 .level {
-    margin-top: 50px;
-    padding-bottom: 40px;
+    margin-top: 60px;
+    padding-bottom: 30px;
 }
 
 .level .title {
@@ -85,16 +85,20 @@ h1.title {
     padding: 2px;
 }
 
+.blockviz-wrapper {
+    height: 197px;
+    overflow: hidden;
+}
+
 .blockviz {
     width: 100%;
-    display: flex;
     vertical-align: bottom;
+    table-layout: fixed;
 }
 
 .blockviz .segment {
     padding: 0;
-    height: 150px;
-    vertical-align: bottom;
+    vertical-align: top;
     width: 10%;
     overflow: hidden;
 }
@@ -142,4 +146,12 @@ h1.title {
 
 .clear {
     clear: both;
+}
+
+hr {
+    background: white;
+    height: 1px;
+    opacity: 0;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
