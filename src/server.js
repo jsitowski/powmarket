@@ -99,6 +99,7 @@ export async function start(port=8000) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/ request from ${ip}`);
         const homepage = await views.homepage();
+        homepage["21e8"] = true;
         res.render('index', homepage);
     });
 
