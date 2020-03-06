@@ -43,14 +43,27 @@ export async function start(port=8000) {
         return res.json(await fetchMagicNumbers(null));
     });
 
-    // CLEANUP
-    // CREATE VIEW
-    // START UNBUNDLING GLOBAL STATS FROM CURRENT VIEW
-    // ALGORITHM TO SORT BY BEST MAGIC NUMBERS
-    // START FILTERING FOR BITSV
-    // STORE USD PRICE
+    app.get('/mined', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/ request from ${ip}`);
+        const db = await connect();
+        let view = await views.dashboard({}, db);
+        view = await views.mined(view, db);
+        db.close();
+        res.render('mined', view);
+    });
 
-    app.get('*', async function(req, res) {
+    app.get('/unmined', async function(req, res) {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        log(`/ request from ${ip}`);
+        const db = await connect();
+        let view = await views.dashboard({}, db);
+        view = await views.unmined(view, db);
+        db.close();
+        res.render('unmined', view);
+    });
+
+    app.get('/', async function(req, res) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/ request from ${ip}`);
         const homepage = await views.homepage();

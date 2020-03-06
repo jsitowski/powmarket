@@ -1,0 +1,27 @@
+<h2 class="title">{{dashboard.unmined_num}} Pending Magic Numbers</h2>
+<p>There are {{dashboard.unmined_num}} Pending Magic Numbers worth ${{dashboard.unmined_earnings}}, grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and start mining!</p>
+<div class="table-container">
+  <table class="table">
+      <thead>
+        <tr>
+          <th class="created">created</th>
+          <th class="reward">reward</th>
+          <th class="target">target</th>
+          <th class="txid">txid</th>
+         <th class="txid">hash</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {{#unmined}}
+        <tr>
+          <td class="created">{{display_date}}</td>
+          <td class="reward">${{display_value}}</td>
+          <td class="target">{{display_magicnumber}}</td>
+          <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
+          <td class="txid">{{target}}</td>
+        </tr>
+      {{/unmined}}
+      </tbody>
+  </table>
+</div>

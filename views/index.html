@@ -57,79 +57,17 @@ function toggleExtendedDisplay() {
         
         <hr />
 
-        <h2 class="title">{{dashboard.mined_num}} Mined Magic Numbers</h2>
-        <p>There have been {{dashboard.mined_num}} Magic Numbers mined for ${{dashboard.mined_earnings}}, these are the most recent ones:</p>
-
-        <div class="table-container">
-          <table class="table">
-              <tr>
-                <th class="created">mined</th>
-                <th class="reward">reward</th>
-                <th class="target">target</th>
-                <th class="magicnumber">magic number</th>
-                <th class="txid">txid</th>
-                <th class="mined_txid">mined txid</th>
-              </tr>
-
-            {{#mined}}
-              <tr>
-                <td class="created">{{display_mined_date}}</td>
-                <td class="reward">${{display_value}}</td>
-                <td class="target">{{display_magicnumber}}</td>
-                <td class="magicnumber"><span class="highlight">{{mined_number}}</span></td>
-                <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
-                <td class="txid mined_txid"><a href="https://whatsonchain.com/tx/{{mined_txid}}">{{mined_txid}}</a></td>
-              </tr>
-            {{/mined}}
-          </table>
-          <p><a href="">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
-        </div>
+        {{> mined_table}}
+        <p><a href="/mined">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
 
         <br />
         <hr />
         <br />
 
-        <h2 class="title">{{dashboard.unmined_num}} Pending Magic Numbers</h2>
-        <p>There are {{dashboard.unmined_num}} Pending Magic Numbers worth ${{dashboard.unmined_earnings}}, grab <a href="https://github.com/deanmlittle/21e8miner">21e8miner</a> and start mining!</p>
-        <div class="table-container">
-          <table class="table">
-              <thead>
-                <tr>
-                  <th class="created">created</th>
-                  <th class="reward">reward</th>
-                  <th class="target">target</th>
-                  <th class="txid">txid</th>
-                 <th class="txid">hash</th>
-                </tr>
-              </thead>
+        {{> unmined_table}}
+        <p><a href="/unmined">Show all {{dashboard.unmined_num}} Pending Magic Numbers</a></p>
 
-              <tbody>
-              {{#unmined}}
-                <tr>
-                  <td class="created">{{display_date}}</td>
-                  <td class="reward">${{display_value}}</td>
-                  <td class="target">{{display_magicnumber}}</td>
-                  <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
-                  <td class="txid">{{target}}</td>
-                </tr>
-              {{/unmined}}
-              </tbody>
-          </table>
-          <p><a href="">Show all {{dashboard.unmined_num}} Pending Magic Numbers</a></p>
-        </div>
-
-        <br />
-        <hr />
-        <br />
-
-        <div class="columns">
-          <div class="column">
-            <p>PoW Market JSON API: <a href="/api/unmined">unmined</a>, <a href="/api/mined">mined</a>, <a href="/api">all</a></p>
-          </div>
-          <div class="column has-text-right-desktop">
-            <p><a href="https://github.com/synfonaut/powmarket">source</a>
-          </div>
-        </div>
+        {{> bumper}}
       </div>
     </div>
   </div>

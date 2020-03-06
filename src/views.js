@@ -5,7 +5,9 @@ import { connect } from "./db"
 
 export async function dashboard(view={}, db=null) {
 
-    if (!view.bsvusd) { throw new Error(`expected bsvusd to be able to price dashboard`) }
+    if (!view.bsvusd) {
+        view.bsvusd = await helpers.bsvusd();
+    }
 
     const mined_num = await db.collection("magicnumbers").find({"mined": true}).count();
     const unmined_num = await db.collection("magicnumbers").find({"mined": false}).count();
@@ -32,11 +34,13 @@ function processMagicNumber(m, view) {
     return m;
 }
 
-export async function mined(view={}, db) {
+export async function mined(view={}, db, limit=10000) {
 
-    if (!view.bsvusd) { throw new Error(`expected bsvusd to be able to price mined`) }
+    if (!view.bsvusd) {
+        view.bsvusd = await helpers.bsvusd();
+    }
 
-    const recentlyMined = await (db.collection("magicnumbers").find({"mined": true}).sort({"created_at": -1}).limit(10).toArray());
+    const recentlyMined = await (db.collection("magicnumbers").find({"mined": true}).sort({"created_at": -1}).limit(limit).toArray());
 
     view.mined = recentlyMined.map(m => {
         return processMagicNumber(m, view);
@@ -45,11 +49,20 @@ export async function mined(view={}, db) {
     return view;
 }
 
-export async function unmined(view={}, db) {
+export async function unmined(view={}, db, limit=10000, sortby=null) {
 
-    if (!view.bsvusd) { throw new Error(`expected bsvusd to be able to price mined`) }
+    if (!view.bsvusd) {
+        view.bsvusd = await helpers.bsvusd();
+    }
 
-    const pending = await (db.collection("magicnumbers").find({"mined": false}).sort({"value": -1}).limit(10).toArray());
+    const sort = {};
+    if (sortby === "profitable") {
+        sort["value"] = -1;
+    } else {
+        sort["created_at"] = -1;
+    }
+
+    const pending = await (db.collection("magicnumbers").find({"mined": false}).sort(sort).limit(limit).toArray());
 
     view.unmined = pending.map(m => {
         return processMagicNumber(m, view);
@@ -57,6 +70,7 @@ export async function unmined(view={}, db) {
 
     return view;
 }
+
 
 export async function blockviz(view={}, db) {
 
@@ -110,8 +124,8 @@ export async function homepage(view={}) {
     view.bsvusd = bsvusd;
     view = await blockviz(view, db);
     view = await dashboard(view, db);
-    view = await mined(view, db);
-    view = await unmined(view, db);
+    view = await mined(view, db, 10);
+    view = await unmined(view, db, 10, "profitable");
 
     return view;
 }
