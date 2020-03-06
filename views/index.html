@@ -11,25 +11,25 @@
         <nav class="level is-mobile">
           <div class="level-item has-text-centered">
             <div>
-              <p class="title">{{numminedtxs}}</p>
+              <p class="title">{{dashboard.mined_num}}</p>
               <p class="heading">Magic Numbers Mined</p>
             </div>
           </div>
           <div class="level-item has-text-centered">
             <div>
-              <p class="title">${{display_paidmoney}}</p>
+              <p class="title">${{dashboard.mined_earnings}}</p>
               <p class="heading">Earned</p>
             </div>
           </div>
           <div class="level-item has-text-centered is-hidden-mobile">
             <div>
-              <p class="title">{{numunminedtxs}}</p>
+              <p class="title">{{dashboard.unmined_num}}</p>
               <p class="heading">Pending Magic Numbers</p>
             </div>
           </div>
           <div class="level-item has-text-centered is-hidden-mobile">
             <div>
-              <p class="title">${{display_pendingmoney}}</p>
+              <p class="title">${{dashboard.unmined_earnings}}</p>
               <p class="heading">Available</p>
             </div>
           </div>

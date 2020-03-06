@@ -31,7 +31,7 @@ let cryptocompare_price_timeout = 0;
 let cryptocompare_expire = 60 * 10;
 let cryptocompare_price = null;
 
-export async function backup_bsvusd() {
+export async function bsvusd() {
 
     return new Promise((resolve, reject) => {
 
@@ -102,3 +102,25 @@ export function stripid(results) {
         return result;
     });
 }
+
+export async function magicnumbers(query={}, sort=null, db=null) {
+    if (sort=null) {
+        sort = {"mined_at": -1, "created_at": -1};
+    }
+
+    return await db.collection("magicnumbers").find(query).sort(sort).toArray();
+}
+
+export function numberFormat(number, length=3) {
+    if (number > 0) {
+        const val = number.toLocaleString("en-US", {'minimumFractionDigits':2, 'maximumFractionDigits':length});
+        return val;
+    } else {
+        return "0";
+    }
+}
+
+export function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
