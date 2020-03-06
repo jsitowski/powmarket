@@ -1,10 +1,59 @@
 {{> header}}
 
+<script src="https://www.moneybutton.com/moneybutton.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/emn178/js-sha256/build/sha256.min.js"></script>
 <script>
+
+let content = "";
+let hash = "";
+
 function toggleExtendedDisplay() {
   document.getElementById("blockviz").classList.toggle("extended");
 }
+
+function toggleAddMagicNumber() {
+  document.getElementById("add-magic-modal").classList.toggle("is-active");
+}
+
+function handleFormSubmit() {
+  handleKeyUp();
+
+  //console.log("CONTENT", content);
+  let target = document.getElementById("target").value;
+  let amount = document.getElementById("price").value;
+
+  if (!content || !hash || !target || !amount) {
+    alert("Error while submitting form...please check data");
+    return;
+  }
+
+  const mb = document.getElementById("money-button");
+  moneyButton.render(mb, {
+    outputs: [{
+      "script": `${hash} ${target} OP_SIZE OP_4 OP_PICK OP_SHA256 OP_SWAP OP_SPLIT OP_DROP OP_EQUALVERIFY OP_DROP OP_CHECKSIG`,
+      "amount": amount,
+      "currency": "USD"
+    }],
+  });
+
+  mb.classList.add("is-active");
+
+  return false;
+}
+
+function handleKeyUp(e) {
+  content = document.getElementById("content").value;
+  if (content) {
+    hash = sha256(content);
+  } else {
+    hash = "";
+  }
+
+  document.getElementById("hash").innerHTML = hash;
+}
+
 </script>
+
 
 <section class="section" id="app">
   <div class="container is-widescreen">
@@ -61,6 +110,26 @@ function toggleExtendedDisplay() {
 
       {{> mined_table}}
       <p><a href="/mined">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
+
+      <a id="add-magic" href="#" onclick="toggleAddMagicNumber()"><i class="fas fa-magic"></i> Add Magic Number</a>
+
+      <div class="modal is-active" id="add-magic-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+           <section class="modal-card-body content">
+               <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
+               <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Enter content"></textarea>
+               <div class="hash-wrapper"><span id="hash"></span></div>
+               <input type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
+               &nbsp;<span class="dollar-sign">$</span><input type="text" id="price" class="price" name="price" value="0.01" placeholder="0.01" />
+               <input type="button" value="Mine" onClick="handleFormSubmit()" />
+               <span id="money-button-wrapper">
+                 <div class='money-button' id="money-button"></div>
+               </span>
+           </section>
+        </div>
+        <button onClick="toggleAddMagicNumber()" class="modal-close is-large" aria-label="close"></button>
+      </div>
 
       {{> bumper}}
     </div>

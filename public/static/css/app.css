@@ -7,6 +7,11 @@ h1, h2, h3, h4, h5, h6, th, p, span, td {
     color: white !important;
 }
 
+.modal-card-body {
+    background: black;
+    border-radius: 5px;
+}
+
 a {
     color: white !important;
     padding-bottom: 3px;
@@ -232,3 +237,66 @@ hr {
     }
 }
 
+
+#add-magic-modal textarea {
+    background: rgba(100, 100, 100, 0.1);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    width: 100%;
+    min-height: 140px;
+    resize: none;
+}
+
+#add-magic-modal input[type="text"] {
+    background: rgba(100, 100, 100, 0.1);
+    padding: 7px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    width: 100px;
+}
+
+#add-magic-modal .modal-card-body .price {
+    width: 80px;
+    padding-left: 30px;
+}
+
+#add-magic-modal .modal-card-body .dollar-sign {
+    margin-right: -21px;
+    margin-left: 11px;
+}
+
+#add-magic-modal input[type="button"] {
+    border: 1px solid red;
+    background: rgba(100, 100, 100, 0.2);
+    padding: 7px 13px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-size: 15px;
+}
+
+#add-magic-modal input[type="button"]:hover {
+    background: rgba(100, 100, 100, 0.3);
+    cursor: pointer;
+}
+
+
+.hash-wrapper {
+    margin: 5px 0;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+#add-magic-modal .money-button.is-active {
+    padding: 0;
+    margin-top: 15px;
+    margin-left: 12px;
+    margin-bottom: -8px;
+    height: 46px;
+    vertical-align: bottom;
+}
