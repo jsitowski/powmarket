@@ -14,9 +14,9 @@ function is21e8MinerScript(script) {
     return !!(
         script.chunks.length === 12 &&
         script.chunks[0].buf &&
-        script.chunks[0].buf.length === 32 &&
+        script.chunks[0].buf.length >= 1 &&
         script.chunks[1].buf &&
-        script.chunks[1].buf.length > 1 &&
+        script.chunks[1].buf.length >= 1 &&
         script.chunks[2].opcodenum === Opcode.OP_SIZE &&
         script.chunks[3].opcodenum === Opcode.OP_4 &&
         script.chunks[4].opcodenum === Opcode.OP_PICK &&
@@ -30,30 +30,30 @@ function is21e8MinerScript(script) {
     );
 }
 
-function isCoinguruStyleScript(script) {
-    /*
+function debugScript(script) {
     try {
-        console.log(script.chunks.length, 12, "CHUNKS");
-        console.log(script.chunks[0].buf, 1);
-        console.log(script.chunks[0].buf.length, 1, "BUF0");
-        console.log(script.chunks[1].buf, 1);
-        console.log(script.chunks[1].buf.length, 1, "BUF1");
+        console.log(script.chunks.length, 12, "CHUNKS", (script.chunks.length == 12));
+        console.log(script.chunks[0].buf, 1, !!script.chunks[0].buf);
+        console.log(script.chunks[0].buf.length, 1, "BUF0", (script.chunks[0].buf.length >= 1));
+        console.log(script.chunks[1].buf, 1, !!script.chunks[1].buf);
+        console.log(script.chunks[1].buf.length, 1, "BUF1", (script.chunks[1].buf.length >= 1));
 
-        console.log(script.chunks[2].opcodenum, Opcode.OP_SIZE);
-        console.log(script.chunks[3].opcodenum, Opcode.OP_4);
-        console.log(script.chunks[4].opcodenum, Opcode.OP_PICK);
-        console.log(script.chunks[5].opcodenum, Opcode.OP_SHA256);
-        console.log(script.chunks[6].opcodenum, Opcode.OP_SWAP);
-        console.log(script.chunks[7].opcodenum, Opcode.OP_SPLIT);
-        console.log(script.chunks[8].opcodenum, Opcode.OP_DROP);
-        console.log(script.chunks[9].opcodenum, Opcode.OP_EQUALVERIFY);
-        console.log(script.chunks[10].opcodenum, Opcode.OP_DROP);
-        console.log(script.chunks[11].opcodenum, Opcode.OP_CHECKSIG);
+        console.log(script.chunks[2].opcodenum, Opcode.OP_SIZE, (script.chunks[2].opcodenum == Opcode.OP_SIZE));
+        console.log(script.chunks[3].opcodenum, Opcode.OP_4, (script.chunks[3].opcodenum == Opcode.OP_4));
+        console.log(script.chunks[4].opcodenum, Opcode.OP_PICK, (script.chunks[4].opcodenum == Opcode.OP_PICK));
+        console.log(script.chunks[5].opcodenum, Opcode.OP_SHA256, (script.chunks[5].opcodenum == Opcode.OP_SHA256));
+        console.log(script.chunks[6].opcodenum, Opcode.OP_SWAP, (script.chunks[6].opcodenum == Opcode.OP_SWAP));
+        console.log(script.chunks[7].opcodenum, Opcode.OP_SPLIT, (script.chunks[7].opcodenum == Opcode.OP_SPLIT));
+        console.log(script.chunks[8].opcodenum, Opcode.OP_DROP, (script.chunks[8].opcodenum == Opcode.OP_DROP));
+        console.log(script.chunks[9].opcodenum, Opcode.OP_EQUALVERIFY, (script.chunks[9].opcodenum == Opcode.OP_EQUALVERIFY));
+        console.log(script.chunks[10].opcodenum, Opcode.OP_DROP, (script.chunks[10].opcodenum == Opcode.OP_DROP));
+        console.log(script.chunks[11].opcodenum, Opcode.OP_CHECKSIG, (script.chunks[11].opcodenum == Opcode.OP_CHECKSIG));
     } catch (e) {
         console.log("err while debugging");
     }
-    */
+}
 
+function isCoinguruStyleScript(script) {
     return !!(
         script.chunks.length >= 13 &&
         script.chunks[0].buf &&
