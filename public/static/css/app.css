@@ -101,6 +101,7 @@ h1.title {
     vertical-align: top;
     width: 10%;
     overflow: hidden;
+    border: 1px solid black;
 }
 
 .blockviz .segment .tx {
