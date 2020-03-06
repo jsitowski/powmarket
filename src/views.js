@@ -34,6 +34,22 @@ function processMagicNumber(m, view) {
     return m;
 }
 
+export async function all(view={}, db, limit=10000) {
+
+    if (!view.bsvusd) {
+        view.bsvusd = await helpers.bsvusd();
+    }
+
+    const recentlyMined = await (db.collection("magicnumbers").find({}).sort({"created_at": -1}).limit(limit).toArray());
+
+    view.mined = recentlyMined.map(m => {
+        return processMagicNumber(m, view);
+    });
+
+    return view;
+}
+
+
 export async function mined(view={}, db, limit=10000) {
 
     if (!view.bsvusd) {

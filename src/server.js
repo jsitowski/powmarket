@@ -28,19 +28,34 @@ export async function start(port=8000) {
     app.get('/api/mined', async function(req, res) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/api/mined request from ${ip}`);
-        return res.json(await fetchMagicNumbers("mined"));
+        const db = await connect();
+        let view = await views.dashboard({}, db);
+        view = await views.mined(view, db);
+        const response = helpers.apiify(view.mined);
+        db.close();
+        return res.json(response);
     });
 
     app.get('/api/unmined', async function(req, res) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/api/unmined request from ${ip}`);
-        return res.json(await fetchMagicNumbers("unmined"));
+        const db = await connect();
+        let view = await views.dashboard({}, db);
+        view = await views.unmined(view, db);
+        const response = helpers.apiify(view.unmined);
+        db.close();
+        return res.json(response);
     });
 
     app.get('/api', async function(req, res) {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         log(`/api request from ${ip}`);
-        return res.json(await fetchMagicNumbers(null));
+        const db = await connect();
+        let view = await views.dashboard({}, db);
+        view = await views.all(view, db);
+        const response = helpers.apiify(view.mined);
+        db.close();
+        return res.json(response);
     });
 
     app.get('/mined', async function(req, res) {
