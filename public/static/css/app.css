@@ -125,37 +125,54 @@ h1.title {
     float: left;
 }
 
-.blockviz .segment .tx.mined-,
-.blockviz .segment .tx.mined-false {
-    opacity: 0.44;
-}
-
 .blockviz .segment .tx.mined-true {
     opacity: 1;
 }
 
-.blockviz .segment .tx.power-0 {
-    background: #F7F9F9;
-}
+.blockviz .segment .tx.power-0 { background: #CAFE89; border: 1px solid #CAFE89; }
+.blockviz .segment .tx.power-1 { background: #CAFE89; border: 1px solid #CAFE89; }
+.blockviz .segment .tx.power-2 { background: #9BFFA9; border: 1px solid #9BFFA9; }
+.blockviz .segment .tx.power-3 { background: #9BFFA9; border: 1px solid #9BFFA9; }
+.blockviz .segment .tx.power-4 { background: #6EFECA; border: 1px solid #6EFECA; }
+.blockviz .segment .tx.power-5 { background: #6EFECA; border: 1px solid #6EFECA; }
+.blockviz .segment .tx.power-6 { background: #48F9E8; border: 1px solid #48F9E8; }
+.blockviz .segment .tx.power-7 { background: #48F9E8; border: 1px solid #48F9E8; }
+.blockviz .segment .tx.power-8 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-9 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-10 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-11 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-12 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-13 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-14 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-15 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-16 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-17 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-18 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-19 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-20 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-21 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-22 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-23 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-24 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-25 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-26 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-27 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-28 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-29 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-30 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-31 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-32 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-33 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-34 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-35 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-36 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-37 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-38 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-39 { background: #41F2FF; border: 1px solid #41F2FF; }
+.blockviz .segment .tx.power-40 { background: #41F2FF; border: 1px solid #41F2FF; }
 
-.blockviz .segment .tx.power-2 {
-    background: #BED8D4;
-}
-
-.blockviz .segment .tx.power-4 {
-    background: #78D5D7;
-}
-
-.blockviz .segment .tx.power-6 {
-    background: #63D2FF;
-}
-
-.blockviz .segment .tx.power-8 {
-    background: #2081C3;
-}
-
-.blockviz .segment .tx.power-10 {
-    background: black;
+.blockviz .segment .tx.mined-false {
+    background: none;
 }
 
 .clear {
