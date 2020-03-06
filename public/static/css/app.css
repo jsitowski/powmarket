@@ -38,11 +38,6 @@ h1.title {
     font-size: 14px;
 }
 
-.content-wrapper {
-    padding: 10px;
-}
-
-
 .table .txid {
     font-family: monospace;
     max-width: 200px;
@@ -184,6 +179,12 @@ hr {
         margin: 0px;
         font-size: 68px;
     }
+
+    .level {
+        margin-top: 50px;
+        padding-bottom: 20px;
+    }
+
 }
 
 @media screen and (max-width: 540px) {
@@ -193,6 +194,15 @@ hr {
     }
     .subtitle {
         font-size: 19px;
+    }
+
+    .level {
+        margin-top: 40px;
+        padding-bottom: 10px;
+    }
+
+    .level .title {
+        font-size: 21px;
     }
 }
 
