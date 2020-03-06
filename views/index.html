@@ -42,6 +42,11 @@ function handleFormSubmit() {
       document.getElementById("content").value = "";
       handleKeyUp();
 
+      setTimeout(function() {
+        document.location.reload();
+      }, 1000);
+
+
 
     },
     "onError": function(e) {
