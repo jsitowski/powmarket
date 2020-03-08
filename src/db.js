@@ -2,7 +2,16 @@ const log = require("debug")("pow:db");
 
 const MongoClient = require("mongodb");
 
+let numconnections = 0;
+
+let debugConnectionsInterval = null;
+
 export function connect() {
+    if (debugConnectionsInterval === null) {
+        debugConnectionsInterval = setInterval(function() {
+            log(`${numconnections} connections`);
+        }, 1000 * 60 * 2);
+    }
     return new Promise((resolve, reject) => {
         MongoClient.connect("mongodb://localhost:27017", { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
             if (err) {
@@ -11,9 +20,14 @@ export function connect() {
                     connect().then(resolve);
                 }, 1000);
             } else {
-                log(`connected to powmarket`);
+                numconnections += 1;
+                log(`${numconnections} // connected`);
                 const db = client.db("powmarket");
-                db.close = function() { return client.close() }
+                db.close = function() {
+                    numconnections -= 1;
+                    log(`${numconnections} // disconnected`);
+                    return client.close();
+                }
                 resolve(db);
             }
         });

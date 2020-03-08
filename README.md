@@ -111,7 +111,7 @@ PoW Market is a distributed proof-of-work market built on Bitcoin. It's built us
 
 @synfonaut
 
-
+Block visualization inspired by https://bitcoinblocks.live/
 
 ## EarnSV Bounties
 

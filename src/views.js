@@ -148,6 +148,8 @@ export async function homepage(view={}) {
     view = await mined(view, db, 10);
     view = await unmined(view, db, 10);
 
+    db.close();
+
     return view;
 }
 

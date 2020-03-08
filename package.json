@@ -4,7 +4,8 @@
   "description": "A market for magic numbers",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=pow*,hummingbird* node -r esm src/server.js",
+    "start": "npm run server",
+    "server": "DEBUG=pow*,hummingbird* node -r esm src/server.js",
     "state_machine": "DEBUG=pow*,hummingbird* node -r esm src/state_machine.js",
     "patch": "DEBUG=* node -r esm src/patch.js"
   },
