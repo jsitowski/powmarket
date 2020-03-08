@@ -10,7 +10,7 @@ export function connect() {
     if (debugConnectionsInterval === null) {
         debugConnectionsInterval = setInterval(function() {
             log(`${numconnections} connections`);
-        }, 1000 * 60 * 2);
+        }, 1000 * 60);
     }
     return new Promise((resolve, reject) => {
         MongoClient.connect("mongodb://localhost:27017", { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
@@ -21,11 +21,11 @@ export function connect() {
                 }, 1000);
             } else {
                 numconnections += 1;
-                log(`${numconnections} // connected`);
+                //log(`${numconnections} // connected`);
                 const db = client.db("powmarket");
                 db.close = function() {
                     numconnections -= 1;
-                    log(`${numconnections} // disconnected`);
+                    //log(`${numconnections} // disconnected`);
                     return client.close();
                 }
                 resolve(db);
