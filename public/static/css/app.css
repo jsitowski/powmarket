@@ -43,6 +43,11 @@ h1.title {
     font-size: 14px;
 }
 
+.table td,
+.table th {
+    -ms-overflow-style: none;
+}
+
 .table .txid {
     font-family: monospace;
     max-width: 200px;
