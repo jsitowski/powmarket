@@ -291,6 +291,11 @@ hr {
     width: 100px;
 }
 
+#add-magic-modal #hash {
+    width: 100%;
+    max-width: 100%;
+}
+
 #add-magic-modal .modal-card-body .price {
     width: 90px;
     padding-left: 30px;

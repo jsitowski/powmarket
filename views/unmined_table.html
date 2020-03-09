@@ -17,7 +17,10 @@
         <tr>
           <td class="created">{{display_date}}</td>
           <td class="reward">${{display_value}}</td>
-          <td class="target">{{display_magicnumber}}</td>
+          <td class="target">
+            {{display_magicnumber}}
+            {{#emoji}}<small>{{emoji}}</small>{{/emoji}}
+          </td>
           <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
           <td class="txid">{{target}}</td>
         </tr>

@@ -16,8 +16,6 @@ function toggleAddMagicNumber() {
 }
 
 function handleFormSubmit() {
-  handleKeyUp();
-
   //console.log("CONTENT", content);
   let target = document.getElementById("target").value;
   if (target < 75) {
@@ -33,7 +31,7 @@ function handleFormSubmit() {
 
   let amount = document.getElementById("price").value;
 
-  if (!content || !hash || !target || !amount) {
+  if (!hash || !target || !amount) {
     alert("Error while submitting form...please check data");
     return;
   }
@@ -51,7 +49,9 @@ function handleFormSubmit() {
       console.log("Successfully paid");
 
       document.getElementById("content").value = "";
-      handleKeyUp();
+      document.getElementById("content").hash = "";
+
+      clearMoneyButton();
 
       setTimeout(function() {
         document.location.reload();
@@ -79,8 +79,56 @@ function handleKeyUp() {
     hash = "";
   }
 
-  document.getElementById("hash").innerHTML = hash;
+  document.getElementById("hash").value = hash;
 
+  clearMoneyButton();
+}
+
+function handleHashKeyUp() {
+  const oldHash = hash;
+  hash = document.getElementById("hash").value;
+  if (oldHash !== hash) {
+    document.getElementById("content").value = "";
+  }
+}
+
+function handleMoneyKeyUp() {
+  clearMoneyButton();
+}
+
+function emojiUnicode(emoji) {
+    var comp;
+    if (emoji.length === 1) {
+        comp = emoji.charCodeAt(0);
+    }
+    comp = (
+        (emoji.charCodeAt(0) - 0xD800) * 0x400
+        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+    );
+    if (comp < 0) {
+        comp = emoji.charCodeAt(0);
+    }
+    return comp.toString("16");
+};
+
+const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", ];
+const emojiTargets = emojis.map(emojiUnicode);
+
+function handleTargetKeyUp() {
+
+  let target = document.getElementById("target").value;
+  if (emojis.indexOf(target) !== -1) {
+    target = emojiUnicode(target);
+    if ((target.length % 2) === 1) {
+      target = target + "0";
+    }
+    document.getElementById("target").value = target;
+  }
+
+  clearMoneyButton();
+}
+
+function clearMoneyButton() {
   const mb = document.getElementById("money-button-wrapper");
   mb.innerHTML = "<div class='money-button' id='money-button'></div>";
 }
@@ -155,9 +203,9 @@ function handleKeyUp() {
              <section class="modal-card-body content">
                  <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
                  <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Content..."></textarea>
-                 <div class="hash-wrapper"><span id="hash"></span></div>
-                 <input onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
-                 &nbsp;<span class="dollar-sign">$</span><input onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" type="text" id="price" class="price" name="price" value="0.0218" placeholder="0.0218" />
+                 <div class="hash-wrapper"><input onkeyup="handleHashKeyUp()" onchange="handleHashKeyUp()" onpaste="handleHashKeyUp()" id="hash" placeholder="sha256 hash" value="" type="text"></input></div>
+                 <input onkeyup="handleTargetKeyUp()" onchange="handleTargetKeyUp()" onpaste="handleTargetKeyUp()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
+                 &nbsp;<span class="dollar-sign">$</span><input onkeyup="handleMoneyKeyUp()" onchange="handleMoneyKeyUp()" onpaste="handleMoneyKeyUp()" type="text" id="price" class="price" name="price" value="0.0218" placeholder="0.0218" />
                  <input type="button" value="Mine" onClick="handleFormSubmit()" />
                  <span id="money-button-wrapper">
                    <div class='money-button' id="money-button"></div>
