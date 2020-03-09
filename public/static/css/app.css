@@ -53,6 +53,15 @@ h1.title {
     font-family: monospace;
 }
 
+.table .short {
+    max-width: 200px;
+    overflow: hidden;
+}
+
+.table .mongo {
+    font-family: monospace;
+}
+
 .table td.created {
     white-space: nowrap;
     width: 150px;

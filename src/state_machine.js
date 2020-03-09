@@ -10,6 +10,39 @@ const Opcode = bsv.Opcode;
 
 const utxos = new Set();
 
+const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", ];
+
+function emojiUnicode(emoji) {
+    var comp;
+    if (emoji.length === 1) {
+        comp = emoji.charCodeAt(0);
+    }
+    comp = (
+        (emoji.charCodeAt(0) - 0xD800) * 0x400
+        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+    );
+    if (comp < 0) {
+        comp = emoji.charCodeAt(0);
+    }
+    return comp.toString("16");
+};
+
+const emojiTargets = emojis.map(emojiUnicode);
+
+function isEmojiMagicNumber(target) {
+    for (const emojiTarget of emojiTargets) {
+        if (target.indexOf(emojiTarget) === 0) {
+            return emojiTarget;
+        }
+    }
+
+    return null;
+}
+
+function isMagicNumber(target) {
+    return isEmojiMagicNumber(target);
+}
+
 function is21e8MinerScript(script) {
     return !!(
         script.chunks.length === 12 &&
@@ -136,11 +169,13 @@ export default class POWMarketStateMachine {
                 const value = out.e.v;
                 const txid = tx.tx.h;
                 const parts = out.str.split(" "); // TODO: use script
-                const target = parts[0];
-                const magicnumber = parts[1];
+                const target = parts[0]; // these are backwards
+                const magicnumber = parts[1]; // backwards
+
+                const emoji = isEmojiMagicNumber(magicnumber);
 
                 try {
-                    await this.db.collection("magicnumbers").insertOne({
+                    const obj = {
                         txid,
                         vout,
                         from: tx.in[0].e.a,
@@ -150,7 +185,13 @@ export default class POWMarketStateMachine {
                         target,
                         mined: false,
                         created_at,
-                    });
+                    };
+
+                    if (emoji) {
+                        obj.emoji = String.fromCodePoint(parseInt(emoji, 16));
+                    }
+
+                    await this.db.collection("magicnumbers").insertOne(obj);
 
                     const utxo = `${txid}:${vout}`;
                     if (confirmed) {
