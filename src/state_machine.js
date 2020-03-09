@@ -10,6 +10,7 @@ const Opcode = bsv.Opcode;
 
 const utxos = new Set();
 
+// Allow any emoji? Any is technically allowed...but how do we make sense of them?
 const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", ];
 
 function emojiUnicode(emoji) {

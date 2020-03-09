@@ -93,41 +93,28 @@ export async function blockviz(view={}, db) {
     const now = Math.floor((new Date()).getTime() / 1000);
     const interval = 86400 / 16;
     const num = 112;
-    const earliest_time = now - (interval * num);
-    const txs = await db.collection("magicnumbers").find({"created_at": {"$gte": earliest_time}}).sort({"created_at": 1}).toArray();
 
-    let buckets = [], bucket = [];
-    let before = earliest_time;
-    let after = earliest_time + interval;
+    let before = now - (interval * num);
+    const txs = await db.collection("magicnumbers").find({"created_at": {"$gte": before}}).sort({"created_at": 1}).toArray();
 
-    for (const tx of txs) {
-        const created_at = tx.created_at;
-        const inside = (created_at >= before) && (created_at <= after);
+    let buckets = [];
+    while (before < now) {
 
-        if (inside) {
+        let after = before + interval;
+        let bucket = [];
+
+        while (txs.length && (txs[0].created_at < after)) {
+            const tx = txs.shift();
             bucket.push({
                 mined: tx.mined,
                 power: tx.magicnumber.length,
                 txid: tx.txid,
             });
-        } else {
-            if (bucket.length > 0) {
-                buckets.push(bucket);
-                bucket = [];
-            }
-            bucket.push({
-                mined: tx.mined,
-                power: tx.magicnumber.length,
-                txid: tx.txid,
-            });
-            before = after;
-            after += interval
         }
-    }
 
-    if (bucket.length > 0) {
         buckets.push(bucket);
-        bucket = [];
+
+        before += interval;
     }
 
     return Object.assign(view, {
