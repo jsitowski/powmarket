@@ -1,0 +1,3 @@
+#!/bin/bash
+
+git push && ssh powmarket ./deploy_powmarket
