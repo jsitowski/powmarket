@@ -43,6 +43,7 @@ h1.title {
     font-size: 14px;
 }
 
+.table,
 .table td,
 .table th {
     -ms-overflow-style: none;
@@ -63,7 +64,7 @@ h1.title {
     overflow: hidden;
 }
 
-.table .mongo {
+.table .mono {
     font-family: monospace;
 }
 
