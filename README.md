@@ -143,3 +143,4 @@ How much hashpower is currently flowing through the market? Calculate and displa
 ### Design and UX ($2.18)
 
 Make improvements to the design / UX.
+
