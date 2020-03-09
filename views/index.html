@@ -142,9 +142,7 @@ function clearMoneyButton() {
       <h1 class="title">PoW Market</h1>
       <p class="subtitle">A Marketplace for Magic Numbers</p>
 
-      {{#21e8}}
-        <a id="add-magic" href="javascript:" onclick="toggleAddMagicNumber()"><i class="fas fa-magic"></i> &nbsp;Add Magic Number</a>
-      {{/21e8}}
+      <a id="add-magic" href="javascript:" onclick="toggleAddMagicNumber()"><i class="fas fa-magic"></i> &nbsp;Add Magic Number</a>
 
       <nav class="level is-mobile">
         <div class="level-item has-text-centered">
@@ -196,25 +194,23 @@ function clearMoneyButton() {
       {{> mined_table}}
       <p><a href="/mined">Show all {{dashboard.mined_num}} Mined Magic Numbers</a></p>
 
-      {{#21e8}}
-        <div class="modal" id="add-magic-modal">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-             <section class="modal-card-body content">
-                 <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
-                 <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Content..."></textarea>
-                 <div class="hash-wrapper"><input onkeyup="handleHashKeyUp()" onchange="handleHashKeyUp()" onpaste="handleHashKeyUp()" id="hash" placeholder="sha256 hash" value="" type="text"></input></div>
-                 <input onkeyup="handleTargetKeyUp()" onchange="handleTargetKeyUp()" onpaste="handleTargetKeyUp()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
-                 &nbsp;<span class="dollar-sign">$</span><input onkeyup="handleMoneyKeyUp()" onchange="handleMoneyKeyUp()" onpaste="handleMoneyKeyUp()" type="text" id="price" class="price" name="price" value="0.0218" placeholder="0.0218" />
-                 <input type="button" value="Mine" onClick="handleFormSubmit()" />
-                 <span id="money-button-wrapper">
-                   <div class='money-button' id="money-button"></div>
-                 </span>
-             </section>
-          </div>
+      <div class="modal" id="add-magic-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+           <section class="modal-card-body content">
+               <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
+               <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Content..."></textarea>
+               <div class="hash-wrapper"><input onkeyup="handleHashKeyUp()" onchange="handleHashKeyUp()" onpaste="handleHashKeyUp()" id="hash" placeholder="sha256 hash" value="" type="text"></input></div>
+               <input onkeyup="handleTargetKeyUp()" onchange="handleTargetKeyUp()" onpaste="handleTargetKeyUp()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
+               &nbsp;<span class="dollar-sign">$</span><input onkeyup="handleMoneyKeyUp()" onchange="handleMoneyKeyUp()" onpaste="handleMoneyKeyUp()" type="text" id="price" class="price" name="price" value="0.0218" placeholder="0.0218" />
+               <input type="button" value="Mine" onClick="handleFormSubmit()" />
+               <span id="money-button-wrapper">
+                 <div class='money-button' id="money-button"></div>
+               </span>
+           </section>
+        </div>
 
-          <button onClick="toggleAddMagicNumber()" class="modal-close is-large" aria-label="close"></button>
-        {{/21e8}}
+        <button onClick="toggleAddMagicNumber()" class="modal-close is-large" aria-label="close"></button>
       </div>
 
       {{> bumper}}
