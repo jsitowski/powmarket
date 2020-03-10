@@ -111,9 +111,15 @@ export async function start(port=8000) {
         }
 
         let txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
-        if (txs) {
+        if (txs.length > 0) {
             db.close();
             return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash }));
+        }
+
+        txs = await db.collection("magicnumbers").find({"magicnumber": hash}).toArray();
+        if (txs.length > 0) {
+            db.close();
+            return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash }));
         }
 
         res.render('404');
