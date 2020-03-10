@@ -145,4 +145,6 @@ How much hashpower is currently flowing through the market? Calculate and displa
 Make improvements to the design / UX.
 
 ## TODO
+- Associated proof of work
+- Search bar
 - Fix prices to what they actually are...

@@ -4,6 +4,8 @@ import Hummingbird from "hummingbird-bitcoin"
 
 import { connect, good, dupe } from "./db"
 
+import * as helpers from "./helpers"
+
 import bsv from "bsv"
 
 const Opcode = bsv.Opcode;
@@ -148,6 +150,7 @@ export default class POWMarketStateMachine {
                     "$set": {
                         mined: true,
                         mined_at: created_at,
+                        mined_bsvusd: await helpers.bsvusd(),
                         mined_number: hash,
                         mined_txid: tx.tx.h,
                         mined_address: input.e.a,
