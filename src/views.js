@@ -140,3 +140,26 @@ export async function homepage(view={}) {
     return view;
 }
 
+
+export async function tx(tx, txid) {
+    const bsvusd = await helpers.bsvusd();
+    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+
+    tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
+
+    return tx;
+}
+
+export async function hash(input) {
+    const db = await connect();
+
+    const bsvusd = await helpers.bsvusd();
+    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+
+    const view = {
+        hash: input,
+    };
+
+    db.close();
+    return view;
+}

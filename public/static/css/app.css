@@ -342,3 +342,8 @@ hr {
     height: 46px;
     vertical-align: bottom;
 }
+
+.table .feature-label {
+    white-space: nowrap;
+    width: 100px;
+}

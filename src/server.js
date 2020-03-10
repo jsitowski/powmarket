@@ -13,6 +13,10 @@ import * as helpers from "./helpers"
 
 import * as views from "./views"
 
+function getip(req) {
+    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+}
+
 export async function start(port=8000) {
 
     const app = express();
@@ -26,8 +30,7 @@ export async function start(port=8000) {
     app.set('views', __dirname + '/../views');
 
     app.get('/api/mined', async function(req, res) {
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        log(`/api/mined request from ${ip}`);
+        log(`/api/mined request from ${getip(req)}`);
         const db = await connect();
         let view = await views.dashboard({}, db);
         view = await views.mined(view, db);
@@ -40,8 +43,7 @@ export async function start(port=8000) {
     });
 
     app.get('/api/unmined', async function(req, res) {
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        log(`/api/unmined request from ${ip}`);
+        log(`/api/unmined request from ${getip(req)}`);
         const db = await connect();
         let view = await views.dashboard({}, db);
         view = await views.unmined(view, db);
@@ -54,8 +56,7 @@ export async function start(port=8000) {
     });
 
     app.get('/api', async function(req, res) {
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        log(`/api request from ${ip}`);
+        log(`/api request from ${getip(req)}`);
         const db = await connect();
         let view = await views.dashboard({}, db);
         view = await views.all(view, db);
@@ -68,8 +69,7 @@ export async function start(port=8000) {
     });
 
     app.get('/mined', async function(req, res) {
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        log(`/ request from ${ip}`);
+        log(`/mined request from ${getip(req)}`);
         const db = await connect();
         let view = await views.dashboard({}, db);
         view = await views.mined(view, db);
@@ -78,8 +78,7 @@ export async function start(port=8000) {
     });
 
     app.get('/unmined', async function(req, res) {
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        log(`/ request from ${ip}`);
+        log(`/unmined request from ${getip(req)}`);
         const db = await connect();
         let view = await views.dashboard({}, db);
         view = await views.unmined(view, db);
@@ -87,11 +86,23 @@ export async function start(port=8000) {
         res.render('unmined', view);
     });
 
+    app.get('/:hash', async function(req, res) {
+        const hash = req.params.hash;
+        log(`/${hash} request from ${getip(req)}`);
+
+        const db = await connect();
+        const tx = await db.collection("magicnumbers").findOne({"txid": hash});
+        db.close();
+        if (tx) {
+            res.render('tx', await views.tx(tx, hash));
+        } else {
+            res.render('hash', await views.hash(hash));
+        }
+    });
+
     app.get('/', async function(req, res) {
-        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        log(`/ request from ${ip}`);
-        const homepage = await views.homepage();
-        res.render('index', homepage);
+        log(`/ request from ${getip(req)}`);
+        res.render('index', await views.homepage());
     });
 
     log(`starting server at http://localhost:${port}`);
