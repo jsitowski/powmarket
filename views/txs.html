@@ -1,0 +1,35 @@
+{{> header}}
+
+<section class="section" id="app">
+  <div class="container is-widescreen">
+    <div class="content content-wrapper">
+      <h1 class="title">PoW Market</h1>
+      <p class="subtitle">A Marketplace for Magic Numbers</p>
+
+      <br />
+
+      <h2>{{ hash }}</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>txid</th>
+            <th>magic number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#txs}}
+            <tr>
+              <td><a href="/{{txid}}">{{ txid }}</a></td>
+              <td><a href="/{{mined_number}}">{{ mined_number }}</a></td>
+            </tr>
+          {{/txs}}
+        </tbody>
+      </table>
+
+      {{> bumper}}
+    </div>
+  </div>
+</section>
+
+
+{{> footer}} 

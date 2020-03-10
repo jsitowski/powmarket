@@ -8,12 +8,16 @@
 
       <br />
 
-      <h2>{{ txid }}</h2>
+      <h2 style="white-space: nowrap;">{{type}}: {{ header }}</h2>
       <table class="table">
         <tbody>
           <tr>
             <th class="feature-label">TXID</th>
-            <td><a class="mono" href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
+            <td><a class="mono" href="/{{txid}}">{{txid}}</a>
+              <a href="https://whatsonchain.com/tx/{{txid}}" style="text-decoration: none;" target="_blank">
+                <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+              </a>
+            </td>
           </tr>
           <tr>
             <th class="feature-label">Target</th>
@@ -45,6 +49,9 @@
             <td>
               {{#mined}}
                 <a class="mono" href="/{{mined_txid}}">{{mined_txid}}</a>
+                <a href="https://whatsonchain.com/tx/{{mined_txid}}" style="text-decoration: none;" target="_blank">
+                  <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+                </a>
               {{/mined}}
             </td>
           </tr>

@@ -141,7 +141,7 @@ export async function homepage(view={}) {
 }
 
 
-export async function tx(tx, txid) {
+export async function tx({ tx, txid, type, header }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
@@ -151,10 +151,32 @@ export async function tx(tx, txid) {
         tx.mined_in = Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100;
     }
 
+    tx.type = type;
+    tx.header = header;
+
     return tx;
 }
 
-export async function hash(input) {
+export async function txs({ txs, hash, type }) {
+    const bsvusd = await helpers.bsvusd();
+    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+
+    for (const tx of txs) {
+        tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
+
+        if (tx.mined_at) {
+            tx.mined_in = Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100;
+        }
+    }
+
+    return {
+        txs,
+        hash,
+    };
+}
+
+
+export async function hash({ input }) {
     const db = await connect();
 
     const bsvusd = await helpers.bsvusd();

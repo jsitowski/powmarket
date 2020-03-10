@@ -95,24 +95,28 @@ export async function start(port=8000) {
         let tx = await db.collection("magicnumbers").findOne({"txid": hash});
         if (tx) {
             db.close();
-            return res.render('tx', await views.tx(tx, hash));
+            return res.render('tx', await views.tx({ tx, hash, type: "TXID", header: tx.txid }));
         }
 
         tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
         if (tx) {
             db.close();
-            return res.render('tx', await views.tx(tx, hash));
+            return res.render('tx', await views.tx({ tx, hash, type: "Mined TXID", header: tx.mined_txid }));
         }
 
         tx = await db.collection("magicnumbers").findOne({"mined_number": hash});
         if (tx) {
             db.close();
-            return res.render('tx', await views.tx(tx, hash));
+            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.mined_number }));
         }
 
+        let txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
+        if (txs) {
+            db.close();
+            return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash }));
+        }
 
-
-        res.render('hash', await views.hash(hash));
+        res.render('404');
     });
 
     app.get('/', async function(req, res) {
