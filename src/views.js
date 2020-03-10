@@ -183,6 +183,10 @@ function process({ tx, bsvusd, type, header }) {
         tx.emoji = null;
     }
 
+    if (!tx.mined_number) {
+        tx.mined_number = null;
+    }
+
     return tx;
 }
 
@@ -195,9 +199,7 @@ export async function tx({ tx, hash, type, header, db }) {
     const txs = (await db.collection("magicnumbers").find({
         "$or": [
             {"target": tx.txid},
-            {"target": tx.target},
             {"target": tx.mined_number},
-            {"target": tx.mined_txid},
         ]
     }).limit(10).toArray()).filter(t => {
         return t.txid !== tx.txid;
