@@ -147,6 +147,10 @@ export async function tx(tx, txid) {
 
     tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
 
+    if (tx.mined_at) {
+        tx.mined_in = Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100;
+    }
+
     return tx;
 }
 

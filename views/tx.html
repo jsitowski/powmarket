@@ -13,7 +13,7 @@
         <tbody>
           <tr>
             <th class="feature-label">TXID</th>
-            <td><a class="mono" href="https://whatsonchain.com/tx/{{txid}}}">{{txid}}</a></td>
+            <td><a class="mono" href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
           </tr>
           <tr>
             <th class="feature-label">Target</th>
@@ -48,6 +48,14 @@
               {{/mined}}
             </td>
           </tr>
+          {{#mined_in}}
+          <tr>
+            <th class="feature-label">Mined In</th>
+            <td>
+              {{#mined_in}}{{mined_in}} seconds {{/mined_in}}
+            </td>
+          </tr>
+          {{/mined_in}}
         </tbody>
       </table>
 
