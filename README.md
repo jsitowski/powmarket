@@ -150,3 +150,4 @@ Make improvements to the design / UX.
 - Show tags
 - Pagination
 - Easier to vote
+- Show items with most associated proof of work

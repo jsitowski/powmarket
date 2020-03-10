@@ -3,8 +3,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th>txid</th>
         <th>target</th>
+        <th>txid</th>
         <th>magic number</th>
         <th>hash</th>
       </tr>
@@ -12,11 +12,11 @@
     <tbody>
       {{#txs}}
         <tr>
-          <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
           <td style="white-space: nowrap">
             <a class="mono" href="/{{magicnumber}}">{{ display_magicnumber }}</a>
             {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
           </td>
+          <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
           <td>
               {{#mined_number}}
                 <a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a>
