@@ -18,13 +18,13 @@
         <td class="created">{{display_mined_date}}</td>
         <td class="reward">${{display_value}}</td>
         <td class="target">
-          {{display_magicnumber}}
-          {{#emoji}}<small>{{emoji}}</small>{{/emoji}}
+          <a href="/{{magicnumber}}">{{display_magicnumber}}</a>
+          <a href="/{{magicnumber}}">{{#emoji}}<small>{{emoji}}</small>{{/emoji}}</a>
         </td>
-        <td class="magicnumber"><span class="highlight">{{mined_number}}</span></td>
-        <td class="hash short mono">{{target}}</td>
-        <td class="txid"><a href="https://whatsonchain.com/tx/{{txid}}">{{txid}}</a></td>
-        <td class="txid mined_txid"><a href="https://whatsonchain.com/tx/{{mined_txid}}">{{mined_txid}}</a></td>
+        <td class="magicnumber"><a class="highlight" href="/{{mined_number}}">{{mined_number}}</a></td>
+        <td class="hash short mono"><a href="/{{target}}">{{target}}</a></td>
+        <td class="txid"><a href="/{{txid}}">{{txid}}</a></td>
+        <td class="txid mined_txid"><a href="/{{mined_txid}}">{{mined_txid}}</a></td>
       </tr>
     {{/mined}}
   </table>

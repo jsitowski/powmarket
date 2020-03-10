@@ -135,3 +135,47 @@ export function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+export function countpow(hash, target) {
+    if (hash.length == 64 && target && hash.indexOf(target) === 0) {
+        const letters = hash.split("");
+        for (var i = 0; i < target.length; i++) {
+            letters.shift();
+        }
+
+        let pow = 0;
+        let letter = 0;
+        while (letter = letters.shift()) {
+            if (letter === "0") { pow++ }
+            else { break }
+        }
+
+        return target.length + pow;
+    }
+
+    return 0;
+}
+
+export function humanReadableInterval(inputSeconds) {
+    const days = Math.floor( inputSeconds / (60 * 60 * 24) );
+    const hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60 );
+    const seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60 );
+    const parts = [];
+
+    if (days > 0){
+        parts.push(days + ' day' + (days > 1 ? 's': ''));
+    }
+    if (hour > 0){
+        parts.push(hour + ' hour' + (hour > 1 ? 's': ''));
+    }
+
+    if (minutes > 0){
+        parts.push(minutes + ' minute' + (minutes > 1 ? 's' : ''));
+    }
+
+    if (seconds > 0){
+        parts.push(seconds + ' seconds' + (seconds > 1 ? 's': ''));
+    }
+
+    return parts.join(" ");
+}

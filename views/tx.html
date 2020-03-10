@@ -28,6 +28,10 @@
             <th class="feature-label">Magic Number</th>
             <td><a class="highlight mono" href="/{{mined_number}}">{{mined_number}}</a></td>
           </tr>
+          <tr>
+            <th class="feature-label">Proof of Work</th>
+            <td>{{pow}}</td>
+          </tr>
           {{/mined_number}}
           <tr>
             <th class="feature-label">Value</th>
@@ -59,7 +63,7 @@
           <tr>
             <th class="feature-label">Mined In</th>
             <td>
-              {{#mined_in}}{{mined_in}} seconds {{/mined_in}}
+              {{#mined_in}}{{mined_in}}{{/mined_in}}
             </td>
           </tr>
           {{/mined_in}}
