@@ -174,7 +174,7 @@ export function humanReadableInterval(inputSeconds) {
     }
 
     if (seconds > 0){
-        parts.push(seconds + ' seconds' + (seconds > 1 ? 's': ''));
+        parts.push(seconds + ' second' + (seconds > 1 ? 's': ''));
     }
 
     return parts.join(" ");
