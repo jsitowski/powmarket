@@ -133,7 +133,9 @@ export default class POWMarketStateMachine {
         // log(tx.tx.h);
 
         for (const input of tx.in) {
-            const utxo = `${input.e.h}:${input.e.i}`;
+            const txid = input.e.h;
+            const vout = input.e.i;
+            const utxo = `${txid}:${vout}`;
 
             if (utxos.has(utxo)) {
                 const asm = input.str;
@@ -141,25 +143,30 @@ export default class POWMarketStateMachine {
                 const presig = script.chunks[0].buf;
                 const hash = bsv.crypto.Hash.sha256(presig).toString("hex");
 
-                log(`🌟 r-puzzle mined ${hash} at ${tx.tx.h}`);
+                log(`🌟 r-puzzle mined ${hash} at ${txid}`);
 
-                const response = await this.db.collection("magicnumbers").updateOne({
-                    "txid": input.e.h,
-                    "vout": input.e.i,
-                }, {
+                const magicnumber = await this.db.collection("magicnumbers").findOne({ txid });
+                if (!magicnumber) {
+                    throw new Error(`error while processing r-puzzle solution, couldn't find ${txid}`);
+                }
+
+                const bsvusd = await helpers.bsvusd();
+                const mined_price = helpers.satoshisToDollars(magicnumber.value, bsvusd);
+
+                const response = await this.db.collection("magicnumbers").updateOne({ txid }, {
                     "$set": {
                         mined: true,
                         mined_at: created_at,
-                        mined_bsvusd: await helpers.bsvusd(),
+                        mined_price,
                         mined_number: hash,
-                        mined_txid: tx.tx.h,
+                        mined_txid: txid,
                         mined_address: input.e.a,
                     }
                 });
 
                 if (!good(response)) {
                     console.log(response);
-                    throw new Error(`error while processing r-puzzle solution ${tx.tx.h}`);
+                    throw new Error(`error while processing r-puzzle solution ${txid}`);
                 }
 
                 utxos.delete(utxo);

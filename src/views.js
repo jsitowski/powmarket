@@ -55,25 +55,20 @@ function process({ tx, bsvusd, type, header }) {
 }
 
 
-
 export async function dashboard(view={}) {
     if (!database.db) { throw new Error("expected db") }
+    if (!view.bsvusd) { throw new Error("expected bsvusd") }
 
-    if (!view.bsvusd) {
-        view.bsvusd = await helpers.bsvusd();
-    }
+    const mined_results = (await database.db.collection("magicnumbers").aggregate([{"$match": {mined: true}}, {"$group": {
+        _id: null,
+        "mined_earnings": {"$sum": "$mined_price"},
+        "mined_num": {"$sum": 1},
+    }}]).toArray())[0];
+
+    const mined_num = mined_results["mined_num"];
+    const mined_earnings = mined_results["mined_earnings"];
 
     const unmined_num = await database.db.collection("magicnumbers").find({"mined": false}).count();
-
-    let mined_num = 0, mined_earnings = 0;
-    const mined = await database.db.collection("magicnumbers").find({"mined": true}, {"value": 1, "mined_bsvusd": 1}).toArray();
-    for (const m of mined) {
-        mined_earnings += Number(helpers.satoshisToDollars(m.value, m.mined_bsvusd));
-        mined_num += 1;
-    }
-
-    mined_earnings = Math.floor(mined_earnings * 100) / 100;
-    
     const unmined_satoshis = (await database.db.collection("magicnumbers").aggregate([{"$match": {mined: false}}, {"$group": {_id: null, "amount": {"$sum": "$value"}}}]).toArray())[0].amount;
 
     return Object.assign(view, {
@@ -89,10 +84,7 @@ export async function dashboard(view={}) {
 
 export async function all(view={}, limit=10000) {
     if (!database.db) { throw new Error("expected db") }
-
-    if (!view.bsvusd) {
-        view.bsvusd = await helpers.bsvusd();
-    }
+    if (!view.bsvusd) { throw new Error("expected bsvusd") }
 
     const recentlyMined = await (database.db.collection("magicnumbers").find({}).sort({"created_at": -1}).limit(limit).toArray());
 
@@ -121,10 +113,7 @@ export async function mined(view={}, limit=10000) {
 
 export async function unmined(view={}, limit=10000, sortby=null) {
     if (!database.db) { throw new Error("expected db") }
-
-    if (!view.bsvusd) {
-        view.bsvusd = await helpers.bsvusd();
-    }
+    if (!view.bsvusd) { throw new Error("expected bsvusd") }
 
     const sort = {};
     if (sortby === "profitable") {
@@ -198,6 +187,7 @@ export async function homepage(view={}) {
     view = await dashboard(view);
     console.log("ts 5", Date.now() - now)
 
+    /*
     view.num = 20;
     view = await mined(view);
     console.log("ts 6", Date.now() - now)
@@ -205,6 +195,7 @@ export async function homepage(view={}) {
     view.num = 10;
     view = await unmined(view);
     console.log("ts 7", Date.now() - now)
+    */
 
     return view;
 }
