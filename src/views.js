@@ -147,6 +147,8 @@ export async function tx({ tx, txid, type, header }) {
 
     tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
 
+    tx = processMagicNumber(tx, { bsvusd });
+
     if (tx.mined_at) {
         tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
     }
@@ -164,7 +166,9 @@ export async function txs({ txs, hash, type, header }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
-    for (const tx of txs) {
+    for (let tx of txs) {
+        tx = processMagicNumber(tx, { bsvusd });
+
         tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
 
         if (tx.mined_at) {

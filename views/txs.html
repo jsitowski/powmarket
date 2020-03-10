@@ -1,40 +1,26 @@
 {{> header}}
+  <br />
 
-<section class="section" id="app">
-  <div class="container is-widescreen">
-    <div class="content content-wrapper">
-      <h1 class="title">PoW Market</h1>
-      <p class="subtitle">A Marketplace for Magic Numbers</p>
-
-      <br />
-
-      <h2>{{ type }}: {{ header }}</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>txid</th>
-            <th>target</th>
-            <th>magic number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#txs}}
-            <tr>
-              <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
-              <td>
-                <a class="mono" href="/{{target}}">{{ magicnumber }}</a>
-                {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
-              </td>
-              <td><a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a></td>
-            </tr>
-          {{/txs}}
-        </tbody>
-      </table>
-
-      {{> bumper}}
-    </div>
-  </div>
-</section>
-
-
+  <h2>{{ type }}: {{ header }}</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>txid</th>
+        <th>target</th>
+        <th>magic number</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#txs}}
+        <tr>
+          <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
+          <td>
+            <a class="mono" href="/{{target}}">{{ display_magicnumber }}</a>
+            {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
+          </td>
+          <td><a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a></td>
+        </tr>
+      {{/txs}}
+    </tbody>
+  </table>
 {{> footer}} 

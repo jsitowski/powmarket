@@ -1,79 +1,66 @@
 {{> header}}
+  <br />
 
-<section class="section" id="app">
-  <div class="container is-widescreen">
-    <div class="content content-wrapper">
-      <h1 class="title">PoW Market</h1>
-      <p class="subtitle">A Marketplace for Magic Numbers</p>
-
-      <br />
-
-      <h2 style="white-space: nowrap;">{{type}}: {{ header }}</h2>
-      <table class="table">
-        <tbody>
-          <tr>
-            <th class="feature-label">TXID</th>
-            <td><a class="mono" href="/{{txid}}">{{txid}}</a>
-              <a href="https://whatsonchain.com/tx/{{txid}}" style="text-decoration: none;" target="_blank">
-                <span class="icon"><i class="fas fa-external-link-alt"></i></span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <th class="feature-label">Target</th>
-            <td><a class="mono" href="/{{magicnumber}}">{{magicnumber}}</a></td>
-          </tr>
-          {{#mined_number}}
-          <tr>
-            <th class="feature-label">Magic Number</th>
-            <td><a class="highlight mono" href="/{{mined_number}}">{{mined_number}}</a></td>
-          </tr>
-          <tr>
-            <th class="feature-label">Proof of Work</th>
-            <td>{{pow}}</td>
-          </tr>
-          {{/mined_number}}
-          <tr>
-            <th class="feature-label">Value</th>
-            <td>${{bsvusd}} ({{value}} satoshis)</td>
-          </tr>
-          <tr>
-            <th class="feature-label">Hash</th>
-            <td><a class="mono" href="/{{target}}">{{target}}</a></td>
-          </tr>
-          <tr>
-            <th class="feature-label">
-              {{#mined}}
-                Mined <span class="icon has-text-success"><i class="fas fa-check-circle"></i></span>
-              {{/mined}}
-              {{^mined}}
-                Unmined
-              {{/mined}}
-            </th>
-            <td>
-              {{#mined}}
-                <a class="mono" href="/{{mined_txid}}">{{mined_txid}}</a>
-                <a href="https://whatsonchain.com/tx/{{mined_txid}}" style="text-decoration: none;" target="_blank">
-                  <span class="icon"><i class="fas fa-external-link-alt"></i></span>
-                </a>
-              {{/mined}}
-            </td>
-          </tr>
-          {{#mined_in}}
-          <tr>
-            <th class="feature-label">Mined In</th>
-            <td>
-              {{#mined_in}}{{mined_in}}{{/mined_in}}
-            </td>
-          </tr>
-          {{/mined_in}}
-        </tbody>
-      </table>
-
-      {{> bumper}}
-    </div>
-  </div>
-</section>
-
+  <h2 style="white-space: nowrap;">{{type}}: {{ header }}</h2>
+  <table class="table">
+    <tbody>
+      <tr>
+        <th class="feature-label">TXID</th>
+        <td><a class="mono" href="/{{txid}}">{{txid}}</a>
+          <a href="https://whatsonchain.com/tx/{{txid}}" style="text-decoration: none;" target="_blank">
+            <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <th class="feature-label">Target</th>
+        <td><a class="mono" href="/{{magicnumber}}">{{magicnumber}}</a></td>
+      </tr>
+      {{#mined_number}}
+      <tr>
+        <th class="feature-label">Magic Number</th>
+        <td><a class="highlight mono" href="/{{mined_number}}">{{mined_number}}</a></td>
+      </tr>
+      <tr>
+        <th class="feature-label">Proof of Work</th>
+        <td>{{pow}}</td>
+      </tr>
+      {{/mined_number}}
+      <tr>
+        <th class="feature-label">Value</th>
+        <td>${{bsvusd}} ({{value}} satoshis)</td>
+      </tr>
+      <tr>
+        <th class="feature-label">Hash</th>
+        <td><a class="mono" href="/{{target}}">{{target}}</a></td>
+      </tr>
+      <tr>
+        <th class="feature-label">
+          {{#mined}}
+            Mined <span class="icon has-text-success"><i class="fas fa-check-circle"></i></span>
+          {{/mined}}
+          {{^mined}}
+            Unmined
+          {{/mined}}
+        </th>
+        <td>
+          {{#mined}}
+            <a class="mono" href="/{{mined_txid}}">{{mined_txid}}</a>
+            <a href="https://whatsonchain.com/tx/{{mined_txid}}" style="text-decoration: none;" target="_blank">
+              <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+            </a>
+          {{/mined}}
+        </td>
+      </tr>
+      {{#mined_in}}
+      <tr>
+        <th class="feature-label">Mined In</th>
+        <td>
+          {{#mined_in}}{{mined_in}}{{/mined_in}}
+        </td>
+      </tr>
+      {{/mined_in}}
+    </tbody>
+  </table>
 
 {{> footer}} 
