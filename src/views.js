@@ -96,13 +96,11 @@ export async function all(view={}, limit=10000) {
 }
 
 
-export async function mined(view={}, limit=10000) {
+export async function mined(view={}) {
+    if (!database.db) { throw new Error("expected db") }
+    if (!view.bsvusd) { throw new Error("expected bsvusd") }
 
-    if (!view.bsvusd) {
-        view.bsvusd = await helpers.bsvusd();
-    }
-
-    const recentlyMined = await (database.db.collection("magicnumbers").find({"mined": true}).sort({"mined_at": -1}).limit(limit).toArray());
+    const recentlyMined = await (database.db.collection("magicnumbers").find({"mined": true}).sort({"mined_at": -1}).limit(view.num).toArray());
 
     view.mined = recentlyMined.map(m => {
         return processMagicNumber(m, view);
@@ -111,18 +109,13 @@ export async function mined(view={}, limit=10000) {
     return view;
 }
 
-export async function unmined(view={}, limit=10000, sortby=null) {
+export async function unmined(view={}) {
     if (!database.db) { throw new Error("expected db") }
     if (!view.bsvusd) { throw new Error("expected bsvusd") }
 
-    const sort = {};
-    if (sortby === "profitable") {
-        sort["value"] = -1;
-    } else {
-        sort["created_at"] = -1;
-    }
+    const sort = view.sort || {"created_at": -1};
 
-    const pending = await (database.db.collection("magicnumbers").find({"mined": false}).sort(sort).limit(limit).toArray());
+    const pending = await (database.db.collection("magicnumbers").find({"mined": false}).sort(sort).limit(view.num).toArray());
 
     view.unmined = pending.map(m => {
         return processMagicNumber(m, view);
@@ -179,6 +172,7 @@ export async function homepage(view={}) {
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
     view.bsvusd = bsvusd;
+    view.num = 10;
 
     console.log("ts 3", Date.now() - now)
     view = await blockviz(view);
@@ -187,15 +181,11 @@ export async function homepage(view={}) {
     view = await dashboard(view);
     console.log("ts 5", Date.now() - now)
 
-    /*
-    view.num = 20;
     view = await mined(view);
     console.log("ts 6", Date.now() - now)
 
-    view.num = 10;
     view = await unmined(view);
     console.log("ts 7", Date.now() - now)
-    */
 
     return view;
 }
