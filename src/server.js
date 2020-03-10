@@ -91,13 +91,28 @@ export async function start(port=8000) {
         log(`/${hash} request from ${getip(req)}`);
 
         const db = await connect();
-        const tx = await db.collection("magicnumbers").findOne({"txid": hash});
-        db.close();
+
+        let tx = await db.collection("magicnumbers").findOne({"txid": hash});
         if (tx) {
-            res.render('tx', await views.tx(tx, hash));
-        } else {
-            res.render('hash', await views.hash(hash));
+            db.close();
+            return res.render('tx', await views.tx(tx, hash));
         }
+
+        tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
+        if (tx) {
+            db.close();
+            return res.render('tx', await views.tx(tx, hash));
+        }
+
+        tx = await db.collection("magicnumbers").findOne({"mined_number": hash});
+        if (tx) {
+            db.close();
+            return res.render('tx', await views.tx(tx, hash));
+        }
+
+
+
+        res.render('hash', await views.hash(hash));
     });
 
     app.get('/', async function(req, res) {
