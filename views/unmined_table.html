@@ -19,10 +19,10 @@
           <td class="reward">${{display_value}}</td>
           <td class="target">
             <a href="/{{magicnumber}}">{{display_magicnumber}}</a>
-            <a href="/{{magicnumber}}">{{#emoji}}<small>{{emoji}}</small>{{/emoji}}</a>
+            {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
           </td>
           <td class="txid"><a href="/{{txid}}">{{txid}}</a></td>
-          <td class="txid">{{target}}</td>
+          <td class="txid"><a href="/{{target}}">{{target}}</a></td>
         </tr>
       {{/unmined}}
       </tbody>

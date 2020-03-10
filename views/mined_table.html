@@ -19,7 +19,7 @@
         <td class="reward">${{display_value}}</td>
         <td class="target">
           <a href="/{{magicnumber}}">{{display_magicnumber}}</a>
-          <a href="/{{magicnumber}}">{{#emoji}}<small>{{emoji}}</small>{{/emoji}}</a>
+          {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
         </td>
         <td class="magicnumber"><a class="highlight" href="/{{mined_number}}">{{mined_number}}</a></td>
         <td class="hash short mono"><a href="/{{target}}">{{target}}</a></td>

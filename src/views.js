@@ -153,12 +153,14 @@ export async function tx({ tx, txid, type, header }) {
 
     tx.type = type;
     tx.header = header;
-    tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
+    if (tx.mined_number) {
+        tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
+    }
 
     return tx;
 }
 
-export async function txs({ txs, hash, type }) {
+export async function txs({ txs, hash, type, header }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
@@ -166,13 +168,21 @@ export async function txs({ txs, hash, type }) {
         tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
 
         if (tx.mined_at) {
-            tx.mined_in = Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100;
+            tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
+        }
+
+        tx.type = type;
+        tx.header = header;
+        if (tx.mined_number) {
+            tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
         }
     }
 
     return {
         txs,
         hash,
+        header,
+        type,
     };
 }
 

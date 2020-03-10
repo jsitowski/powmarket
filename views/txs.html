@@ -8,19 +8,24 @@
 
       <br />
 
-      <h2>{{ hash }}</h2>
+      <h2>{{ type }}: {{ header }}</h2>
       <table class="table">
         <thead>
           <tr>
             <th>txid</th>
+            <th>target</th>
             <th>magic number</th>
           </tr>
         </thead>
         <tbody>
           {{#txs}}
             <tr>
-              <td><a href="/{{txid}}">{{ txid }}</a></td>
-              <td><a href="/{{mined_number}}">{{ mined_number }}</a></td>
+              <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
+              <td>
+                <a class="mono" href="/{{target}}">{{ magicnumber }}</a>
+                {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
+              </td>
+              <td><a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a></td>
             </tr>
           {{/txs}}
         </tbody>
