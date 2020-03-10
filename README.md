@@ -145,6 +145,12 @@ How much hashpower is currently flowing through the market? Calculate and displa
 Make improvements to the design / UX.
 
 ## TODO
+- Optimize performance
+- Small amounts of caching
+- Reuse DB connection?
+- Simplify code base
+- Handlebars
+
 - Search bar that auto converts to proper hash
 - Show tags
 - Pagination

@@ -9,6 +9,8 @@ import mustacheExpress from "mustache-express"
 import bodyParser from "body-parser"
 
 import { connect } from "./db"
+let database = require("./db");
+
 import * as helpers from "./helpers"
 
 import * as views from "./views"
@@ -18,6 +20,9 @@ function getip(req) {
 }
 
 export async function start(port=8000) {
+
+    database.db = await database.connect();
+    const db = database.db;
 
     const app = express();
 
@@ -31,11 +36,8 @@ export async function start(port=8000) {
 
     app.get('/api/mined', async function(req, res) {
         log(`/api/mined request from ${getip(req)}`);
-        const db = await connect();
-        let view = await views.dashboard({}, db);
-        view = await views.mined(view, db);
+        let view = await views.mined(await views.dashboard());
         const response = helpers.apiify(view.mined);
-        db.close();
         return res.json({
             bsvusd: view.bsvusd,
             magicnumbers: response
@@ -44,11 +46,8 @@ export async function start(port=8000) {
 
     app.get('/api/unmined', async function(req, res) {
         log(`/api/unmined request from ${getip(req)}`);
-        const db = await connect();
-        let view = await views.dashboard({}, db);
-        view = await views.unmined(view, db);
+        let view = await views.unmined(await views.dashboard());
         const response = helpers.apiify(view.unmined);
-        db.close();
         return res.json({
             bsvusd: view.bsvusd,
             magicnumbers: response
@@ -57,11 +56,8 @@ export async function start(port=8000) {
 
     app.get('/api', async function(req, res) {
         log(`/api request from ${getip(req)}`);
-        const db = await connect();
-        let view = await views.dashboard({}, db);
-        view = await views.all(view, db);
+        let view = await views.all(await views.dashboard());
         const response = helpers.apiify(view.mined);
-        db.close();
         return res.json({
             bsvusd: view.bsvusd,
             magicnumbers: response
@@ -70,27 +66,19 @@ export async function start(port=8000) {
 
     app.get('/mined', async function(req, res) {
         log(`/mined request from ${getip(req)}`);
-        const db = await connect();
-        let view = await views.dashboard({}, db);
-        view = await views.mined(view, db);
-        db.close();
+        let view = await views.mined(await views.dashboard());
         res.render('mined', view);
     });
 
     app.get('/unmined', async function(req, res) {
         log(`/unmined request from ${getip(req)}`);
-        const db = await connect();
-        let view = await views.dashboard({}, db);
-        view = await views.unmined(view, db);
-        db.close();
+        let view = await views.unmined(await views.dashboard());
         res.render('unmined', view);
     });
 
     app.get('/:hash', async function(req, res) {
         const hash = req.params.hash;
         log(`/${hash} request from ${getip(req)}`);
-
-        const db = await connect();
 
         let tx = await db.collection("magicnumbers").findOne({"txid": hash});
         if (tx) {
@@ -116,8 +104,6 @@ export async function start(port=8000) {
         if (txs.length > 0) {
             return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash, db }));
         }
-
-        db.close();
 
         res.render('404');
     });

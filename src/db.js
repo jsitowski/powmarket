@@ -6,6 +6,8 @@ let numconnections = 0;
 
 let debugConnectionsInterval = null;
 
+export let db = null;
+
 export function connect() {
     if (debugConnectionsInterval === null) {
         debugConnectionsInterval = setInterval(function() {
@@ -22,7 +24,7 @@ export function connect() {
             } else {
                 numconnections += 1;
                 //log(`${numconnections} // connected`);
-                const db = client.db("powmarket");
+                db = client.db("powmarket");
                 db.close = function() {
                     numconnections -= 1;
                     //log(`${numconnections} // disconnected`);
