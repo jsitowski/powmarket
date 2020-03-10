@@ -155,6 +155,11 @@ export function countpow(hash, target) {
     return 0;
 }
 
+export function countpower(hash, target) {
+    let pow = countpow(hash, target);
+    return Math.pow(2, pow);
+}
+
 export function humanReadableInterval(inputSeconds) {
     const days = Math.floor( inputSeconds / (60 * 60 * 24) );
     const hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60));
@@ -178,4 +183,30 @@ export function humanReadableInterval(inputSeconds) {
     }
 
     return parts.join(" ");
+}
+
+export function aggregatepower(powers) {
+    let val = 0;
+    for (const power of powers) {
+        const exp = Math.pow(2, power.power) * power.polarity;
+        val += exp;
+    }
+
+    if (val === 0) {
+        return 0;
+    }
+
+    let isnegative = (val < 0);
+    val = Math.abs(val);
+
+    const agg = Math.log(val) / Math.log(2);
+    if (isNaN(agg)) {
+        return 0;
+    }
+
+    if (isnegative) {
+        return (agg * -1);
+    }
+
+    return agg;
 }

@@ -4,9 +4,9 @@
     <thead>
       <tr>
         <th>target</th>
-        <th>txid</th>
-        <th>magic number</th>
         <th>hash</th>
+        <th>magic number</th>
+        <th>txid</th>
       </tr>
     </thead>
     <tbody>
@@ -16,7 +16,7 @@
             <a class="mono" href="/{{magicnumber}}">{{ display_magicnumber }}</a>
             {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
           </td>
-          <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
+          <td><a class="mono" href="/{{target}}">{{ target }}</a></td>
           <td>
               {{#mined_number}}
                 <a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a>
@@ -25,7 +25,7 @@
                 pending...
               {{/mined_number}}
             </td>
-          <td><a class="mono" href="/{{target}}">{{ target }}</a></td>
+          <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
         </tr>
       {{/txs}}
     </tbody>

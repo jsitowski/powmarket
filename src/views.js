@@ -3,6 +3,8 @@ import * as timeago from "timeago.js"
 import * as helpers from "./helpers"
 import { connect } from "./db"
 
+const BAD_EMOJIS = ["👎", "😠"];
+
 export async function dashboard(view={}, db=null) {
 
     if (!view.bsvusd) {
@@ -72,7 +74,7 @@ export async function mined(view={}, db, limit=10000) {
         view.bsvusd = await helpers.bsvusd();
     }
 
-    const recentlyMined = await (db.collection("magicnumbers").find({"mined": true}).sort({"created_at": -1}).limit(limit).toArray());
+    const recentlyMined = await (db.collection("magicnumbers").find({"mined": true}).sort({"mined_at": -1}).limit(limit).toArray());
 
     view.mined = recentlyMined.map(m => {
         return processMagicNumber(m, view);
@@ -174,7 +176,7 @@ function process({ tx, bsvusd, type, header }) {
     tx.type = type;
     tx.header = header;
     if (tx.mined_number) {
-        tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
+        tx.power = helpers.countpow(tx.mined_number, tx.magicnumber);
     }
 
     if (!tx.emoji) {
@@ -207,6 +209,15 @@ export async function tx({ tx, hash, type, header, db }) {
         tx.txs = txs;
     }
 
+    const powers = [];
+    powers.push({ power: tx.power, polarity: (BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
+
+    for (const t of txs) {
+        powers.push({ power: t.power, polarity: (BAD_EMOJIS.indexOf(t.emoji) >= 0 ? -1 : 1)});
+    }
+
+    tx.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
+
     db.close();
 
     return tx;
@@ -215,6 +226,8 @@ export async function tx({ tx, hash, type, header, db }) {
 export async function txs({ txs, hash, type, header, db }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+
+    const powers = [];
 
     for (let tx of txs) {
         tx = processMagicNumber(tx, { bsvusd });
@@ -232,13 +245,18 @@ export async function txs({ txs, hash, type, header, db }) {
         tx.type = type;
         tx.header = header;
         if (tx.mined_number) {
-            tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
+            tx.power = helpers.countpow(tx.mined_number, tx.magicnumber);
+            powers.push({ power: tx.power, polarity: (BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
         }
     }
+
+
+    const aggregatepower = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
 
     db.close();
 
     return {
+        aggregatepower,
         txs,
         hash,
         header,
