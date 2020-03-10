@@ -94,33 +94,30 @@ export async function start(port=8000) {
 
         let tx = await db.collection("magicnumbers").findOne({"txid": hash});
         if (tx) {
-            db.close();
-            return res.render('tx', await views.tx({ tx, hash, type: "TXID", header: tx.txid }));
+            return res.render('tx', await views.tx({ tx, hash, type: "TXID", header: tx.txid, db }));
         }
 
         tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
         if (tx) {
-            db.close();
-            return res.render('tx', await views.tx({ tx, hash, type: "Mined TXID", header: tx.mined_txid }));
+            return res.render('tx', await views.tx({ tx, hash, type: "Mined TXID", header: tx.mined_txid, db }));
         }
 
         tx = await db.collection("magicnumbers").findOne({"mined_number": hash});
         if (tx) {
-            db.close();
-            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.mined_number }));
+            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.mined_number, db }));
         }
 
         let txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
         if (txs.length > 0) {
-            db.close();
-            return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash }));
+            return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash, db }));
         }
 
         txs = await db.collection("magicnumbers").find({"magicnumber": hash}).toArray();
         if (txs.length > 0) {
-            db.close();
-            return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash }));
+            return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash, db }));
         }
+
+        db.close();
 
         res.render('404');
     });

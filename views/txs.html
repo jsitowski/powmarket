@@ -2,36 +2,5 @@
   <br />
 
   <h2 style="white-space: nowrap">{{ type }}: {{ header }}</h2>
-  <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>txid</th>
-          <th>target</th>
-          <th>magic number</th>
-          <th>hash</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#txs}}
-          <tr>
-            <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
-            <td style="white-space: nowrap">
-              <a class="mono" href="/{{magicnumber}}">{{ display_magicnumber }}</a>
-              {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
-            </td>
-            <td>
-                {{#mined_number}}
-                  <a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a>
-                {{/mined_number}}
-                {{^mined_number}}
-                  pending...
-                {{/mined_number}}
-              </td>
-            <td><a class="mono" href="/{{target}}">{{ target }}</a></td>
-          </tr>
-        {{/txs}}
-      </tbody>
-    </table>
-  </div>
+  {{> txs_table}}
 {{> footer}} 

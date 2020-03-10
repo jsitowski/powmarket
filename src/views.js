@@ -141,9 +141,7 @@ export async function homepage(view={}) {
 }
 
 
-export async function tx({ tx, txid, type, header }) {
-    const bsvusd = await helpers.bsvusd();
-    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+function process({ tx, bsvusd, type, header }) {
 
     tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
 
@@ -159,10 +157,42 @@ export async function tx({ tx, txid, type, header }) {
         tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
     }
 
+    if (!tx.emoji) {
+        tx.emoji = null;
+    }
+
     return tx;
 }
 
-export async function txs({ txs, hash, type, header }) {
+export async function tx({ tx, hash, type, header, db }) {
+    const bsvusd = await helpers.bsvusd();
+    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+
+    tx = process({ tx, bsvusd, hash, type, header });
+
+    const txs = (await db.collection("magicnumbers").find({
+        "$or": [
+            {"target": tx.txid},
+            {"target": tx.target},
+            {"target": tx.mined_number},
+            {"target": tx.mined_txid},
+        ]
+    }).limit(10).toArray()).filter(t => {
+        return t.txid !== tx.txid;
+    }).map(t => {
+        return process({ tx: t, bsvusd, type, hash, header });
+    });
+
+    if (txs.length > 0) {
+        tx.txs = txs;
+    }
+
+    db.close();
+
+    return tx;
+}
+
+export async function txs({ txs, hash, type, header, db }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
@@ -181,6 +211,8 @@ export async function txs({ txs, hash, type, header }) {
             tx.pow = helpers.countpow(tx.mined_number, tx.magicnumber);
         }
     }
+
+    db.close();
 
     return {
         txs,
