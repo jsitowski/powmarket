@@ -1,7 +1,7 @@
 {{> header}}
   <br />
 
-  <h2>{{ type }}: {{ header }}</h2>
+  <h2 style="white-space: nowrap">{{ type }}: {{ header }}</h2>
   <div class="table-container">
     <table class="table">
       <thead>
@@ -20,7 +20,14 @@
               <a class="mono" href="/{{magicnumber}}">{{ display_magicnumber }}</a>
               {{#emoji}}<a href="/{{magicnumber}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
             </td>
-            <td><a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a></td>
+            <td>
+                {{#mined_number}}
+                  <a class="mono highlighted" href="/{{mined_number}}">{{ mined_number }}</a>
+                {{/mined_number}}
+                {{^mined_number}}
+                  pending...
+                {{/mined_number}}
+              </td>
             <td><a class="mono" href="/{{target}}">{{ target }}</a></td>
           </tr>
         {{/txs}}

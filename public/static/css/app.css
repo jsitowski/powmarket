@@ -351,3 +351,20 @@ hr {
     white-space: nowrap;
     width: 100px;
 }
+
+.mined-true {
+    background-color: hsl(217, 71%, 53%);
+    opacity: 0.80;
+    color: white;
+    font-weight: bold;
+    border-radius: 7px 7px 0 0;
+}
+
+.mined-false {
+    background-color: hsla(171, 100%, 41%, 0.9);
+
+    opacity: 0.80;
+    color: white;
+    font-weight: bold;
+    border-radius: 7px 7px 0 0;
+}
