@@ -108,7 +108,7 @@ export async function minedtxid(req, res) {
 
 export async function magicnumber(req, res) {
     const hash = req.params.hash;
-    log(`/magicnumber/{hash} request from ${helpers.getip(req)}`);
+    log(`/magicnumber/${hash} request from ${helpers.getip(req)}`);
 
     let tx = await database.db.collection("magicnumbers").findOne({"magicnumber": hash});
 
@@ -119,7 +119,7 @@ export async function magicnumber(req, res) {
 
 export async function hash(req, res) {
     const hash = req.params.hash;
-    log(`/hash/{hash} request from ${helpers.getip(req)}`);
+    log(`/hash/${hash} request from ${helpers.getip(req)}`);
 
     let txs = await database.db.collection("magicnumbers").find({"hash": hash}).sort(DEFAULT_SORT).toArray();
 
@@ -130,7 +130,7 @@ export async function hash(req, res) {
 
 export async function target(req, res) {
     const hash = req.params.hash;
-    log(`/target/{hash} request from ${helpers.getip(req)}`);
+    log(`/target/${hash} request from ${helpers.getip(req)}`);
 
     let txs = await database.db.collection("magicnumbers").find({"target": hash}).sort(DEFAULT_SORT).toArray();
 
@@ -171,3 +171,5 @@ export async function wildcard(req, res) {
 
     return res.render("404");
 }
+
+

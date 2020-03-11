@@ -124,8 +124,11 @@ export async function tx(view={}) {
         view.txs = txs;
     }
 
+    console.log("VIEW", view);
+
     // TODO: Store power to easily aggregate in database
 
+    /*
     const powers = [];
     powers.push({ power: view.power, polarity: (data.BAD_EMOJIS.indexOf(view.emoji) >= 0 ? -1 : 1)});
 
@@ -134,6 +137,7 @@ export async function tx(view={}) {
     }
 
     view.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
+    */
 
     return view;
 }
@@ -144,7 +148,7 @@ export async function txs({ txs, hash, type, header }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
-    const powers = [];
+    //const powers = [];
 
     for (let tx of txs) {
         tx = await data.processDisplayForMagicNumber(tx, { bsvusd });
@@ -152,16 +156,18 @@ export async function txs({ txs, hash, type, header }) {
         tx.type = type;
         tx.header = header;
 
+        /*
         if (tx.magicnumber) {
             powers.push({ power: tx.power, polarity: (data.BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
         }
+        */
     }
 
 
-    const aggregatepower = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
+    //const aggregatepower = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
 
     return {
-        aggregatepower,
+        //aggregatepower,
         txs,
         hash,
         header,

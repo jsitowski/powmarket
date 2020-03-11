@@ -139,7 +139,7 @@ export function countpow(hash, target) {
 
 export function countpower(hash, target) {
     let pow = countpow(hash, target);
-    return Math.pow(2, pow);
+    return Math.pow(10, pow);
 }
 
 export function humanReadableInterval(inputSeconds) {
@@ -170,7 +170,7 @@ export function humanReadableInterval(inputSeconds) {
 export function aggregatepower(powers) {
     let val = 0;
     for (const power of powers) {
-        const exp = Math.pow(2, power.power) * power.polarity;
+        const exp = Math.pow(10, power.power) * power.polarity;
         val += exp;
     }
 
@@ -196,3 +196,18 @@ export function aggregatepower(powers) {
 export function getip(req) {
     return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 }
+
+export function emojiUnicode(emoji) {
+    var comp;
+    if (emoji.length === 1) {
+        comp = emoji.charCodeAt(0);
+    }
+    comp = (
+        (emoji.charCodeAt(0) - 0xD800) * 0x400
+        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+    );
+    if (comp < 0) {
+        comp = emoji.charCodeAt(0);
+    }
+    return comp.toString("16");
+};

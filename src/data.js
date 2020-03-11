@@ -4,7 +4,23 @@ const database = require("./db");
 
 import * as helpers from "./helpers"
 
+export const EMOJIS = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂"];
 export const BAD_EMOJIS = ["👎", "😠"];
+export const EMOJI_TARGETS = EMOJIS.map(helpers.emojiUnicode);
+
+export function isBadEmoji(emoji) {
+    return BAD_EMOJIS.indexOf(emoji) >= 0;
+}
+
+export function isEmojiMagicNumber(target) {
+    for (const emojiTarget of EMOJI_TARGETS) {
+        if (target.indexOf(emojiTarget) === 0) {
+            return emojiTarget;
+        }
+    }
+
+    return null;
+}
 
 export async function results({ bsvusd, offset=0, limit=100, mined, sort={"created_at": -1} }) {
     if (!database.db) { throw new Error("expected db") }
@@ -44,8 +60,12 @@ export async function processDisplayForMagicNumber(tx={}) {
         tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
     }
 
-    if (tx.magicnumber) {
-        tx.power = helpers.countpow(tx.magicnumber, tx.target);
+    if (tx.power) {
+        if (tx.power < 0) {
+            tx.display_power = Math.round(Math.log(tx.power * -1) / Math.log(10) * -100) / 100;
+        } else {
+            tx.display_power = Math.round((Math.log(tx.power) / Math.log(10)) * 100) / 100;
+        }
     }
 
     // mustache scoping bugs

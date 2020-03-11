@@ -33,10 +33,12 @@
           {{#emoji}}<a href="/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
         </td>
       </tr>
+      {{#mined}}
       <tr>
         <th class="feature-label">Power</th>
-        <td>{{power}}</td>
+          <td>{{display_power}}</td>
       </tr>
+      {{/mined}}
       <tr>
         <th class="feature-label">Value</th>
         <td>${{display_value}} ({{value}} satoshis)</td>

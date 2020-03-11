@@ -5,46 +5,13 @@ import Hummingbird from "hummingbird-bitcoin"
 import { connect, good, dupe } from "./db"
 
 import * as helpers from "./helpers"
+import * as data from "./data"
 
 import bsv from "bsv"
 
 const Opcode = bsv.Opcode;
 
 const utxos = new Set();
-
-// Allow any emoji? Any is technically allowed...but how do we make sense of them?
-const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", ];
-
-function emojiUnicode(emoji) {
-    var comp;
-    if (emoji.length === 1) {
-        comp = emoji.charCodeAt(0);
-    }
-    comp = (
-        (emoji.charCodeAt(0) - 0xD800) * 0x400
-        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
-    );
-    if (comp < 0) {
-        comp = emoji.charCodeAt(0);
-    }
-    return comp.toString("16");
-};
-
-const emojiTargets = emojis.map(emojiUnicode);
-
-function isEmojiMagicNumber(target) {
-    for (const emojiTarget of emojiTargets) {
-        if (target.indexOf(emojiTarget) === 0) {
-            return emojiTarget;
-        }
-    }
-
-    return null;
-}
-
-function isMagicNumber(target) {
-    return isEmojiMagicNumber(target);
-}
 
 function is21e8MinerScript(script) {
     return !!(
@@ -153,6 +120,12 @@ export default class POWMarketStateMachine {
                 const bsvusd = await helpers.bsvusd();
                 const mined_price = helpers.satoshisToDollars(result.value, bsvusd);
 
+                const pow = helpers.countpow(magicnumber, result.target);
+                let power = Math.pow(10, pow);
+
+                if (result.emoji && data.isBadEmoji(result.emoji)) {
+                }
+
                 const response = await this.db.collection("magicnumbers").updateOne({ txid }, {
                     "$set": {
                         mined: true,
@@ -183,7 +156,7 @@ export default class POWMarketStateMachine {
                 const hash = parts[0];
                 const target = parts[1];
 
-                const emoji = isEmojiMagicNumber(target);
+                const emoji = data.isEmojiMagicNumber(target);
 
                 try {
                     const obj = {
