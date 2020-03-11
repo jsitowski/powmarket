@@ -28,6 +28,13 @@
           <td><a class="mono" href="/txid/{{txid}}">{{ txid }}</a></td>
         </tr>
       {{/txs}}
+      {{#show_more}}
+        <tr>
+          <td colspan="4">
+            <a href="?offset={{next_offset}}&limit={{limit}}">Show More</a>
+          </td>
+        </tr>
+      {{/show_more}}
     </tbody>
   </table>
 </div>

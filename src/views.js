@@ -102,7 +102,6 @@ export async function homepage(view={}) {
 
 export async function tx(view={}) {
     if (!database.db) { throw new Error("expected db") }
-
     if (!view.bsvusd) {
         view.bsvusd = await helpers.bsvusd();
     }
@@ -134,32 +133,16 @@ export async function tx(view={}) {
     return view;
 }
 
-export async function txs({ txs, hash, type, header }) {
+export async function txs(view={}) {
     if (!database.db) { throw new Error("expected db") }
-
-    const bsvusd = await helpers.bsvusd();
-    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
-
-    let power = 0;
-    for (let tx of txs) {
-        tx = await data.processDisplayForMagicNumber(tx, { bsvusd });
-
-        tx.type = type;
-        tx.header = header;
-
-        if (tx.power) {
-            power += tx.power;
-        }
+    if (!view.bsvusd) {
+        view.bsvusd = await helpers.bsvusd();
     }
 
-    const aggregatepower = Math.round(data.processDisplayForPower(power) * 100) / 100;
+    for (let tx of view.txs) {
+        tx = await data.processDisplayForMagicNumber(tx, { bsvusd: view.bsvusd });
+    }
 
-    return {
-        aggregatepower,
-        txs,
-        hash,
-        header,
-        type,
-    };
+    return view;
 }
 
