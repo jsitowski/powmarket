@@ -66,13 +66,13 @@ export async function start(port=8000) {
 
     app.get('/mined', async function(req, res) {
         log(`/mined request from ${getip(req)}`);
-        let view = await views.mined(await views.dashboard());
+        let view = await views.mined();
         res.render('mined', view);
     });
 
     app.get('/unmined', async function(req, res) {
         log(`/unmined request from ${getip(req)}`);
-        let view = await views.unmined(await views.dashboard());
+        let view = await views.unmined();
         res.render('unmined', view);
     });
 

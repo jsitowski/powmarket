@@ -6,19 +6,21 @@ const connect = database.connect;
 
 const BAD_EMOJIS = ["👎", "😠"];
 
+// TODO: How can we store the powers so we can easily aggregate them in the database?
+
 function processMagicNumber(m, view) {
 
-    let bsvusd;
+    let display_value;
 
-    if (m.mined_bsvusd) {
-        bsvusd = m.mined_bsvusd;
+    if (m.mined_price) {
+        display_value = m.mined_price;
     } else {
-        bsvusd = view.bsvusd;
+        display_value = helpers.satoshisToDollars(m.value, view.bsvusd);
     }
 
     m.display_date = timeago.format(m.created_at * 1000);
     m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
-    m.display_value = helpers.satoshisToDollars(m.value, bsvusd);
+    m.display_value = display_value;
     m.display_magicnumber = (m.magicnumber.length > 10 ? m.magicnumber.substr(0, 10) + "..." : m.magicnumber);
     return m;
 }
@@ -111,11 +113,10 @@ export async function mined(view={}) {
 
 export async function unmined(view={}) {
     if (!database.db) { throw new Error("expected db") }
-    if (!view.bsvusd) { throw new Error("expected bsvusd") }
+    if (!view.num) { view.num = 100 }
+    view.bsvusd = await helpers.bsvusd();
 
-    const sort = view.sort || {"created_at": -1};
-
-    const pending = await (database.db.collection("magicnumbers").find({"mined": false}).sort(sort).limit(view.num).toArray());
+    const pending = await database.db.collection("magicnumbers").find({"mined": false}).sort({"created_at": -1}).limit(view.num).toArray();
 
     view.unmined = pending.map(m => {
         return processMagicNumber(m, view);
@@ -163,29 +164,16 @@ export async function blockviz(view={}) {
 export async function homepage(view={}) {
     if (!database.db) { throw new Error("expected db") }
 
-    const now = Date.now();
-
-    console.log("ts 1", Date.now() - now)
-
-    console.log("ts 2", Date.now() - now)
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
     view.bsvusd = bsvusd;
     view.num = 10;
 
-    console.log("ts 3", Date.now() - now)
-    view = await blockviz(view);
-    console.log("ts 4", Date.now() - now)
-
-    view = await dashboard(view);
-    console.log("ts 5", Date.now() - now)
-
-    view = await mined(view);
-    console.log("ts 6", Date.now() - now)
-
-    view = await unmined(view);
-    console.log("ts 7", Date.now() - now)
+    const views = [blockviz, dashboard, mined, unmined];
+    for (const process of views) {
+        view = await process(view);
+    }
 
     return view;
 }
