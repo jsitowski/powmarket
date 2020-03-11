@@ -13,19 +13,19 @@
       {{#txs}}
         <tr>
           <td style="white-space: nowrap">
-            <a class="mono" href="/{{target}}">{{ display_target }}</a>
-            {{#emoji}}<a href="/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
+            <a class="mono" href="/target/{{target}}">{{ display_target }}</a>
+            {{#emoji}}<a href="/target/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
           </td>
-          <td><a class="mono" href="/{{hash}}">{{ hash }}</a></td>
+          <td><a class="mono" href="/hash/{{hash}}">{{ hash }}</a></td>
           <td>
               {{#magicnumber}}
-                <a class="mono highlighted" href="/{{magicnumber}}">{{ magicnumber }}</a>
+                <a class="mono highlighted" href="/magicnumber/{{magicnumber}}">{{ magicnumber }}</a>
               {{/magicnumber}}
               {{^magicnumber}}
                 pending...
               {{/magicnumber}}
             </td>
-          <td><a class="mono" href="/{{txid}}">{{ txid }}</a></td>
+          <td><a class="mono" href="/txid/{{txid}}">{{ txid }}</a></td>
         </tr>
       {{/txs}}
     </tbody>

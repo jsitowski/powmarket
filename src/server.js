@@ -50,40 +50,6 @@ export async function start(port=8000) {
     app.get('/', handlers.homepage);
     app.get('/:hash', handlers.wildcard);
 
-    /*
-    app.get('/:hash', async function(req, res) {
-        const hash = req.params.hash;
-        log(`/${hash} request from ${getip(req)}`);
-
-        let tx = await db.collection("magicnumbers").findOne({"txid": hash});
-        if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "TXID", header: tx.txid, db }));
-        }
-
-        tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
-        if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "Mined TXID", header: tx.mined_txid, db }));
-        }
-
-        tx = await db.collection("magicnumbers").findOne({"magicnumber": hash});
-        if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.magicnumber, db }));
-        }
-
-        let txs = await db.collection("magicnumbers").find({"hash": hash}).toArray();
-        if (txs.length > 0) {
-            return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash, db }));
-        }
-
-        txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
-        if (txs.length > 0) {
-            return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash, db }));
-        }
-
-        res.render('404');
-    });
-    */
-
     log(`starting server at http://localhost:${port}`);
 
     return app.listen(port);
