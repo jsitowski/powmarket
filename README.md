@@ -145,17 +145,10 @@ How much hashpower is currently flowing through the market? Calculate and displa
 Make improvements to the design / UX.
 
 ## TODO
-- API
-- paging
+- power in db scheme
 - title tags / meta tags / og tags
-
-- Simplify code base
-- Handlebars
-
 - Search bar that auto converts to proper hash
 - Show tags
-- Pagination
 - Easier to vote
 - Show items with most associated proof of work
-
 - SSE

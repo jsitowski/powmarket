@@ -2,22 +2,12 @@ const log = require("debug")("pow:server");
 
 import express from "express"
 
-import bsv from "bsv"
-
 import compression from "compression"
 import mustacheExpress from "mustache-express"
 import bodyParser from "body-parser"
 
 import * as database from "./db"
-import * as helpers from "./helpers"
-import * as views from "./views"
-import * as data from "./data"
-
 import * as handlers from "./handlers"
-
-function getip(req) {
-    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-}
 
 export async function start(port=8000) {
 
