@@ -28,7 +28,10 @@
       </tr>
       <tr>
         <th class="feature-label">Target</th>
-        <td><a class="mono" href="/{{target}}">{{target}}</a></td>
+        <td>
+          <a class="mono" href="/{{target}}">{{target}}</a>
+          {{#emoji}}<a href="/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
+        </td>
       </tr>
       <tr>
         <th class="feature-label">Power</th>

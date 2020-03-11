@@ -4,7 +4,7 @@ const database = require("./db");
 
 import * as helpers from "./helpers"
 
-const BAD_EMOJIS = ["👎", "😠"];
+export const BAD_EMOJIS = ["👎", "😠"];
 
 export async function results({ bsvusd, offset=0, limit=100, mined, sort={"created_at": -1} }) {
     if (!database.db) { throw new Error("expected db") }
@@ -24,14 +24,14 @@ export async function results({ bsvusd, offset=0, limit=100, mined, sort={"creat
     });
 }
 
-export function processDisplayForMagicNumber(m, view) {
+export function processDisplayForMagicNumber(m, { bsvusd }) {
 
     let display_value;
 
     if (m.mined_price) {
         display_value = m.mined_price;
     } else {
-        display_value = helpers.satoshisToDollars(m.value, view.bsvusd);
+        display_value = helpers.satoshisToDollars(m.value, bsvusd);
     }
 
     m.display_date = timeago.format(m.created_at * 1000);

@@ -38,17 +38,9 @@ export async function start(port=8000) {
     app.get('/api/unmined', handlers.api.unmined);
     app.get('/api', handlers.api.all);
 
-    app.get('/mined', async function(req, res) {
-        log(`/mined request from ${getip(req)}`);
-        let view = await views.mined();
-        res.render('mined', view);
-    });
+    app.get('/mined', handlers.mined);
+    app.get('/unmined', handlers.unmined);
 
-    app.get('/unmined', async function(req, res) {
-        log(`/unmined request from ${getip(req)}`);
-        let view = await views.unmined();
-        res.render('unmined', view);
-    });
 
     app.get('/:hash', async function(req, res) {
         const hash = req.params.hash;
@@ -82,10 +74,7 @@ export async function start(port=8000) {
         res.render('404');
     });
 
-    app.get('/', async function(req, res) {
-        log(`/ request from ${getip(req)}`);
-        res.render('index', await views.homepage());
-    });
+    app.get('/', handlers.homepage);
 
     log(`starting server at http://localhost:${port}`);
 

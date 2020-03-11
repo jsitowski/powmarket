@@ -68,6 +68,22 @@ export async function blockviz(view={}) {
     });
 }
 
+export async function mined(view={}) {
+    if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
+    if (!view.dashboard) { view = await dashboard(view) }
+    const mined = await data.results(Object.assign({}, view, {"mined": true, "sort": {"mined_at": -1}}));
+    view.mined = mined.map(m => { return data.processDisplayForMagicNumber(m, view)});
+    return view;
+}
+
+export async function unmined(view={}) {
+    if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
+    if (!view.dashboard) { view = await dashboard(view) }
+    const unmined = await data.results(Object.assign({}, view, {"mined": false}));
+    view.unmined = unmined.map(m => { return data.processDisplayForMagicNumber(m, view)});
+    return view;
+}
+
 export async function homepage(view={}) {
     if (!database.db) { throw new Error("expected db") }
 
@@ -75,11 +91,11 @@ export async function homepage(view={}) {
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
     view.bsvusd = bsvusd;
-    view.num = 10;
+    view.limit = 10;
 
     const views = [blockviz, dashboard, mined, unmined];
-    for (const process of views) {
-        view = await data.process(view);
+    for (const viewhandler of views) {
+        view = await viewhandler(view);
     }
 
     return view;
@@ -130,13 +146,15 @@ export async function txs({ txs, hash, type, header }) {
     const powers = [];
 
     for (let tx of txs) {
-        tx = data.processMagicNumber(tx, { bsvusd });
+        tx = data.processDisplayForMagicNumber(tx, { bsvusd });
 
-        if (tx.mined_bsvusd) {
+        /*
+        if (tx.mined_price) {
             tx.bsvusd = helpers.satoshisToDollars(tx.value, tx.mined_bsvusd);
         } else {
             tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
         }
+        */
 
         if (tx.mined_at) {
             tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
