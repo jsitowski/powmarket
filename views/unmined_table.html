@@ -25,6 +25,13 @@
           <td class="txid"><a href="/{{hash}}">{{hash}}</a></td>
         </tr>
       {{/unmined}}
+      {{#show_more}}
+        <tr>
+          <td colspan="5">
+            <a href="?offset={{next_offset}}&limit={{limit}}">Show More</a>
+          </td>
+        </tr>
+      {{/show_more}}
       </tbody>
   </table>
 </div>

@@ -27,5 +27,12 @@
         <td class="txid mined_txid"><a href="/{{mined_txid}}">{{mined_txid}}</a></td>
       </tr>
     {{/mined}}
+    {{#show_more}}
+      <tr>
+        <td colspan="7">
+          <a href="?offset={{next_offset}}&limit={{limit}}">Show More</a>
+        </td>
+      </tr>
+    {{/show_more}}
   </table>
 </div>

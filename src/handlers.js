@@ -57,14 +57,24 @@ export async function mined(req, res) {
     log(`/mined request from ${helpers.getip(req)}`);
     let offset = getoffset(req);
     let limit = getlimit(req);
-    res.render('mined', await views.mined({ limit, offset }));
+    const view = await views.mined({ limit, offset });
+    if (view.mined.length === view.limit) {
+        view.show_more = true;
+        view.next_offset = view.offset + view.limit;
+    }
+    res.render('mined', view);
 }
 
 export async function unmined(req, res) {
     log(`/unmined request from ${helpers.getip(req)}`);
     let offset = getoffset(req);
     let limit = getlimit(req);
-    res.render('unmined', await views.unmined({ limit, offset }));
+    const view = await views.unmined({ limit, offset });
+    if (view.unmined.length === view.limit) {
+        view.show_more = true;
+        view.next_offset = view.offset + view.limit;
+    }
+    res.render('unmined', view);
 }
 
 export async function homepage(req, res) {
