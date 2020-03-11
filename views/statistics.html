@@ -1,5 +1,5 @@
-<h2 class="title">Best Magic Numbers</h2>
-<p>These are the magic numbers, hashes and targets with the most proof of work.</p>
+<h2 class="title">Statistics</h2>
+<p>Useful information about hashes, targets and magic numbers.</p>
 
 <div class="columns">
   <div class="column">
@@ -16,6 +16,16 @@
                 <td class="txid mono"><a href="/hash/{{0}}">{{0}}</a></td>
               </tr>
             {{/best.hashes}}
+
+            <tr>
+              <td colspan="2">...</td>
+            </tr>
+            {{#worst.hashes}}
+              <tr>
+                <td class="power">{{1}}</td>
+                <td class="txid mono"><a href="/hash/{{0}}">{{0}}</a></td>
+              </tr>
+            {{/worst.hashes}}
         </tbody>
       </table>
     </div>
@@ -34,6 +44,17 @@
                 <td class="txid mono"><a href="/magicnumber/{{0}}" class="highlight">{{0}}</a></td>
               </tr>
             {{/best.magicnumbers}}
+
+            <tr>
+              <td colspan="2">...</td>
+            </tr>
+
+            {{#worst.magicnumbers}}
+              <tr>
+                <td class="power">{{1}}</td>
+                <td class="txid mono"><a href="/magicnumber/{{0}}" class="highlight">{{0}}</a></td>
+              </tr>
+            {{/worst.magicnumbers}}
         </tbody>
       </table>
     </div>
@@ -52,6 +73,16 @@
                 <td class="txid mono"><a href="/target/{{0}}">{{0}}</a></td>
               </tr>
             {{/best.targets}}
+
+            <tr>
+              <td colspan="2">...</td>
+            </tr>
+            {{#worst.targets}}
+              <tr>
+                <td class="power">{{1}}</td>
+                <td class="txid mono"><a href="/target/{{0}}">{{0}}</a></td>
+              </tr>
+            {{/worst.targets}}
         </tbody>
       </table>
     </div>

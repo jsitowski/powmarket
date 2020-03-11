@@ -130,19 +130,27 @@ export async function best(view={}) {
         }
     }
 
-    view.best = {};
-    view.best.hashes = Object.entries(hashes).sort(bypower).slice(0, limit).map(arr => {
+    const sortedHashes = Object.entries(hashes).sort(bypower);
+    const sortedTargets = Object.entries(targets).sort(bypower);
+    const sortedMagicNumbers = Object.entries(magicnumbers).sort(bypower);
+
+    function process(arr) {
         arr[1] = data.processDisplayForPower(arr[1]);
         return arr;
-    });
-    view.best.targets = Object.entries(targets).sort(bypower).slice(0, limit).map(arr => {
-        arr[1] = data.processDisplayForPower(arr[1]);
-        return arr;
-    });
-    view.best.magicnumbers = Object.entries(magicnumbers).sort(bypower).slice(0, limit).map(arr => {
-        arr[1] = data.processDisplayForPower(arr[1]);
-        return arr;
-    });
+    }
+
+    view.worst = {
+        hashes: sortedHashes.filter(arr => { return arr[1] < 0 }).slice(limit * -1).map(process),
+        targets: sortedTargets.filter(arr => { return arr[1] < 0 }).slice(limit * -1).map(process),
+        magicnumbers: sortedMagicNumbers.filter(arr => { return arr[1] < 0 }).slice(limit * -1).map(process),
+    };
+
+
+    view.best = {
+        hashes: sortedHashes.slice(0, limit).map(process),
+        targets: sortedTargets.slice(0, limit).map(process),
+        magicnumbers: sortedMagicNumbers.slice(0, limit).map(process),
+    };
     
     return view;
 }
