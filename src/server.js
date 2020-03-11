@@ -90,17 +90,17 @@ export async function start(port=8000) {
             return res.render('tx', await views.tx({ tx, hash, type: "Mined TXID", header: tx.mined_txid, db }));
         }
 
-        tx = await db.collection("magicnumbers").findOne({"mined_number": hash});
+        tx = await db.collection("magicnumbers").findOne({"magicnumber": hash});
         if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.mined_number, db }));
+            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.magicnumber, db }));
         }
 
-        let txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
+        let txs = await db.collection("magicnumbers").find({"hash": hash}).toArray();
         if (txs.length > 0) {
             return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash, db }));
         }
 
-        txs = await db.collection("magicnumbers").find({"magicnumber": hash}).toArray();
+        txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
         if (txs.length > 0) {
             return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash, db }));
         }

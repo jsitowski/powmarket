@@ -21,7 +21,7 @@ function processMagicNumber(m, view) {
     m.display_date = timeago.format(m.created_at * 1000);
     m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
     m.display_value = display_value;
-    m.display_magicnumber = (m.magicnumber.length > 10 ? m.magicnumber.substr(0, 10) + "..." : m.magicnumber);
+    m.display_target = (m.target.length > 10 ? m.target.substr(0, 10) + "..." : m.target);
     return m;
 }
 
@@ -41,16 +41,16 @@ function process({ tx, bsvusd, type, header }) {
 
     tx.type = type;
     tx.header = header;
-    if (tx.mined_number) {
-        tx.power = helpers.countpow(tx.mined_number, tx.magicnumber);
+    if (tx.magicnumber) {
+        tx.power = helpers.countpow(tx.magicnumber, tx.target);
     }
 
     if (!tx.emoji) {
         tx.emoji = null;
     }
 
-    if (!tx.mined_number) {
-        tx.mined_number = null;
+    if (!tx.magicnumber) {
+        tx.magicnumber = null;
     }
 
     return tx;
@@ -146,7 +146,7 @@ export async function blockviz(view={}) {
             const tx = txs.shift();
             bucket.push({
                 mined: tx.mined,
-                power: tx.magicnumber.length,
+                power: tx.target.length, // Get polarity from fn
                 txid: tx.txid,
             });
         }
@@ -189,8 +189,8 @@ export async function tx({ tx, hash, type, header }) {
 
     const txs = (await database.db.collection("magicnumbers").find({
         "$or": [
-            {"target": tx.txid},
-            {"target": tx.mined_number},
+            {"hash": tx.txid},
+            {"hash": tx.magicnumber},
         ]
     }).limit(10).toArray()).filter(t => {
         return t.txid !== tx.txid;
@@ -237,8 +237,8 @@ export async function txs({ txs, hash, type, header }) {
 
         tx.type = type;
         tx.header = header;
-        if (tx.mined_number) {
-            tx.power = helpers.countpow(tx.mined_number, tx.magicnumber);
+        if (tx.magicnumber) {
+            tx.power = helpers.countpow(tx.magicnumber, tx.target);
             powers.push({ power: tx.power, polarity: (BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
         }
     }

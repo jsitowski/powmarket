@@ -18,6 +18,10 @@ a {
     text-decoration: underline;
 }
 
+th {
+    white-space: nowrap;
+}
+
 h1.title {
     margin-top: 10px;
     font-size: 71px;

@@ -121,7 +121,7 @@ export default class POWMarketStateMachine {
         const pendingMagicNumbers = await this.db.collection("magicnumbers").find({ mined: false }).toArray();
         for (const magicnumber of pendingMagicNumbers) {
             const utxo = `${magicnumber.txid}:${magicnumber.vout}`;
-            log(`adding pending magic number ${magicnumber.target} at utxo ${utxo}`);
+            log(`adding target for ${magicnumber.target} at utxo ${utxo}`);
             utxos.add(utxo);
         }
     }
@@ -141,24 +141,24 @@ export default class POWMarketStateMachine {
                 const asm = input.str;
                 const script = bsv.Script.fromASM(asm);
                 const presig = script.chunks[0].buf;
-                const hash = bsv.crypto.Hash.sha256(presig).toString("hex");
+                const magicnumber = bsv.crypto.Hash.sha256(presig).toString("hex");
 
-                log(`🌟 r-puzzle mined ${hash} at ${txid}`);
+                log(`🌟 r-puzzle mined ${magicnumber} at ${txid}`);
 
-                const magicnumber = await this.db.collection("magicnumbers").findOne({ txid });
-                if (!magicnumber) {
+                const result = await this.db.collection("magicnumbers").findOne({ txid });
+                if (!result) {
                     throw new Error(`error while processing r-puzzle solution, couldn't find ${txid}`);
                 }
 
                 const bsvusd = await helpers.bsvusd();
-                const mined_price = helpers.satoshisToDollars(magicnumber.value, bsvusd);
+                const mined_price = helpers.satoshisToDollars(result.value, bsvusd);
 
                 const response = await this.db.collection("magicnumbers").updateOne({ txid }, {
                     "$set": {
                         mined: true,
                         mined_at: created_at,
                         mined_price,
-                        mined_number: hash,
+                        magicnumber,
                         mined_txid: txid,
                         mined_address: input.e.a,
                     }
@@ -180,10 +180,10 @@ export default class POWMarketStateMachine {
                 const value = out.e.v;
                 const txid = tx.tx.h;
                 const parts = out.str.split(" "); // TODO: use script
-                const target = parts[0]; // these are backwards
-                const magicnumber = parts[1]; // backwards
+                const hash = parts[0];
+                const target = parts[1];
 
-                const emoji = isEmojiMagicNumber(magicnumber);
+                const emoji = isEmojiMagicNumber(target);
 
                 try {
                     const obj = {
@@ -192,7 +192,7 @@ export default class POWMarketStateMachine {
                         from: tx.in[0].e.a,
                         value,
                         confirmed,
-                        magicnumber,
+                        hash,
                         target,
                         mined: false,
                         created_at,
