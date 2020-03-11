@@ -36,7 +36,7 @@ export async function start(port=8000) {
 
     app.get('/api/mined', async function(req, res) {
         log(`/api/mined request from ${getip(req)}`);
-        let view = await views.mined(await views.dashboard());
+        let view = await views.mined();
         const response = helpers.apiify(view.mined);
         return res.json({
             bsvusd: view.bsvusd,
@@ -46,7 +46,7 @@ export async function start(port=8000) {
 
     app.get('/api/unmined', async function(req, res) {
         log(`/api/unmined request from ${getip(req)}`);
-        let view = await views.unmined(await views.dashboard());
+        let view = await views.unmined();
         const response = helpers.apiify(view.unmined);
         return res.json({
             bsvusd: view.bsvusd,
@@ -56,7 +56,7 @@ export async function start(port=8000) {
 
     app.get('/api', async function(req, res) {
         log(`/api request from ${getip(req)}`);
-        let view = await views.all(await views.dashboard());
+        let view = await views.all();
         const response = helpers.apiify(view.mined);
         return res.json({
             bsvusd: view.bsvusd,

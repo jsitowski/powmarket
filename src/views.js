@@ -86,9 +86,10 @@ export async function dashboard(view={}) {
 
 export async function all(view={}, limit=10000) {
     if (!database.db) { throw new Error("expected db") }
-    if (!view.bsvusd) { throw new Error("expected bsvusd") }
+    if (!view.num) { view.num = 100 }
+    view.bsvusd = await helpers.bsvusd();
 
-    const recentlyMined = await (database.db.collection("magicnumbers").find({}).sort({"created_at": -1}).limit(limit).toArray());
+    const recentlyMined = await (database.db.collection("magicnumbers").find({}).sort({"created_at": -1}).limit(view.num).toArray());
 
     view.mined = recentlyMined.map(m => {
         return processMagicNumber(m, view);
@@ -100,7 +101,8 @@ export async function all(view={}, limit=10000) {
 
 export async function mined(view={}) {
     if (!database.db) { throw new Error("expected db") }
-    if (!view.bsvusd) { throw new Error("expected bsvusd") }
+    if (!view.num) { view.num = 100 }
+    view.bsvusd = await helpers.bsvusd();
 
     const recentlyMined = await (database.db.collection("magicnumbers").find({"mined": true}).sort({"mined_at": -1}).limit(view.num).toArray());
 
