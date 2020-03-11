@@ -24,41 +24,33 @@ export async function results({ bsvusd, offset=0, limit=100, mined, sort={"creat
     });
 }
 
-export function processDisplayForMagicNumber(m, { bsvusd }) {
+export async function processDisplayForMagicNumber(magicnumber, context={}) {
 
     let display_value;
-
-    if (m.mined_price) {
-        display_value = m.mined_price;
+    if (magicnumber.mined_price) {
+         display_value = magicnumber.mined_price;
     } else {
-        display_value = helpers.satoshisToDollars(m.value, bsvusd);
+        const bsvusd = (context.bsvusd ? context.bsvusd : await helpers.bsvusd());
+        display_value = helpers.satoshisToDollars(magicnumber.value, bsvusd);
     }
 
-    m.display_date = timeago.format(m.created_at * 1000);
-    m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
-    m.display_value = display_value;
-    m.display_target = (m.target.length > 10 ? m.target.substr(0, 10) + "..." : m.target);
-    return m;
+    magicnumber.display_value = display_value;
+    magicnumber.display_date = timeago.format(magicnumber.created_at * 1000);
+    magicnumber.display_mined_date = timeago.format((magicnumber.mined_at || magicnumber.created_at) * 1000);
+    magicnumber.display_target = (magicnumber.target.length > 10 ? magicnumber.target.substr(0, 10) + "..." : magicnumber.target);
+    return magicnumber;
 }
 
 
 
-export function process({ tx, bsvusd, type, header }) {
+export async function process(tx) {
 
-    if (tx.mined_bsvusd) {
-        tx.bsvusd = helpers.satoshisToDollars(tx.value, tx.mined_bsvusd);
-    } else {
-        tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
-    }
-
-    tx = processDisplayForMagicNumber(tx, { bsvusd });
+    tx = processDisplayForMagicNumber(tx);
 
     if (tx.mined_at) {
         tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
     }
 
-    tx.type = type;
-    tx.header = header;
     if (tx.magicnumber) {
         tx.power = helpers.countpow(tx.magicnumber, tx.target);
     }

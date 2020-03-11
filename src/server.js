@@ -41,7 +41,12 @@ export async function start(port=8000) {
     app.get('/mined', handlers.mined);
     app.get('/unmined', handlers.unmined);
 
+    app.get('/txid/:hash', handlers.txid);
 
+    app.get('/', handlers.homepage);
+
+
+    /*
     app.get('/:hash', async function(req, res) {
         const hash = req.params.hash;
         log(`/${hash} request from ${getip(req)}`);
@@ -73,8 +78,7 @@ export async function start(port=8000) {
 
         res.render('404');
     });
-
-    app.get('/', handlers.homepage);
+    */
 
     log(`starting server at http://localhost:${port}`);
 

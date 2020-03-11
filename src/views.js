@@ -2,7 +2,7 @@ import * as timeago from "timeago.js"
 
 import * as helpers from "./helpers"
 import * as data from "./data"
-import * as database from "./db";
+import * as database from "./db"
 
 // TODO: Store power to easily aggregate in database
 
@@ -72,7 +72,7 @@ export async function mined(view={}) {
     if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
     if (!view.dashboard) { view = await dashboard(view) }
     const mined = await data.results(Object.assign({}, view, {"mined": true, "sort": {"mined_at": -1}}));
-    view.mined = mined.map(m => { return data.processDisplayForMagicNumber(m, view)});
+    view.mined = await Promise.all(mined.map(async (m) => { return await data.processDisplayForMagicNumber(m, view)}));
     return view;
 }
 
@@ -80,7 +80,7 @@ export async function unmined(view={}) {
     if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
     if (!view.dashboard) { view = await dashboard(view) }
     const unmined = await data.results(Object.assign({}, view, {"mined": false}));
-    view.unmined = unmined.map(m => { return data.processDisplayForMagicNumber(m, view)});
+    view.unmined = await Promise.all(unmined.map(async (m) => { return await data.processDisplayForMagicNumber(m, view)}));
     return view;
 }
 
@@ -105,10 +105,10 @@ export async function homepage(view={}) {
 export async function tx({ tx, hash, type, header }) {
     if (!database.db) { throw new Error("expected db") }
 
-    const bsvusd = await helpers.bsvusd();
-    if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
+    tx = await data.process({ tx, type, header });
 
-    tx = data.process({ tx, bsvusd, hash, type, header });
+    tx.type = type;
+    tx.header = header;
 
     const txs = (await database.db.collection("magicnumbers").find({
         "$or": [
@@ -117,8 +117,8 @@ export async function tx({ tx, hash, type, header }) {
         ]
     }).limit(10).toArray()).filter(t => {
         return t.txid !== tx.txid;
-    }).map(t => {
-        return data.process({ tx: t, bsvusd, type, hash, header });
+    }).map(async (t) => {
+        return await data.process({ tx: t, bsvusd, type, header });
     });
 
     if (txs.length > 0) {
@@ -146,7 +146,7 @@ export async function txs({ txs, hash, type, header }) {
     const powers = [];
 
     for (let tx of txs) {
-        tx = data.processDisplayForMagicNumber(tx, { bsvusd });
+        tx = await data.processDisplayForMagicNumber(tx, { bsvusd });
 
         /*
         if (tx.mined_price) {
