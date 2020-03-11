@@ -96,24 +96,6 @@ export async function wait(ms) {
   });
 }
 
-export function stripid(results) {
-    return results.map(result => {
-        delete result["_id"];
-        return result;
-    });
-}
-
-export function apiify(results) {
-    return results.map(result => {
-        delete result["_id"];
-        delete result["display_date"];
-        delete result["display_mined_date"];
-        delete result["display_value"];
-        delete result["display_magicnumber"];
-        return result;
-    });
-}
-
 export async function magicnumbers(query={}, sort=null, db=null) {
     if (sort=null) {
         sort = {"mined_at": -1, "created_at": -1};
@@ -209,4 +191,8 @@ export function aggregatepower(powers) {
     }
 
     return agg;
+}
+
+export function getip(req) {
+    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 }

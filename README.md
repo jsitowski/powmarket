@@ -157,3 +157,5 @@ Make improvements to the design / UX.
 - Pagination
 - Easier to vote
 - Show items with most associated proof of work
+
+- SSE
