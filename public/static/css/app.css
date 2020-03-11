@@ -356,6 +356,10 @@ hr {
     width: 100px;
 }
 
+.table .power {
+    width: 70px;
+}
+
 .table td.mined-true {
     background-color: hsl(217, 71%, 53%);
     opacity: 0.80;

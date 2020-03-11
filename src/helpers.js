@@ -185,3 +185,10 @@ export function emojiUnicode(emoji) {
     }
     return comp.toString("16");
 };
+
+export function fromEntries(iterable) {
+    return [...iterable].reduce((obj, [key, val]) => {
+        obj[key] = val
+        return obj
+    }, {})
+}

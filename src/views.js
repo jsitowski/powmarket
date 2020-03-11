@@ -67,6 +67,7 @@ export async function blockviz(view={}) {
 }
 
 export async function mined(view={}) {
+    if (!database.db) { throw new Error("expected db") }
     if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
     if (!view.dashboard) { view = await dashboard(view) }
     const mined = await data.results(Object.assign({}, view, {"mined": true, "sort": {"mined_at": -1}}));
@@ -75,12 +76,74 @@ export async function mined(view={}) {
 }
 
 export async function unmined(view={}) {
+    if (!database.db) { throw new Error("expected db") }
     if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
     if (!view.dashboard) { view = await dashboard(view) }
     const unmined = await data.results(Object.assign({}, view, {"mined": false}));
     view.unmined = await Promise.all(unmined.map(async (m) => {
         return await data.processDisplayForMagicNumber(Object.assign(m, view));
     }));
+    return view;
+}
+
+export async function best(view={}) {
+    if (!database.db) { throw new Error("expected db") }
+
+    let txs = await database.db.collection("magicnumbers").aggregate([
+        {
+            "$sort": {"power": -1, "mined_at": -1, "created_at": -1}
+        },
+    ]).toArray();
+
+    const limit = 20;
+    const hashes = {};
+    const magicnumbers = {};
+    const targets = {};
+
+    function bypower(a, b) {
+        if (a[1] > b[1]) { return -1 }
+        if (a[1] < b[1]) { return 1 }
+        return 0;
+    }
+
+    for (const tx of txs) {
+        const power = tx.power || 0;
+
+        if (hashes[tx.hash]) {
+            hashes[tx.hash] += power;
+        } else {
+            hashes[tx.hash] = power;
+        }
+
+        if (targets[tx.target]) {
+            targets[tx.target] += power;
+        } else {
+            targets[tx.target] = power;
+        }
+
+        if (tx.magicnumber) {
+            if (magicnumbers[tx.magicnumber]) {
+                magicnumbers[tx.magicnumber] += power;
+            } else {
+                magicnumbers[tx.magicnumber] = power;
+            }
+        }
+    }
+
+    view.best = {};
+    view.best.hashes = Object.entries(hashes).sort(bypower).slice(0, limit).map(arr => {
+        arr[1] = data.processDisplayForPower(arr[1]);
+        return arr;
+    });
+    view.best.targets = Object.entries(targets).sort(bypower).slice(0, limit).map(arr => {
+        arr[1] = data.processDisplayForPower(arr[1]);
+        return arr;
+    });
+    view.best.magicnumbers = Object.entries(magicnumbers).sort(bypower).slice(0, limit).map(arr => {
+        arr[1] = data.processDisplayForPower(arr[1]);
+        return arr;
+    });
+    
     return view;
 }
 
@@ -93,7 +156,7 @@ export async function homepage(view={}) {
     view.bsvusd = bsvusd;
     view.limit = 10;
 
-    const views = [blockviz, dashboard, mined, unmined];
+    const views = [blockviz, dashboard, mined, unmined, best];
     for (const viewhandler of views) {
         view = await viewhandler(view);
     }

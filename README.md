@@ -149,5 +149,5 @@ Make improvements to the design / UX.
 - Search bar that auto converts to proper hash
 - Show tags
 - Easier to vote
-- Show items with most associated proof of work
+- Show items with most associated proof of work and least
 - SSE

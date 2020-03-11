@@ -1,0 +1,59 @@
+<h2 class="title">Best Magic Numbers</h2>
+<p>These are the magic numbers, hashes and targets with the most proof of work.</p>
+
+<div class="columns">
+  <div class="column">
+    <div class="table-container">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th class="power">Power</th>
+            <td>Hash</td>
+          </tr>
+            {{#best.hashes}}
+              <tr>
+                <td class="power">{{1}}</td>
+                <td class="txid mono"><a href="/hash/{{0}}">{{0}}</a></td>
+              </tr>
+            {{/best.hashes}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="column">
+    <div class="table-container">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th class="power">Power</th>
+            <td>Magic Number</td>
+          </tr>
+            {{#best.magicnumbers}}
+              <tr>
+                <td class="power">{{1}}</td>
+                <td class="txid mono"><a href="/magicnumber/{{0}}" class="highlight">{{0}}</a></td>
+              </tr>
+            {{/best.magicnumbers}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="column">
+    <div class="table-container">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th class="power">Power</th>
+            <td>Target</td>
+          </tr>
+            {{#best.targets}}
+              <tr>
+                <td class="power">{{1}}</td>
+                <td class="txid mono"><a href="/target/{{0}}">{{0}}</a></td>
+              </tr>
+            {{/best.targets}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
