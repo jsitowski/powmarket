@@ -86,14 +86,27 @@ export async function homepage(req, res) {
 
 export async function txid(req, res) {
     const hash = req.params.hash;
-    log(`/${hash} request from ${helpers.getip(req)}`);
+    log(`/txid/${hash} request from ${helpers.getip(req)}`);
 
     let tx = await database.db.collection("magicnumbers").findOne({"txid": hash});
     if (!tx) {
         return res.render("404");
     }
 
-    return res.render('tx', await views.tx(Object.assign(tx, {hash, type: "TXID", header: tx.txid })));
+    return res.render('tx', await views.tx(Object.assign(tx, {type: "TXID", header: tx.txid })));
+}
+
+export async function minedtxid(req, res) {
+    const hash = req.params.hash;
+    log(`/mined/${hash} request from ${helpers.getip(req)}`);
+
+    let tx = await database.db.collection("magicnumbers").findOne({"mined_txid": hash});
+
+    if (!tx) {
+        return res.render("404");
+    }
+
+    return res.render('tx', await views.tx(Object.assign(tx, {type: "Mined TXID", header: tx.mined_txid })));
 }
 
 export async function hash(req, res) {
@@ -103,23 +116,20 @@ export async function hash(req, res) {
     let tx = await database.db.collection("magicnumbers").findOne({"txid": hash});
     if (tx) {
         return res.redirect(`/txid/${hash}`);
-    } else {
-        return res.render("404");
     }
+
+    tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
+    if (tx) {
+        return res.redirect(`/mined/${hash}`);
+    }
+
+    return res.render("404");
+
     /*
     app.get('/:hash', async function(req, res) {
         const hash = req.params.hash;
         log(`/${hash} request from ${getip(req)}`);
 
-        let tx = await db.collection("magicnumbers").findOne({"txid": hash});
-        if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "TXID", header: tx.txid, db }));
-        }
-
-        tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
-        if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "Mined TXID", header: tx.mined_txid, db }));
-        }
 
         tx = await db.collection("magicnumbers").findOne({"magicnumber": hash});
         if (tx) {

@@ -42,6 +42,7 @@ export async function start(port=8000) {
     app.get('/unmined', handlers.unmined);
 
     app.get('/txid/:hash', handlers.txid);
+    app.get('/mined/:hash', handlers.minedtxid);
 
     app.get('/', handlers.homepage);
 

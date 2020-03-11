@@ -109,6 +109,8 @@ export async function tx(view={}) {
         view.bsvusd = await helpers.bsvusd();
     }
 
+    console.log("VIEW", view);
+
     view = await data.processDisplayForMagicNumber(view);
 
     const txs = (await database.db.collection("magicnumbers").find({
@@ -126,6 +128,7 @@ export async function tx(view={}) {
         view.txs = txs;
     }
 
+    /*
     const powers = [];
     powers.push({ power: view.power, polarity: (data.BAD_EMOJIS.indexOf(view.emoji) >= 0 ? -1 : 1)});
 
@@ -134,6 +137,7 @@ export async function tx(view={}) {
     }
 
     view.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
+    */
 
     return view;
 }

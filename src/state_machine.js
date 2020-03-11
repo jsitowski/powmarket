@@ -143,7 +143,7 @@ export default class POWMarketStateMachine {
                 const presig = script.chunks[0].buf;
                 const magicnumber = bsv.crypto.Hash.sha256(presig).toString("hex");
 
-                log(`🌟 r-puzzle mined ${magicnumber} at ${txid}`);
+                log(`🌟 r-puzzle mined ${magicnumber} at ${tx.tx.h}`);
 
                 const result = await this.db.collection("magicnumbers").findOne({ txid });
                 if (!result) {
@@ -159,14 +159,14 @@ export default class POWMarketStateMachine {
                         mined_at: created_at,
                         mined_price,
                         magicnumber,
-                        mined_txid: txid,
+                        mined_txid: tx.tx.h,
                         mined_address: input.e.a,
                     }
                 });
 
                 if (!good(response)) {
                     console.log(response);
-                    throw new Error(`error while processing r-puzzle solution ${txid}`);
+                    throw new Error(`error while processing r-puzzle solution ${tx.tx.h}`);
                 }
 
                 utxos.delete(utxo);
