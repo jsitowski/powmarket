@@ -128,7 +128,6 @@ export async function tx(view={}) {
         view.txs = txs;
     }
 
-    /*
     const powers = [];
     powers.push({ power: view.power, polarity: (data.BAD_EMOJIS.indexOf(view.emoji) >= 0 ? -1 : 1)});
 
@@ -137,7 +136,6 @@ export async function tx(view={}) {
     }
 
     view.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
-    */
 
     return view;
 }
@@ -153,22 +151,10 @@ export async function txs({ txs, hash, type, header }) {
     for (let tx of txs) {
         tx = await data.processDisplayForMagicNumber(tx, { bsvusd });
 
-        /*
-        if (tx.mined_price) {
-            tx.bsvusd = helpers.satoshisToDollars(tx.value, tx.mined_bsvusd);
-        } else {
-            tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
-        }
-        */
-
-        if (tx.mined_at) {
-            tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
-        }
-
         tx.type = type;
         tx.header = header;
+
         if (tx.magicnumber) {
-            tx.power = helpers.countpow(tx.magicnumber, tx.target);
             powers.push({ power: tx.power, polarity: (data.BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
         }
     }

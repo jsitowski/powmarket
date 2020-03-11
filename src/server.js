@@ -43,9 +43,12 @@ export async function start(port=8000) {
 
     app.get('/txid/:hash', handlers.txid);
     app.get('/mined/:hash', handlers.minedtxid);
+    app.get('/magicnumber/:hash', handlers.magicnumber);
+    app.get('/hash/:hash', handlers.hash);
+    app.get('/target/:hash', handlers.target);
 
     app.get('/', handlers.homepage);
-
+    app.get('/:hash', handlers.wildcard);
 
     /*
     app.get('/:hash', async function(req, res) {

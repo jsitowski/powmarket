@@ -89,9 +89,7 @@ export async function txid(req, res) {
     log(`/txid/${hash} request from ${helpers.getip(req)}`);
 
     let tx = await database.db.collection("magicnumbers").findOne({"txid": hash});
-    if (!tx) {
-        return res.render("404");
-    }
+    if (!tx) { return res.render("404") }
 
     return res.render('tx', await views.tx(Object.assign(tx, {type: "TXID", header: tx.txid })));
 }
@@ -102,14 +100,46 @@ export async function minedtxid(req, res) {
 
     let tx = await database.db.collection("magicnumbers").findOne({"mined_txid": hash});
 
-    if (!tx) {
-        return res.render("404");
-    }
+    if (!tx) { return res.render("404") }
 
     return res.render('tx', await views.tx(Object.assign(tx, {type: "Mined TXID", header: tx.mined_txid })));
 }
 
+export async function magicnumber(req, res) {
+    const hash = req.params.hash;
+    log(`/magicnumber/{hash} request from ${helpers.getip(req)}`);
+
+    let tx = await database.db.collection("magicnumbers").findOne({"magicnumber": hash});
+
+    if (!tx) { return res.render("404") }
+
+    return res.render('tx', await views.tx(Object.assign(tx, {type: "Magic Number", header: tx.magicnumber })));
+}
+
 export async function hash(req, res) {
+    const hash = req.params.hash;
+    log(`/hash/{hash} request from ${helpers.getip(req)}`);
+
+    let txs = await database.db.collection("magicnumbers").find({"hash": hash}).toArray();
+
+    if (!txs) { return res.render("404") }
+
+    return res.render('txs', await views.txs(Object.assign({ txs }, { type: "Hash", header: hash })));
+}
+
+export async function target(req, res) {
+    const hash = req.params.hash;
+    log(`/target/{hash} request from ${helpers.getip(req)}`);
+
+    let txs = await database.db.collection("magicnumbers").find({"target": hash}).toArray();
+
+    if (!txs) { return res.render("404") }
+
+    return res.render('txs', await views.txs(Object.assign({ txs }, { type: "Target", header: hash })));
+}
+
+
+export async function wildcard(req, res) {
     const hash = req.params.hash;
     log(`/${hash} request from ${helpers.getip(req)}`);
 
@@ -118,36 +148,25 @@ export async function hash(req, res) {
         return res.redirect(`/txid/${hash}`);
     }
 
-    tx = await db.collection("magicnumbers").findOne({"mined_txid": hash});
+    tx = await database.db.collection("magicnumbers").findOne({"mined_txid": hash});
     if (tx) {
         return res.redirect(`/mined/${hash}`);
     }
 
+    tx = await database.db.collection("magicnumbers").findOne({"magicnumber": hash});
+    if (tx) {
+        return res.redirect(`/magicnumber/${hash}`);
+    }
+
+    tx = await database.db.collection("magicnumbers").findOne({"hash": hash});
+    if (tx) {
+        return res.redirect(`/hash/${hash}`);
+    }
+
+    tx = await database.db.collection("magicnumbers").findOne({"target": hash});
+    if (tx) {
+        return res.redirect(`/target/${hash}`);
+    }
+
     return res.render("404");
-
-    /*
-    app.get('/:hash', async function(req, res) {
-        const hash = req.params.hash;
-        log(`/${hash} request from ${getip(req)}`);
-
-
-        tx = await db.collection("magicnumbers").findOne({"magicnumber": hash});
-        if (tx) {
-            return res.render('tx', await views.tx({ tx, hash, type: "Magic Number", header: tx.magicnumber, db }));
-        }
-
-        let txs = await db.collection("magicnumbers").find({"hash": hash}).toArray();
-        if (txs.length > 0) {
-            return res.render('txs', await views.txs({ txs, hash, type: "Hash", header: hash, db }));
-        }
-
-        txs = await db.collection("magicnumbers").find({"target": hash}).toArray();
-        if (txs.length > 0) {
-            return res.render('txs', await views.txs({ txs, hash, type: "Target", header: hash, db }));
-        }
-
-        res.render('404');
-    });
-    */
-
 }
