@@ -167,32 +167,6 @@ export function humanReadableInterval(inputSeconds) {
     return parts.join(" ");
 }
 
-export function aggregatepower(powers) {
-    let val = 0;
-    for (const power of powers) {
-        const exp = Math.pow(10, power.power) * power.polarity;
-        val += exp;
-    }
-
-    if (val === 0) {
-        return 0;
-    }
-
-    let isnegative = (val < 0);
-    val = Math.abs(val);
-
-    const agg = Math.log(val) / Math.log(2);
-    if (isNaN(agg)) {
-        return 0;
-    }
-
-    if (isnegative) {
-        return (agg * -1);
-    }
-
-    return agg;
-}
-
 export function getip(req) {
     return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 }

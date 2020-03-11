@@ -109,35 +109,27 @@ export async function tx(view={}) {
 
     view = await data.processDisplayForMagicNumber(view);
 
-    const txs = (await database.db.collection("magicnumbers").find({
+    const query = {
         "$or": [
             {"hash": view.txid},
             {"hash": view.magicnumber},
+            {"hash": view.mined_txid},
         ]
-    }).limit(10).toArray()).filter(t => {
+    };
+
+    let txs = await database.db.collection("magicnumbers").find(query).limit(10).toArray();
+
+    txs = await Promise.all(txs.filter(t => {
         return t.txid !== view.txid;
     }).map(async (t) => {
-        return await data.processDisplayForMagicNumber(view);
-    });
+        return await data.processDisplayForMagicNumber(t, { bsvusd: view.bsvusd });
+    }));
 
     if (txs.length > 0) {
         view.txs = txs;
+        for (const t of txs) { view.power += t.power }
+        view.display_power = data.processDisplayForPower(view.power);
     }
-
-    console.log("VIEW", view);
-
-    // TODO: Store power to easily aggregate in database
-
-    /*
-    const powers = [];
-    powers.push({ power: view.power, polarity: (data.BAD_EMOJIS.indexOf(view.emoji) >= 0 ? -1 : 1)});
-
-    for (const t of txs) {
-        powers.push({ power: t.power, polarity: (data.BAD_EMOJIS.indexOf(t.emoji) >= 0 ? -1 : 1)});
-    }
-
-    view.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
-    */
 
     return view;
 }
@@ -148,26 +140,22 @@ export async function txs({ txs, hash, type, header }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
-    //const powers = [];
-
+    let power = 0;
     for (let tx of txs) {
         tx = await data.processDisplayForMagicNumber(tx, { bsvusd });
 
         tx.type = type;
         tx.header = header;
 
-        /*
-        if (tx.magicnumber) {
-            powers.push({ power: tx.power, polarity: (data.BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
+        if (tx.power) {
+            power += tx.power;
         }
-        */
     }
 
-
-    //const aggregatepower = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
+    const aggregatepower = Math.round(data.processDisplayForPower(power) * 100) / 100;
 
     return {
-        //aggregatepower,
+        aggregatepower,
         txs,
         hash,
         header,

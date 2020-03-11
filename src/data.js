@@ -40,6 +40,18 @@ export async function results({ bsvusd, offset=0, limit=100, mined, sort={"creat
     });
 }
 
+export function processDisplayForPower(power) {
+    if (power) {
+        if (power < 0) {
+            return Math.round(Math.log(power * -1) / Math.log(10) * -100) / 100;
+        } else {
+            return Math.round((Math.log(power) / Math.log(10)) * 100) / 100;
+        }
+    }
+
+    return 0;
+}
+
 export async function processDisplayForMagicNumber(tx={}) {
 
     let display_value;
@@ -61,11 +73,7 @@ export async function processDisplayForMagicNumber(tx={}) {
     }
 
     if (tx.power) {
-        if (tx.power < 0) {
-            tx.display_power = Math.round(Math.log(tx.power * -1) / Math.log(10) * -100) / 100;
-        } else {
-            tx.display_power = Math.round((Math.log(tx.power) / Math.log(10)) * 100) / 100;
-        }
+        tx.display_power = processDisplayForPower(tx.power);
     }
 
     // mustache scoping bugs
