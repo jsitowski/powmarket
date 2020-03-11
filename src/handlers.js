@@ -7,6 +7,7 @@ import * as database from "./db"
 
 export const api = {};
 
+const DEFAULT_SORT = {"mined_at": 1, "created_at": 1};
 
 function getoffset(req) {
     let offset = Number(req.param("offset"));
@@ -120,7 +121,7 @@ export async function hash(req, res) {
     const hash = req.params.hash;
     log(`/hash/{hash} request from ${helpers.getip(req)}`);
 
-    let txs = await database.db.collection("magicnumbers").find({"hash": hash}).toArray();
+    let txs = await database.db.collection("magicnumbers").find({"hash": hash}).sort(DEFAULT_SORT).toArray();
 
     if (!txs) { return res.render("404") }
 
@@ -131,7 +132,7 @@ export async function target(req, res) {
     const hash = req.params.hash;
     log(`/target/{hash} request from ${helpers.getip(req)}`);
 
-    let txs = await database.db.collection("magicnumbers").find({"target": hash}).toArray();
+    let txs = await database.db.collection("magicnumbers").find({"target": hash}).sort(DEFAULT_SORT).toArray();
 
     if (!txs) { return res.render("404") }
 

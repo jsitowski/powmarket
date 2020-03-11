@@ -4,8 +4,6 @@ import * as helpers from "./helpers"
 import * as data from "./data"
 import * as database from "./db"
 
-// TODO: Store power to easily aggregate in database
-
 export async function dashboard(view={}) {
     if (!database.db) { throw new Error("expected db") }
     if (!view.bsvusd) { throw new Error("expected bsvusd") }
@@ -109,8 +107,6 @@ export async function tx(view={}) {
         view.bsvusd = await helpers.bsvusd();
     }
 
-    console.log("VIEW", view);
-
     view = await data.processDisplayForMagicNumber(view);
 
     const txs = (await database.db.collection("magicnumbers").find({
@@ -127,6 +123,8 @@ export async function tx(view={}) {
     if (txs.length > 0) {
         view.txs = txs;
     }
+
+    // TODO: Store power to easily aggregate in database
 
     const powers = [];
     powers.push({ power: view.power, polarity: (data.BAD_EMOJIS.indexOf(view.emoji) >= 0 ? -1 : 1)});
@@ -170,5 +168,4 @@ export async function txs({ txs, hash, type, header }) {
         type,
     };
 }
-
 
