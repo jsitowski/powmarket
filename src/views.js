@@ -78,7 +78,9 @@ export async function unmined(view={}) {
     if (!view.bsvusd) { view.bsvusd = await helpers.bsvusd() }
     if (!view.dashboard) { view = await dashboard(view) }
     const unmined = await data.results(Object.assign({}, view, {"mined": false}));
-    view.unmined = await Promise.all(unmined.map(async (m) => { return await data.processDisplayForMagicNumber(m, view)}));
+    view.unmined = await Promise.all(unmined.map(async (m) => {
+        return await data.processDisplayForMagicNumber(Object.assign(m, view));
+    }));
     return view;
 }
 

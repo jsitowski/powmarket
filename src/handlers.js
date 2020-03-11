@@ -7,7 +7,7 @@ import * as database from "./db"
 
 export const api = {};
 
-const DEFAULT_SORT = {"mined_at": 1, "created_at": 1};
+const DEFAULT_SORT = {"mined_at": -1, "created_at": -1};
 
 function getoffset(req) {
     let offset = Number(req.param("offset"));
@@ -121,11 +121,33 @@ export async function hash(req, res) {
     const hash = req.params.hash;
     log(`/hash/${hash} request from ${helpers.getip(req)}`);
 
-    let txs = await database.db.collection("magicnumbers").find({"hash": hash}).sort(DEFAULT_SORT).toArray();
+    let offset = getoffset(req);
+    let limit = getlimit(req);
+
+    let txs = await database.db.collection("magicnumbers").find({"hash": hash}).sort(DEFAULT_SORT).skip(offset).limit(limit).toArray();
 
     if (!txs) { return res.render("404") }
 
-    return res.render('txs', await views.txs(Object.assign({ txs }, { type: "Hash", header: hash })));
+    let dashboard = (await database.db.collection("magicnumbers").aggregate([{"$match": {"hash": hash}}, {"$sort": DEFAULT_SORT}, {"$group": {
+        _id: null,
+        "total_power": {"$sum": "$power"},
+        "total_numbers": {"$sum": 1},
+    }}]).toArray())[0];
+
+    const view = await views.txs(Object.assign({ txs }, { type: "Target", header: hash, offset, limit }));
+
+    view.total_power = dashboard.total_power;
+    view.total_numbers = dashboard.total_numbers;
+
+    view.display_total_power = data.processDisplayForPower(dashboard.total_power);
+    view.display_total_numbers = helpers.numberWithCommas(dashboard.total_numbers);
+
+    if (view.txs.length === view.limit) {
+        view.show_more = true;
+        view.next_offset = view.offset + view.limit;
+    }
+
+    return res.render('txs', view);
 }
 
 export async function target(req, res) {

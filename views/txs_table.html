@@ -3,6 +3,7 @@
   <table class="table">
     <thead>
       <tr>
+        <th>created at</th>
         <th>target</th>
         <th>hash</th>
         <th>magic number</th>
@@ -12,6 +13,7 @@
     <tbody>
       {{#txs}}
         <tr>
+          <td class="created">{{display_date}}</td>
           <td style="white-space: nowrap">
             <a class="mono" href="/target/{{target}}">{{ display_target }}</a>
             {{#emoji}}<a href="/target/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
