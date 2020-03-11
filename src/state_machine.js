@@ -124,11 +124,13 @@ export default class POWMarketStateMachine {
                 let power = Math.pow(10, pow);
 
                 if (result.emoji && data.isBadEmoji(result.emoji)) {
+                    power = power * -1;
                 }
 
                 const response = await this.db.collection("magicnumbers").updateOne({ txid }, {
                     "$set": {
                         mined: true,
+                        power,
                         mined_at: created_at,
                         mined_price,
                         magicnumber,
