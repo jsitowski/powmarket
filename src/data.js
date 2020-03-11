@@ -24,28 +24,21 @@ export async function results({ bsvusd, offset=0, limit=100, mined, sort={"creat
     });
 }
 
-export async function processDisplayForMagicNumber(magicnumber, context={}) {
+export async function processDisplayForMagicNumber(tx={}) {
 
     let display_value;
-    if (magicnumber.mined_price) {
-         display_value = magicnumber.mined_price;
+    if (tx.mined_price) {
+         display_value = tx.mined_price;
     } else {
-        const bsvusd = (context.bsvusd ? context.bsvusd : await helpers.bsvusd());
-        display_value = helpers.satoshisToDollars(magicnumber.value, bsvusd);
+        const bsvusd = (tx.bsvusd ? tx.bsvusd : await helpers.bsvusd());
+        display_value = helpers.satoshisToDollars(tx.value, bsvusd);
     }
 
-    magicnumber.display_value = display_value;
-    magicnumber.display_date = timeago.format(magicnumber.created_at * 1000);
-    magicnumber.display_mined_date = timeago.format((magicnumber.mined_at || magicnumber.created_at) * 1000);
-    magicnumber.display_target = (magicnumber.target.length > 10 ? magicnumber.target.substr(0, 10) + "..." : magicnumber.target);
-    return magicnumber;
-}
+    tx.display_value = display_value;
+    tx.display_date = timeago.format(tx.created_at * 1000);
+    tx.display_mined_date = timeago.format((tx.mined_at || tx.created_at) * 1000);
 
-
-
-export async function process(tx) {
-
-    tx = processDisplayForMagicNumber(tx);
+    tx.display_target = (tx.target.length > 10 ? tx.target.substr(0, 10) + "..." : tx.target);
 
     if (tx.mined_at) {
         tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
@@ -55,14 +48,11 @@ export async function process(tx) {
         tx.power = helpers.countpow(tx.magicnumber, tx.target);
     }
 
-    if (!tx.emoji) {
-        tx.emoji = null;
-    }
-
-    if (!tx.magicnumber) {
-        tx.magicnumber = null;
-    }
+    // mustache scoping bugs
+    if (!tx.emoji) { tx.emoji = null }
+    if (!tx.magicnumber) {tx.magicnumber = null }
 
     return tx;
 }
+
 

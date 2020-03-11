@@ -102,39 +102,40 @@ export async function homepage(view={}) {
 }
 
 
-export async function tx({ tx, hash, type, header }) {
+export async function tx(view={}) {
     if (!database.db) { throw new Error("expected db") }
 
-    tx = await data.process({ tx, type, header });
+    if (!view.bsvusd) {
+        view.bsvusd = await helpers.bsvusd();
+    }
 
-    tx.type = type;
-    tx.header = header;
+    view = await data.processDisplayForMagicNumber(view);
 
     const txs = (await database.db.collection("magicnumbers").find({
         "$or": [
-            {"hash": tx.txid},
-            {"hash": tx.magicnumber},
+            {"hash": view.txid},
+            {"hash": view.magicnumber},
         ]
     }).limit(10).toArray()).filter(t => {
-        return t.txid !== tx.txid;
+        return t.txid !== view.txid;
     }).map(async (t) => {
-        return await data.process({ tx: t, bsvusd, type, header });
+        return await data.processDisplayForMagicNumber(view);
     });
 
     if (txs.length > 0) {
-        tx.txs = txs;
+        view.txs = txs;
     }
 
     const powers = [];
-    powers.push({ power: tx.power, polarity: (data.BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
+    powers.push({ power: view.power, polarity: (data.BAD_EMOJIS.indexOf(view.emoji) >= 0 ? -1 : 1)});
 
     for (const t of txs) {
         powers.push({ power: t.power, polarity: (data.BAD_EMOJIS.indexOf(t.emoji) >= 0 ? -1 : 1)});
     }
 
-    tx.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
+    view.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
 
-    return tx;
+    return view;
 }
 
 export async function txs({ txs, hash, type, header }) {

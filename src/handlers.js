@@ -93,12 +93,7 @@ export async function txid(req, res) {
         return res.render("404");
     }
 
-    return res.render('tx', await views.tx({
-        tx,
-        hash,
-        type: "TXID",
-        header: tx.txid
-    }));
+    return res.render('tx', await views.tx(Object.assign(tx, {hash, type: "TXID", header: tx.txid })));
 }
 
 export async function hash(req, res) {
