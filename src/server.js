@@ -8,12 +8,12 @@ import compression from "compression"
 import mustacheExpress from "mustache-express"
 import bodyParser from "body-parser"
 
-import * as database from "./db"
-import * as helpers from "./helpers"
-import * as views from "./views"
-import * as data from "./data"
+import { connect } from "./db"
+let database = require("./db");
 
-import * as handlers from "./handlers"
+import * as helpers from "./helpers"
+
+import * as views from "./views"
 
 function getip(req) {
     return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -34,9 +34,35 @@ export async function start(port=8000) {
     app.set('view engine', 'html');
     app.set('views', __dirname + '/../views');
 
-    app.get('/api/mined', handlers.api.mined);
-    app.get('/api/unmined', handlers.api.unmined);
-    app.get('/api', handlers.api.all);
+    app.get('/api/mined', async function(req, res) {
+        log(`/api/mined request from ${getip(req)}`);
+        let view = await views.mined();
+        const response = helpers.apiify(view.mined);
+        return res.json({
+            bsvusd: view.bsvusd,
+            magicnumbers: response
+        });
+    });
+
+    app.get('/api/unmined', async function(req, res) {
+        log(`/api/unmined request from ${getip(req)}`);
+        let view = await views.unmined();
+        const response = helpers.apiify(view.unmined);
+        return res.json({
+            bsvusd: view.bsvusd,
+            magicnumbers: response
+        });
+    });
+
+    app.get('/api', async function(req, res) {
+        log(`/api request from ${getip(req)}`);
+        let view = await views.all();
+        const response = helpers.apiify(view.mined);
+        return res.json({
+            bsvusd: view.bsvusd,
+            magicnumbers: response
+        });
+    });
 
     app.get('/mined', async function(req, res) {
         log(`/mined request from ${getip(req)}`);
@@ -92,5 +118,5 @@ export async function start(port=8000) {
     return app.listen(port);
 }
 
-start();
 
+start();

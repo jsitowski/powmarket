@@ -1,10 +1,61 @@
 import * as timeago from "timeago.js"
 
 import * as helpers from "./helpers"
-import * as data from "./data"
-import * as database from "./db";
+const database = require("./db");
+const connect = database.connect;
 
-// TODO: Store power to easily aggregate in database
+const BAD_EMOJIS = ["👎", "😠"];
+
+// TODO: How can we store the powers so we can easily aggregate them in the database?
+
+function processMagicNumber(m, view) {
+
+    let display_value;
+
+    if (m.mined_price) {
+        display_value = m.mined_price;
+    } else {
+        display_value = helpers.satoshisToDollars(m.value, view.bsvusd);
+    }
+
+    m.display_date = timeago.format(m.created_at * 1000);
+    m.display_mined_date = timeago.format((m.mined_at || m.created_at) * 1000);
+    m.display_value = display_value;
+    m.display_target = (m.target.length > 10 ? m.target.substr(0, 10) + "..." : m.target);
+    return m;
+}
+
+function process({ tx, bsvusd, type, header }) {
+
+    if (tx.mined_bsvusd) {
+        tx.bsvusd = helpers.satoshisToDollars(tx.value, tx.mined_bsvusd);
+    } else {
+        tx.bsvusd = helpers.satoshisToDollars(tx.value, bsvusd);
+    }
+
+    tx = processMagicNumber(tx, { bsvusd });
+
+    if (tx.mined_at) {
+        tx.mined_in = helpers.humanReadableInterval(Math.floor(((tx.mined_at - tx.created_at) * 100)) / 100);
+    }
+
+    tx.type = type;
+    tx.header = header;
+    if (tx.magicnumber) {
+        tx.power = helpers.countpow(tx.magicnumber, tx.target);
+    }
+
+    if (!tx.emoji) {
+        tx.emoji = null;
+    }
+
+    if (!tx.magicnumber) {
+        tx.magicnumber = null;
+    }
+
+    return tx;
+}
+
 
 export async function dashboard(view={}) {
     if (!database.db) { throw new Error("expected db") }
@@ -30,6 +81,50 @@ export async function dashboard(view={}) {
             unmined_earnings: helpers.satoshisToDollars(unmined_satoshis, view.bsvusd)
         }
     });
+}
+
+
+export async function all(view={}, limit=10000) {
+    if (!database.db) { throw new Error("expected db") }
+    if (!view.num) { view.num = 100 }
+    view.bsvusd = await helpers.bsvusd();
+
+    const recentlyMined = await (database.db.collection("magicnumbers").find({}).sort({"created_at": -1}).limit(view.num).toArray());
+
+    view.mined = recentlyMined.map(m => {
+        return processMagicNumber(m, view);
+    });
+
+    return view;
+}
+
+
+export async function mined(view={}) {
+    if (!database.db) { throw new Error("expected db") }
+    if (!view.num) { view.num = 100 }
+    view.bsvusd = await helpers.bsvusd();
+
+    const recentlyMined = await (database.db.collection("magicnumbers").find({"mined": true}).sort({"mined_at": -1}).limit(view.num).toArray());
+
+    view.mined = recentlyMined.map(m => {
+        return processMagicNumber(m, view);
+    });
+
+    return view;
+}
+
+export async function unmined(view={}) {
+    if (!database.db) { throw new Error("expected db") }
+    if (!view.num) { view.num = 100 }
+    view.bsvusd = await helpers.bsvusd();
+
+    const pending = await database.db.collection("magicnumbers").find({"mined": false}).sort({"created_at": -1}).limit(view.num).toArray();
+
+    view.unmined = pending.map(m => {
+        return processMagicNumber(m, view);
+    });
+
+    return view;
 }
 
 
@@ -79,7 +174,7 @@ export async function homepage(view={}) {
 
     const views = [blockviz, dashboard, mined, unmined];
     for (const process of views) {
-        view = await data.process(view);
+        view = await process(view);
     }
 
     return view;
@@ -92,7 +187,7 @@ export async function tx({ tx, hash, type, header }) {
     const bsvusd = await helpers.bsvusd();
     if (!bsvusd) { throw new Error(`expected bsvusd to be able to price homepage`) }
 
-    tx = data.process({ tx, bsvusd, hash, type, header });
+    tx = process({ tx, bsvusd, hash, type, header });
 
     const txs = (await database.db.collection("magicnumbers").find({
         "$or": [
@@ -102,7 +197,7 @@ export async function tx({ tx, hash, type, header }) {
     }).limit(10).toArray()).filter(t => {
         return t.txid !== tx.txid;
     }).map(t => {
-        return data.process({ tx: t, bsvusd, type, hash, header });
+        return process({ tx: t, bsvusd, type, hash, header });
     });
 
     if (txs.length > 0) {
@@ -110,10 +205,10 @@ export async function tx({ tx, hash, type, header }) {
     }
 
     const powers = [];
-    powers.push({ power: tx.power, polarity: (data.BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
+    powers.push({ power: tx.power, polarity: (BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
 
     for (const t of txs) {
-        powers.push({ power: t.power, polarity: (data.BAD_EMOJIS.indexOf(t.emoji) >= 0 ? -1 : 1)});
+        powers.push({ power: t.power, polarity: (BAD_EMOJIS.indexOf(t.emoji) >= 0 ? -1 : 1)});
     }
 
     tx.power = Math.floor(helpers.aggregatepower(powers) * 100) / 100;
@@ -130,7 +225,7 @@ export async function txs({ txs, hash, type, header }) {
     const powers = [];
 
     for (let tx of txs) {
-        tx = data.processMagicNumber(tx, { bsvusd });
+        tx = processMagicNumber(tx, { bsvusd });
 
         if (tx.mined_bsvusd) {
             tx.bsvusd = helpers.satoshisToDollars(tx.value, tx.mined_bsvusd);
@@ -146,7 +241,7 @@ export async function txs({ txs, hash, type, header }) {
         tx.header = header;
         if (tx.magicnumber) {
             tx.power = helpers.countpow(tx.magicnumber, tx.target);
-            powers.push({ power: tx.power, polarity: (data.BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
+            powers.push({ power: tx.power, polarity: (BAD_EMOJIS.indexOf(tx.emoji) >= 0 ? -1 : 1)});
         }
     }
 
