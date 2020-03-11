@@ -145,7 +145,6 @@ How much hashpower is currently flowing through the market? Calculate and displa
 Make improvements to the design / UX.
 
 ## TODO
-- power in db scheme
 - title tags / meta tags / og tags
 - Search bar that auto converts to proper hash
 - Show tags
