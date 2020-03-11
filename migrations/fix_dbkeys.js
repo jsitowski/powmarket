@@ -20,7 +20,8 @@ import * as helpers from "../src/helpers"
             magicnumber,
         }, "$unset": {
             "mined_number": true,
-            "usdprice": true
+            "usdprice": true,
+            "mined_bsvusd": true,
         }});
     }
     console.log("END");
