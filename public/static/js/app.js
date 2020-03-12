@@ -92,6 +92,23 @@ function handleMoneyKeyUp() {
   clearMoneyButton();
 }
 
+function handleSearchKeyUp(e) {
+
+  let search = document.getElementById("search").value;
+    console.log("KEY UP", search);
+  if (emojis.indexOf(search) !== -1) {
+    search = emojiUnicode(search);
+    if ((search.length % 2) === 1) {
+      search = search + "0";
+    }
+    document.getElementById("search").value = search;
+  }
+
+    if (e.keyCode === 13) {
+        handleSubmitSearch();
+    }
+}
+
 function emojiUnicode(emoji) {
     var comp;
     if (emoji.length === 1) {
@@ -111,7 +128,6 @@ const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠"
 const emojiTargets = emojis.map(emojiUnicode);
 
 function handleTargetKeyUp() {
-
   let target = document.getElementById("target").value;
   if (emojis.indexOf(target) !== -1) {
     target = emojiUnicode(target);
@@ -129,3 +145,15 @@ function clearMoneyButton() {
   mb.innerHTML = "<div class='money-button' id='money-button'></div>";
 }
 
+function handleSubmitSearch() {
+    document.location = "/" + document.getElementById("search").value;
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const search = document.getElementById("search");
+    if (search) {
+        search.addEventListener("keyup", handleSearchKeyUp);
+        search.addEventListener("paste", handleSearchKeyUp);
+        search.addEventListener("change", handleSearchKeyUp);
+    }
+});

@@ -1,5 +1,7 @@
 const log = require("debug")("pow:handlers");
 
+import bsv from "bsv"
+
 import * as helpers from "./helpers"
 import * as data from "./data"
 import * as views from "./views"
@@ -184,7 +186,7 @@ export async function target(req, res) {
 
 
 export async function wildcard(req, res) {
-    const hash = req.params.hash;
+    let hash = req.params.hash;
     log(`/${hash} request from ${helpers.getip(req)}`);
 
     let tx = await database.db.collection("magicnumbers").findOne({"txid": hash});
@@ -210,6 +212,13 @@ export async function wildcard(req, res) {
     tx = await database.db.collection("magicnumbers").findOne({"target": hash});
     if (tx) {
         return res.redirect(`/target/${hash}`);
+    }
+
+    // let's try to sha256 and see if that matches anything
+    hash = bsv.crypto.Hash.sha256(Buffer.from(hash)).toString("hex");
+    tx = await database.db.collection("magicnumbers").findOne({"hash": hash});
+    if (tx) {
+        return res.redirect(`/hash/${hash}`);
     }
 
     return res.render("404");

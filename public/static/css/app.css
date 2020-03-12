@@ -216,73 +216,6 @@ hr {
 }
 
 
-@media screen and (min-width: 1025px) {
-    #add-magic {
-        position: absolute;
-        top: 0;
-        right: 0;
-        text-decoration: none;
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    h1.title {
-        margin: 0px;
-        font-size: 68px;
-    }
-
-    .level {
-        margin-top: 50px;
-        padding-bottom: 20px;
-    }
-
-    #add-magic {
-        display: none;
-        text-align: center;
-        display: block;
-        margin: 0;
-        padding: 0;
-        text-decoration: none;
-    }
-
-    .blockviz .segment .tx {
-        width: 3px;
-    }
-}
-
-@media screen and (max-width: 540px) {
-    h1.title {
-        margin: 0px;
-        font-size: 58px;
-    }
-    .subtitle {
-        font-size: 19px;
-    }
-
-    .level {
-        margin-top: 40px;
-        padding-bottom: 10px;
-    }
-
-    .level .title {
-        font-size: 21px;
-    }
-
-    .blockviz .segment .tx {
-        width: 2px;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    h1.title {
-        margin: 0;
-        font-size: 44px;
-    }
-    .subtitle {
-        font-size: 16px;
-    }
-}
-
 #add-magic-modal textarea {
     background: rgba(100, 100, 100, 0.1);
     border: none;
@@ -295,7 +228,7 @@ hr {
     resize: none;
 }
 
-#add-magic-modal input[type="text"] {
+input[type="text"] {
     background: rgba(100, 100, 100, 0.1);
     padding: 7px 10px;
     border: none;
@@ -320,7 +253,7 @@ hr {
     margin-left: 11px;
 }
 
-#add-magic-modal input[type="button"] {
+input[type="button"] {
     border: 1px solid red;
     background: rgba(100, 100, 100, 0.2);
     padding: 7px 13px;
@@ -376,3 +309,99 @@ hr {
     font-weight: bold;
     border-radius: 7px 7px 0 0;
 }
+
+.search-wrapper {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-wrapper input[type=text] {
+    width: 530px;
+    height: 34px;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.search-wrapper input[type=button] {
+    height: 34px;
+    font-size: 14px;
+    padding: 0 20px;
+}
+
+@media screen and (min-width: 1025px) {
+    #add-magic {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-decoration: none;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    h1.title {
+        margin: 0px;
+        font-size: 68px;
+    }
+
+    .level {
+        margin-top: 50px;
+        padding-bottom: 20px;
+    }
+
+    #add-magic {
+        display: none;
+        text-align: center;
+        display: block;
+        margin: 0;
+        font-size: 14px;
+        padding: 0;
+        text-decoration: none;
+    }
+
+    .blockviz .segment .tx {
+        width: 3px;
+    }
+
+    .search-wrapper input[type=text] {
+        width: 220px;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    h1.title {
+        margin: 0px;
+        font-size: 58px;
+    }
+    .subtitle {
+        font-size: 19px;
+    }
+
+    .level {
+        margin-top: 40px;
+        padding-bottom: 10px;
+    }
+
+    .level .title {
+        font-size: 21px;
+    }
+
+    .blockviz .segment .tx {
+        width: 2px;
+    }
+
+}
+
+@media screen and (max-width: 400px) {
+    h1.title {
+        margin: 0;
+        font-size: 44px;
+    }
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .search-wrapper input[type=text] {
+        width: 183px;
+    }
+}
+
