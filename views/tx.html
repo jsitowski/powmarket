@@ -19,18 +19,18 @@
       {{#mined}}
       <tr>
         <th class="feature-label">Magic Number</th>
-        <td><a class="highlight mono" href="/{{magicnumber}}">{{magicnumber}}</a></td>
+        <td><a class="highlight mono" href="/magicnumber/{{magicnumber}}">{{magicnumber}}</a></td>
       </tr>
       {{/mined}}
       <tr>
         <th class="feature-label">Hash</th>
-        <td><a class="mono" href="/{{hash}}">{{hash}}</a></td>
+        <td><a class="mono" href="/hash/{{hash}}">{{hash}}</a></td>
       </tr>
       <tr>
         <th class="feature-label">Target</th>
         <td>
-          <a class="mono" href="/{{target}}">{{target}}</a>
-          {{#emoji}}<a href="/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
+          <a class="mono" href="/target/{{target}}">{{target}}</a>
+          {{#emoji}}<a href="/target/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
         </td>
       </tr>
       {{#mined}}
@@ -45,7 +45,7 @@
       </tr>
       <tr>
         <th class="feature-label">TXID</th>
-        <td><a class="mono" href="/{{txid}}">{{txid}}</a>
+        <td><a class="mono" href="/txid/{{txid}}">{{txid}}</a>
           <a href="https://whatsonchain.com/tx/{{txid}}" style="text-decoration: none;" target="_blank">
             <span class="icon"><i class="fas fa-external-link-alt"></i></span>
           </a>
@@ -55,7 +55,7 @@
       <tr>
         <th class="feature-label">Mined</th>
         <td>
-            <a class="mono" href="/{{mined_txid}}">{{mined_txid}}</a>
+            <a class="mono" href="/mined/{{mined_txid}}">{{mined_txid}}</a>
             <a href="https://whatsonchain.com/tx/{{mined_txid}}" style="text-decoration: none;" target="_blank">
               <span class="icon"><i class="fas fa-external-link-alt"></i></span>
             </a>

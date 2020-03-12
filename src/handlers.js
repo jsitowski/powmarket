@@ -134,7 +134,7 @@ export async function hash(req, res) {
         "total_numbers": {"$sum": 1},
     }}]).toArray())[0];
 
-    const view = await views.txs(Object.assign({ txs }, { type: "Target", header: hash, offset, limit }));
+    const view = await views.txs(Object.assign({ txs }, { type: "Hash", header: hash, offset, limit }));
 
     view.total_power = dashboard.total_power;
     view.total_numbers = dashboard.total_numbers;

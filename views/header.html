@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  {{#header}}
+  <title>PoW Market — {{ type }} {{ header }}</title>
+  {{/header}}
+  {{^header}}
   <title>PoW Market — Proof of Work Market</title>
+  {{/header}}
   <meta name="description" content="PoW Market is a real-time distributed computation market for magic numbers">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
