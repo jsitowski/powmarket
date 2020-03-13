@@ -4,7 +4,7 @@ const database = require("./db");
 
 import * as helpers from "./helpers"
 
-export const EMOJIS = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂"];
+export const EMOJIS = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰"];
 export const BAD_EMOJIS = ["👎", "😠"];
 export const EMOJI_TARGETS = EMOJIS.map(helpers.emojiUnicode);
 

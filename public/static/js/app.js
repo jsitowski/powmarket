@@ -95,7 +95,6 @@ function handleMoneyKeyUp() {
 function handleSearchKeyUp(e) {
 
   let search = document.getElementById("search").value;
-    console.log("KEY UP", search);
   if (emojis.indexOf(search) !== -1) {
     search = emojiUnicode(search);
     if ((search.length % 2) === 1) {
@@ -124,7 +123,7 @@ function emojiUnicode(emoji) {
     return comp.toString("16");
 };
 
-const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", ];
+const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰"];
 const emojiTargets = emojis.map(emojiUnicode);
 
 function handleTargetKeyUp() {
