@@ -123,7 +123,7 @@ function emojiUnicode(emoji) {
     return comp.toString("16");
 };
 
-const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰"];
+const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰", "☭"];
 const emojiTargets = emojis.map(emojiUnicode);
 
 function handleTargetKeyUp() {
