@@ -139,8 +139,19 @@ There are many NodeJS WebSocket APIs, switch the state_machine to use one that p
 How much hashpower is currently flowing through the market? Calculate and display it on homepage.
 
 
+### Content Lookups ($21.80)
 
-### Design and UX ($2.18)
+Lookup hashes on various block explorers such as bit.sv, twetch, matterpool
+
+
+### Boost PoW transactions ($43.60)
+
+Add Boost PoW (ASIC-compatible PoW puzzles) scripts to the job queue ($21.80)
+
+Add a "0000" mode to Add Magic Number to structure a puzzle using the Boost PoW protocol ($21.80)
+
+
+### Design and UX ($21.80)
 
 Make improvements to the design / UX.
 
