@@ -7,7 +7,8 @@
     "start": "npm run server",
     "server": "DEBUG=pow*,hummingbird* node -r esm src/server.js",
     "state_machine": "DEBUG=pow*,hummingbird* node -r esm src/state_machine.js",
-    "patch": "DEBUG=* node -r esm src/patch.js"
+    "patch": "DEBUG=* node -r esm src/patch.js",
+    "delete_patch": "DEBUG=* node -r esm src/delete_patch.js"
   },
   "keywords": [
     "bitcoin",

@@ -13,6 +13,16 @@ const Opcode = bsv.Opcode;
 
 const utxos = new Set();
 
+const PUZZLE_TYPE_21E8MINER = "21e8miner";
+const PUZZLE_TYPE_BRENDANLEE = "brendanlee";
+const PUZZLE_TYPE_BOOST = "boostpow";
+
+const BITCOM_PROTOCOL_BITSV = "1L8eNuA8ToLGK5aV4d5d9rXUAbRZUxKrhF";
+
+const CONTENT_TYPE_UNKNOWN = "unknown";
+const CONTENT_TYPE_META = "meta";
+const CONTENT_TYPE_BITSV = "bitsv";
+
 function is21e8MinerScript(script) {
     return !!(
         script.chunks.length === 12 &&
@@ -79,6 +89,16 @@ function isCoinguruStyleScript(script) {
 
 function isPuzzle(script) {
     return is21e8MinerScript(script) || isCoinguruStyleScript(script);
+}
+
+function getPuzzleType(script) {
+    if (is21e8MinerScript(script)) {
+        return PUZZLE_TYPE_21E8MINER;
+    }
+
+    if (isCoinguruStyleScript(script)) {
+        return PUZZLE_TYPE_BRENDANLEE;
+    }
 }
 
 export default class POWMarketStateMachine {
@@ -151,7 +171,14 @@ export default class POWMarketStateMachine {
         let vout = 0;
         for (const out of tx.out) {
             const script = bsv.Script.fromASM(out.str); // TODO: slow
-            if (isPuzzle(script)) {
+            const type = getPuzzleType(script);
+            if (type) {
+                let content_type = CONTENT_TYPE_UNKNOWN;
+                if (tx.out[0].s6 === BITCOM_PROTOCOL_BITSV) {
+                    content_type = CONTENT_TYPE_BITSV;
+                } else if (tx.out[0].s2 === "meta") {
+                    content_type = CONTENT_TYPE_META;
+                }
                 const value = out.e.v;
                 const txid = tx.tx.h;
                 const parts = out.str.split(" "); // TODO: use script
@@ -162,6 +189,8 @@ export default class POWMarketStateMachine {
 
                 try {
                     const obj = {
+                        type,
+                        content_type,
                         txid,
                         vout,
                         from: tx.in[0].e.a,
