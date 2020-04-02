@@ -147,3 +147,4 @@ Make improvements to the design / UX.
 ## TODO
 - Easier to vote
 - SSE
+- Auto pad targets with odd number of characters
