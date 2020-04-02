@@ -136,6 +136,11 @@ export async function best(view={}) {
 
     function process(arr) {
         arr[1] = data.processDisplayForPower(arr[1]);
+        const emojicode = data.isEmojiMagicNumber(arr[0]);
+        if (emojicode) {
+            const emoji = String.fromCodePoint(`0x${emojicode}`);
+            arr[2] = emoji;
+        }
         return arr;
     }
 
