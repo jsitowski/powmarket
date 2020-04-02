@@ -67,7 +67,7 @@
              <h3><i class="fas fa-magic"></i> &nbsp;Add Magic Number</h3>
              <textarea onkeyup="handleKeyUp()" onchange="handleKeyUp()" onpaste="handleKeyUp()" id="content" name="content" placeholder="Content..."></textarea>
              <div class="hash-wrapper"><input onkeyup="handleHashKeyUp()" onchange="handleHashKeyUp()" onpaste="handleHashKeyUp()" id="hash" placeholder="sha256 hash" value="" type="text"></input></div>
-             <input onkeyup="handleTargetKeyUp()" onchange="handleTargetKeyUp()" onpaste="handleTargetKeyUp()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
+             <input onblur="handleTargetBlur()" type="text" class="target" id="target" name="target" value="21e8" placeholder="21e8" />
              &nbsp;<span class="dollar-sign">$</span><input onkeyup="handleMoneyKeyUp()" onchange="handleMoneyKeyUp()" onpaste="handleMoneyKeyUp()" type="text" id="price" class="price" name="price" value="0.0218" placeholder="0.0218" />
              <input type="button" value="Mine" onClick="handleFormSubmit()" />
              <span id="money-button-wrapper">

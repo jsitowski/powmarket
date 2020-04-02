@@ -1,5 +1,14 @@
 // todo: all of this should be rewritten in react
 
+function hexEncode(str) {
+    var arr1 = [];
+    for (var n = 0, l = str.length; n < l; n ++) {
+        var hex = Number(str.charCodeAt(n)).toString(16);
+        arr1.push(hex);
+    }
+    return arr1.join('');
+}
+
 let content = "";
 let hash = "";
 
@@ -109,34 +118,39 @@ function handleSearchKeyUp(e) {
 }
 
 function emojiUnicode(emoji) {
-    var comp;
-    if (emoji.length === 1) {
-        comp = emoji.charCodeAt(0);
-    }
-    comp = (
-        (emoji.charCodeAt(0) - 0xD800) * 0x400
-        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
-    );
-    if (comp < 0) {
-        comp = emoji.charCodeAt(0);
-    }
-    return comp.toString("16");
-};
+    return emoji.codePointAt(0).toString(16);
+}
 
 const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰", "☭"];
 const emojiTargets = emojis.map(emojiUnicode);
+const EMOJI_REGEX = new RegExp(/^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/);
 
-function handleTargetKeyUp() {
-  let target = document.getElementById("target").value;
-  if (emojis.indexOf(target) !== -1) {
-    target = emojiUnicode(target);
-    if ((target.length % 2) === 1) {
-      target = target + "0";
+function evenHexStr(hexstr) {
+    if ((hexstr.length % 2) === 1) {
+        hexstr = hexstr + "0";
     }
-    document.getElementById("target").value = target;
-  }
+    return hexstr;
+}
 
-  clearMoneyButton();
+function handleTargetBlur() {
+  let target = document.getElementById("target").value.trim();
+  var hexstr = /^[0-9A-Fa-f]+$/g;
+
+  if (target) {
+    if (!hexstr.test(target)) {
+        if (EMOJI_REGEX.test(target)) {
+            target = emojiUnicode(target);
+        } else {
+            target = hexEncode(target);
+        }
+    }
+
+    target = evenHexStr(target);
+
+    document.getElementById("target").value = target;
+
+    clearMoneyButton();
+  }
 }
 
 function clearMoneyButton() {
