@@ -44,7 +44,11 @@ export async function patch(txids) {
         log(`found block height ${blockdata.height} from whatsonchain API for ${input}`);
 
         return Number(blockdata.height);
-    })))).sort().reverse();
+    })))).sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+    });
 
     log(`patching heights ${heights.join(" ")}`);
 
