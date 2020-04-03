@@ -33,6 +33,18 @@
           {{#emoji}}<a href="/target/{{target}}" style="text-decoration: none"><small>{{emoji}}</small></a>{{/emoji}}
         </td>
       </tr>
+      {{#display_network}}
+      <tr>
+        <th class="feature-label">Network</th>
+        <td><a href="{{display_link}}">{{display_network}}</a></td>
+      </tr>
+      {{/display_network}}
+      {{#content_type}}
+      <tr>
+        <th class="feature-label">Content</th>
+        <td><a href="https://bit.sv/post/{{txid}}">Visit Content</a></td>
+      </tr>
+      {{/content_type}}
       {{#mined}}
       <tr>
         <th class="feature-label">Power</th>
