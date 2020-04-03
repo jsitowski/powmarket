@@ -151,6 +151,11 @@ Add Boost PoW (ASIC-compatible PoW puzzles) scripts to the job queue ($21.80)
 Add a "0000" mode to Add Magic Number to structure a puzzle using the Boost PoW protocol ($21.80)
 
 
+### Hashrate chart ($21.80)
+
+Add a chart to the Statistics section that visualises the historical hashrate for all of PoW.market
+
+
 ### Design and UX ($21.80)
 
 Make improvements to the design / UX.
