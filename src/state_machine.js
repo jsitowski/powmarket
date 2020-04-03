@@ -24,7 +24,7 @@ const CONTENT_TYPE_META = "meta";
 const CONTENT_TYPE_BITSV = "bitsv";
 
 function getContentType(tx) {
-    if (tx.out[0].s6 === BITCOM_PROTOCOL_BITSV) {
+    if (tx.out[0].s6 === BITCOM_PROTOCOL_BITSV || tx.out[0].s2 === BITCOM_PROTOCOL_BITSV) {
         return CONTENT_TYPE_BITSV;
     } else if (tx.out[0].s2 === "meta") {
         return CONTENT_TYPE_META;
@@ -35,8 +35,12 @@ function getContentType(tx) {
 function getContentTXID(tx) {
     const content_type = getContentType(tx);
     if (content_type == CONTENT_TYPE_BITSV) {
-        if (tx.out[0].s11 === "content") {
+        if (tx.out[0].s11 === "content") { // TODO: should parse MAP data and use that
             return tx.tx.h;
+        } else if (tx.out[0].s7 === "receipt" && tx.out[0].s8 === "txid") {
+            return tx.out[0].s9;
+        } else {
+            log(`unable to find bit.sv content_txid for ${JSON.stringify(tx, null, 4)}`);
         }
     }
 
@@ -219,7 +223,7 @@ export default class POWMarketStateMachine {
                         created_at,
                     };
 
-                    if (content_type) {
+                    if (content_type && content_type !== CONTENT_TYPE_UNKNOWN) {
                         obj["content_type"] = content_type;
                     }
 
