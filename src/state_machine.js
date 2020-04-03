@@ -197,7 +197,6 @@ export default class POWMarketStateMachine {
             const script = bsv.Script.fromASM(out.str); // TODO: slow
             const type = getPuzzleType(script);
             if (type) {
-
                 const content_type = getContentType(tx);
                 const content_txid = getContentTXID(tx);
 
@@ -212,7 +211,6 @@ export default class POWMarketStateMachine {
                 try {
                     const obj = {
                         type,
-                        txid,
                         vout,
                         from: tx.in[0].e.a,
                         value,
@@ -235,7 +233,12 @@ export default class POWMarketStateMachine {
                         obj.emoji = String.fromCodePoint(parseInt(emoji, 16));
                     }
 
-                    await this.db.collection("magicnumbers").insertOne(obj);
+                    if (this.updating) {
+                        await this.db.collection("magicnumbers").updateOne({ txid }).updateOne(obj);
+                    } else {
+                        obj["txid"] = txid;
+                        await this.db.collection("magicnumbers").insertOne(obj);
+                    }
 
                     const utxo = `${txid}:${vout}`;
                     if (confirmed) {
