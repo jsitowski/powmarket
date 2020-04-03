@@ -23,6 +23,26 @@ const CONTENT_TYPE_UNKNOWN = "unknown";
 const CONTENT_TYPE_META = "meta";
 const CONTENT_TYPE_BITSV = "bitsv";
 
+function getContentType(tx) {
+    if (tx.out[0].s6 === BITCOM_PROTOCOL_BITSV) {
+        return CONTENT_TYPE_BITSV;
+    } else if (tx.out[0].s2 === "meta") {
+        return CONTENT_TYPE_META;
+    }
+    return CONTENT_TYPE_UNKNOWN;
+}
+
+function getContentTXID(tx) {
+    const content_type = getContentType(tx);
+    if (content_type == CONTENT_TYPE_BITSV) {
+        if (tx.out[0].s11 === "content") {
+            return tx.tx.h;
+        }
+    }
+
+    return null;
+}
+
 function is21e8MinerScript(script) {
     return !!(
         script.chunks.length === 12 &&
@@ -173,12 +193,10 @@ export default class POWMarketStateMachine {
             const script = bsv.Script.fromASM(out.str); // TODO: slow
             const type = getPuzzleType(script);
             if (type) {
-                let content_type = CONTENT_TYPE_UNKNOWN;
-                if (tx.out[0].s6 === BITCOM_PROTOCOL_BITSV) {
-                    content_type = CONTENT_TYPE_BITSV;
-                } else if (tx.out[0].s2 === "meta") {
-                    content_type = CONTENT_TYPE_META;
-                }
+
+                const content_type = getContentType(tx);
+                const content_txid = getContentTXID(tx);
+
                 const value = out.e.v;
                 const txid = tx.tx.h;
                 const parts = out.str.split(" "); // TODO: use script
@@ -190,7 +208,6 @@ export default class POWMarketStateMachine {
                 try {
                     const obj = {
                         type,
-                        content_type,
                         txid,
                         vout,
                         from: tx.in[0].e.a,
@@ -201,6 +218,14 @@ export default class POWMarketStateMachine {
                         mined: false,
                         created_at,
                     };
+
+                    if (content_type) {
+                        obj["content_type"] = content_type;
+                    }
+
+                    if (content_txid) {
+                        obj["content_txid"] = content_txid;
+                    }
 
                     if (emoji) {
                         obj.emoji = String.fromCodePoint(parseInt(emoji, 16));

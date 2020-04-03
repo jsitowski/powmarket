@@ -76,14 +76,12 @@ export async function processDisplayForMagicNumber(tx={}) {
         tx.display_power = processDisplayForPower(tx.power);
     }
 
-    /*
     if (tx.content_type) {
         if (tx.content_type === "bitsv") {
             tx.display_network = "Bit.sv";
             tx.display_link = "https://bit.sv";
         }
     }
-    */
 
     // mustache scoping bugs
     if (!tx.emoji) { tx.emoji = null }
