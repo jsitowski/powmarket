@@ -1,5 +1,18 @@
 // todo: all of this should be rewritten in react
 
+const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰", "☭"];
+const emojiTargets = emojis.map(emojiUnicode);
+
+function isEmoji(str) {
+    const emoji_regex = /<% emojiSequence %>|\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\p{Emoji_Modifier_Base}/gu;
+    const unicode_regex = /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/;
+
+    if (emoji_regex.test(str)) { return true }
+    if (unicode_regex.test(str)) { return true }
+
+    return false;
+}
+
 function hexEncode(str) {
     var arr1 = [];
     for (var n = 0, l = str.length; n < l; n ++) {
@@ -18,6 +31,25 @@ function toggleExtendedDisplay() {
 
 function toggleAddMagicNumber() {
   document.getElementById("add-magic-modal").classList.toggle("is-active");
+}
+
+function handleBlurSearch() {
+    let str = document.getElementById("search").value.trim();
+    var hexstr = new RegExp(/^[0-9A-Fa-f]+$/g);
+
+    if (str) {
+        if (isEmoji(str)) {
+            str = emojiUnicode(str);
+        }
+
+        const ishex = hexstr.test(str);
+        if (ishex) {
+            str = evenHexStr(str);
+        } else {
+            str = sha256(str);
+        }
+        document.getElementById("search").value = str;
+    }
 }
 
 function handleFormSubmit() {
@@ -102,17 +134,8 @@ function handleMoneyKeyUp() {
 }
 
 function handleSearchKeyUp(e) {
-
-  let search = document.getElementById("search").value;
-  if (emojis.indexOf(search) !== -1) {
-    search = emojiUnicode(search);
-    if ((search.length % 2) === 1) {
-      search = search + "0";
-    }
-    document.getElementById("search").value = search;
-  }
-
     if (e.keyCode === 13) {
+        handleBlurSearch();
         handleSubmitSearch();
     }
 }
@@ -121,9 +144,22 @@ function emojiUnicode(emoji) {
     return emoji.codePointAt(0).toString(16);
 }
 
-const emojis = ["👍", "👎", "🙏", "💥", "❤️", "🔥", "🤪", "😠", "🤔", "😂", "💸", "💰", "☭"];
-const emojiTargets = emojis.map(emojiUnicode);
-const EMOJI_REGEX = new RegExp(/^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/);
+function hexify(str) {
+    var hexstr = /^[0-9A-Fa-f]+$/g;
+
+    if (str) {
+        if (!hexstr.test(str)) {
+            if (isEmoji(str)) {
+                str = emojiUnicode(str);
+            } else {
+                str = hexEncode(str);
+            }
+        }
+    }
+
+    str = evenHexStr(str);
+    return str;
+}
 
 function evenHexStr(hexstr) {
     if ((hexstr.length % 2) === 1) {
@@ -133,24 +169,9 @@ function evenHexStr(hexstr) {
 }
 
 function handleTargetBlur() {
-  let target = document.getElementById("target").value.trim();
-  var hexstr = /^[0-9A-Fa-f]+$/g;
-
-  if (target) {
-    if (!hexstr.test(target)) {
-        if (EMOJI_REGEX.test(target)) {
-            target = emojiUnicode(target);
-        } else {
-            target = hexEncode(target);
-        }
-    }
-
-    target = evenHexStr(target);
-
+    let target = hexify(document.getElementById("target").value.trim());
     document.getElementById("target").value = target;
-
     clearMoneyButton();
-  }
 }
 
 function clearMoneyButton() {
@@ -166,7 +187,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const search = document.getElementById("search");
     if (search) {
         search.addEventListener("keyup", handleSearchKeyUp);
-        search.addEventListener("paste", handleSearchKeyUp);
-        search.addEventListener("change", handleSearchKeyUp);
     }
 });

@@ -234,7 +234,7 @@ export default class POWMarketStateMachine {
                     }
 
                     if (this.updating) {
-                        await this.db.collection("magicnumbers").updateOne({ txid }).updateOne(obj);
+                        await this.db.collection("magicnumbers").updateOne({ txid }, {"$set": obj });
                     } else {
                         obj["txid"] = txid;
                         await this.db.collection("magicnumbers").insertOne(obj);

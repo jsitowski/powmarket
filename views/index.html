@@ -1,7 +1,7 @@
 {{> header}}
 
      <div class="search-wrapper">
-       <input type="text" class="search" id="search" name="search" value="" placeholder="Search for a magic number..." autocomplete="off" />
+       <input onblur="handleBlurSearch()" type="text" class="search" id="search" name="search" value="" placeholder="Search for a magic number..." autocomplete="off" />
        <input type="button" class="button" value="Search" onClick="handleSubmitSearch()" />
      </div>
 

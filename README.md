@@ -156,6 +156,7 @@ Add a "0000" mode to Add Magic Number to structure a puzzle using the Boost PoW 
 Make improvements to the design / UX.
 
 ## TODO
-- Easier to vote
-- SSE
-- Auto pad targets with odd number of characters
+- websocket / sse
+- compare any two hashes
+
+Feature: Submit a hash (rainbow tables)
