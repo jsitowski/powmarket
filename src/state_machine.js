@@ -162,7 +162,14 @@ export default class POWMarketStateMachine {
                 }
 
                 const bsvusd = await helpers.bsvusd();
-                const mined_price = helpers.satoshisToDollars(result.value, bsvusd);
+                let mined_price = helpers.satoshisToDollars(result.value, bsvusd);
+                if (mined_price) {
+                    mined_price = Number(mined_price);
+                } else {
+                    mined_price = 0;
+                }
+
+
 
                 const pow = helpers.countpow(magicnumber, result.target);
                 let power = Math.pow(10, pow);
