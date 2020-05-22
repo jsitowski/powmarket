@@ -160,8 +160,13 @@ Add a chart to the Statistics section that visualises the historical hashrate fo
 
 Make improvements to the design / UX.
 
+### Translate to Chinese ($21.80)
+
+Provide Chinese translations for all text on site.
+
 ## TODO
 - websocket / sse
 - compare any two hashes
 
 Feature: Submit a hash (rainbow tables)
+Feature: Magic Number Query Parameter so you can give to someone with form easily active
