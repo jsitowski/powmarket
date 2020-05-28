@@ -5,6 +5,7 @@ import express from "express"
 import compression from "compression"
 import mustacheExpress from "mustache-express"
 import bodyParser from "body-parser"
+import cors from "cors"
 
 import * as database from "./db"
 import * as handlers from "./handlers"
@@ -16,7 +17,8 @@ export async function start(port=8000) {
 
     const app = express();
 
-    app.use(express.static(__dirname + "/../public"))
+    app.use(cors());
+    app.use(express.static(__dirname + "/../public"));
     app.use(compression());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
