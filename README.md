@@ -164,6 +164,10 @@ Make improvements to the design / UX.
 
 Provide Chinese translations for all text on site.
 
+### Magic Number Search API ($21.80)
+
+An API endpoint that can return all the results from any magic number
+
 ## TODO
 - websocket / sse
 - compare any two hashes
