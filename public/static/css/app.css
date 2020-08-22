@@ -37,6 +37,7 @@ h1.title a {
 .subtitle {
     color: black !important;
     margin-top: 30px;
+    margin-bottom: 14px;
     display: block;
     text-align: center;
 }
@@ -329,6 +330,37 @@ input[type="button"] {
     height: 34px;
     font-size: 14px;
     padding: 0 20px;
+}
+
+.header-wrapper {
+    text-align: center;
+}
+
+.header-wrapper a {
+    display: inline-block;
+    position: relative;
+}
+
+.frog-vision-wrapper {
+    border: 1px solid red;
+    display: block;
+    width: 0px;
+    position: absolute;
+    top: 13px;
+    right: -7px;
+    transform: rotate(29deg) !important;
+}
+
+.frog-vision {
+    position: absolute;
+    background: #20D104;
+    padding: 2px 5px;
+    border-radius: 5px;
+    right: -45px;
+    bottom: -9px;
+    font-size: 14px;
+    white-space: nowrap;
+    transform: rotate(90deg) !important;
 }
 
 @media screen and (min-width: 1025px) {
