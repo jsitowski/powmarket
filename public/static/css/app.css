@@ -1,19 +1,19 @@
 html, body {
-    background-color: black;
-    color: white !important;
+    background-color: #21E802;
+    color: black !important;
 }
 
 h1, h2, h3, h4, h5, h6, th, p, span, td {
-    color: white !important;
+    color: black !important;
 }
 
 .modal-card-body {
-    background: black;
+    background: #21E802;
     border-radius: 5px;
 }
 
 a {
-    color: white !important;
+    color: black !important;
     padding-bottom: 3px;
     text-decoration: underline;
 }
@@ -35,14 +35,14 @@ h1.title a {
 }
 
 .subtitle {
-    color: white !important;
+    color: black !important;
     margin-top: 30px;
     display: block;
     text-align: center;
 }
 
 .content {
-    color: white;
+    color: black;
 }
 
 .table {
@@ -106,7 +106,7 @@ h1.title a {
 }
 
 .highlight {
-    background: rgba(61, 84, 99, 0.5);
+    background: #20D104;
     padding: 2px 5px;
     border-radius: 4px;
 }
@@ -146,7 +146,7 @@ h1.title a {
 }
 
 .blockviz .segment .tx {
-    background: white;
+    background: black;
     width: 5px;
     margin: 1px;
     float: left;
@@ -156,6 +156,8 @@ h1.title a {
     opacity: 1;
 }
 
+.blockviz .segment .tx.power { background: white; border: 1px solid white; }
+/*
 .blockviz .segment .tx.power-0 { background: #CAFE89; border: 1px solid #CAFE89; }
 .blockviz .segment .tx.power-1 { background: #CAFE89; border: 1px solid #CAFE89; }
 .blockviz .segment .tx.power-2 { background: #9BFFA9; border: 1px solid #9BFFA9; }
@@ -197,6 +199,7 @@ h1.title a {
 .blockviz .segment .tx.power-38 { background: #41F2FF; border: 1px solid #41F2FF; }
 .blockviz .segment .tx.power-39 { background: #41F2FF; border: 1px solid #41F2FF; }
 .blockviz .segment .tx.power-40 { background: #41F2FF; border: 1px solid #41F2FF; }
+*/
 
 .blockviz .segment .tx.mined-false {
     background: none;
@@ -221,7 +224,7 @@ hr {
     border: none;
     padding: 6px 10px;
     border-radius: 5px;
-    color: white;
+    color: black;
     font-size: 15px;
     width: 100%;
     min-height: 140px;
@@ -233,7 +236,7 @@ input[type="text"] {
     padding: 7px 10px;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: black;
     font-size: 15px;
     width: 100px;
 }
@@ -259,7 +262,7 @@ input[type="button"] {
     padding: 7px 13px;
     border-radius: 5px;
     border: none;
-    color: white;
+    color: black;
     font-size: 15px;
 }
 
@@ -294,18 +297,18 @@ input[type="button"] {
 }
 
 .table td.mined-true {
-    background-color: hsl(217, 71%, 53%);
+    background-color: #21E802;
     opacity: 0.80;
-    color: white;
+    color: black;
     font-weight: bold;
     border-radius: 7px 7px 0 0;
 }
 
 .table td.mined-false {
-    background-color: hsla(171, 100%, 41%, 0.9);
+    background-color: #21E802;
 
     opacity: 0.80;
-    color: white;
+    color: black;
     font-weight: bold;
     border-radius: 7px 7px 0 0;
 }
